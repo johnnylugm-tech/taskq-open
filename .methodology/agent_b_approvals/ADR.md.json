@@ -1,0 +1,45 @@
+{
+  "fr": "ADR.md",
+  "review_status": "APPROVE",
+  "reason": "I re-read ADR.md (249 lines), SAD.md and SRS.md from disk. The ADR matches the SAD on the stack (FastAPI, pydantic v2, SQLAlchemy 2.x, Alembic v1 to v3, asyncio.TaskGroup, create_subprocess_exec), the layering contract and the forbidden-sqlalchemy sources. All 11 ADRs have Status, Context, Decision, Rationale, Consequences and Alternatives Considered. The three earlier SAD caveats are handled: the AC-N6.2 wording conflict is carried as a Requires Verification open item in ADR-002. ADR-011 openly states that the brief's circuit breaker, atomic write and ThreadPoolExecutor are absent from the SAD, so it invents nothing. Only the template-format check was not compared against the template file itself.",
+  "citations": [
+    "02-architecture/SAD.md:5",
+    "02-architecture/SAD.md:246",
+    "02-architecture/SAD.md:263",
+    "02-architecture/SAD.md:469",
+    "01-requirements/SRS.md:237"
+  ],
+  "docs_embedded": [
+    "SRS.md",
+    "SAD.md",
+    "ADR.md"
+  ],
+  "confidence": 0.9,
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "harness/templates/ADR.md",
+      "message": "ADR.md adds an 'Alternatives Considered' subsection that the template's Status/Context/Decision/Rationale/Consequences headings do not list. The review checklist requires documenting alternatives, so this is a harmless superset of the template.",
+      "fr_id": null,
+      "category": "nit"
+    },
+    {
+      "severity": "low",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "01-requirements/SRS.md:237",
+      "message": "The SPEC says 'repository 以外的任何層' may not import sqlalchemy, but the ADR-002 forbidden contract names only api, service, config and errors as sources. ADR-002 flags this as Requires Verification, and it still needs confirmation from the SPEC owner.",
+      "fr_id": null,
+      "category": "nit"
+    },
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "ADR-011",
+      "message": "ADR-011 has status 'Proposed (Requires Verification)', which leaves one ADR not Accepted. This is acceptable because it records non-adoption, but it should be closed once the SPEC owner confirms.",
+      "fr_id": null,
+      "category": "nit"
+    }
+  ],
+  "reviewed_sha256": "1027c293161f760b927243b2abffd2db64dfe691322c7e131b5b8ab12c68a0b0"
+}

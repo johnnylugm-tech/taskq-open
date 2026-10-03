@@ -217,7 +217,7 @@ Citation: SPEC L206-212. dimension: `security`.
 - **AC-N4.1** Before `stdout_tail` / `stderr_tail` / logs / error bodies are persisted or sent, lines matching `(sk-[A-Za-z0-9_-]{8,}|token=\S+|Bearer\s+\S+|postgres(ql)?://[^\s]+)` are replaced whole-line with `[REDACTED]` — decided by a redaction unit test, per SPEC L209-210.
 - **AC-N4.2** "資料庫連線字串(含密碼)不得出現在任何日誌、錯誤訊息或 `/v1/metrics` 回應中" — decided by the unit test behind SPEC §8 #20 / §11 "DB 連線字串出現於日誌 0", per SPEC L211, L376, L452.
 - **AC-N4.3** "API key 明文只在 `key create` 當下輸出一次,不得寫入任何持久化位置" — decided by the `key create` test plus the DB inspection test (SPEC §8 #18), per SPEC L212.
-  - **Coverage note**: the `security` section runs only bandit; redaction and secret-leak behavior are not verified by it and need dedicated implementation tasks.
+  - **Coverage note**: the `security` section runs only bandit; redaction and secret-leak behavior (AC-N4.1 to AC-N4.3) are not verified by it and need dedicated implementation tasks.
 
 ### NFR-05: 文件覆蓋
 
