@@ -1,0 +1,379 @@
+{
+  "deliverable": "/Users/johnny/projects/taskq-open/01-requirements/SRS.md",
+  "canonical": "/Users/johnny/projects/taskq-open/SPEC.md",
+  "mode": "srs_vs_spec",
+  "spec_present": true,
+  "summary": {
+    "total_ac": 22,
+    "total_acceptance_criteria": 111,
+    "canonical_units": 2,
+    "canonical_unit_max_chars": 7406,
+    "verdict_counts": {
+      "transcribed": 0,
+      "overlaps_canonical": 0,
+      "cites_canonical": 1,
+      "unmatched_and_uncited": 21
+    },
+    "citation_counts": {
+      "cited": 1,
+      "resolves": 0,
+      "does_not_resolve": 0
+    },
+    "over_spec_threshold": 0.7,
+    "high_score_count": 16
+  },
+  "fr_coverage": {
+    "in_spec_only": [],
+    "in_srs_only": [],
+    "in_both": [
+      "FR-01",
+      "FR-02",
+      "FR-03",
+      "FR-04",
+      "FR-05",
+      "FR-06",
+      "FR-07",
+      "FR-08",
+      "FR-09",
+      "FR-10"
+    ]
+  },
+  "config_keys": {
+    "declared": [
+      "TASKQ_CORS_ORIGINS",
+      "TASKQ_DB_POOL_SIZE",
+      "TASKQ_DB_URL",
+      "TASKQ_DRAIN_TIMEOUT",
+      "TASKQ_HOST",
+      "TASKQ_LOG_FORMAT",
+      "TASKQ_LOG_LEVEL",
+      "TASKQ_MAX_CONCURRENT",
+      "TASKQ_PORT",
+      "TASKQ_RATE_BURST",
+      "TASKQ_RATE_PER_SEC",
+      "TASKQ_TASK_TIMEOUT"
+    ],
+    "absent_from_srs": []
+  },
+  "machine_block_parity": [
+    {
+      "id": "FR-05",
+      "terms_only_in_machine_block": [
+        "per-token"
+      ]
+    },
+    {
+      "id": "FR-06",
+      "terms_only_in_machine_block": [
+        "string-built"
+      ]
+    },
+    {
+      "id": "NFR-02",
+      "terms_only_in_machine_block": [
+        "deny-all",
+        "string-built"
+      ]
+    },
+    {
+      "id": "NFR-03",
+      "terms_only_in_machine_block": [
+        "re-raised"
+      ]
+    },
+    {
+      "id": "NFR-10",
+      "terms_only_in_machine_block": [
+        "round-trip"
+      ]
+    }
+  ],
+  "per_ac": [
+    {
+      "label": "FR-01",
+      "fr_id": "FR-01",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.677,
+        "best_match_ratio": 0.323,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "FR-02",
+      "fr_id": "FR-02",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.794,
+        "best_match_ratio": 0.206,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "FR-03",
+      "fr_id": "FR-03",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 1.0,
+        "best_match_ratio": 0.286,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "FR-04",
+      "fr_id": "FR-04",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.66,
+        "best_match_ratio": 0.34,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "FR-05",
+      "fr_id": "FR-05",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.712,
+        "best_match_ratio": 0.288,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "FR-06",
+      "fr_id": "FR-06",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.689,
+        "best_match_ratio": 0.311,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "FR-07",
+      "fr_id": "FR-07",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.603,
+        "best_match_ratio": 0.397,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "FR-08",
+      "fr_id": "FR-08",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.769,
+        "best_match_ratio": 0.231,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "FR-09",
+      "fr_id": "FR-09",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.656,
+        "best_match_ratio": 0.344,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "FR-10",
+      "fr_id": "FR-10",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.655,
+        "best_match_ratio": 0.345,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-01",
+      "fr_id": "NFR-01",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.923,
+        "best_match_ratio": 0.377,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-02",
+      "fr_id": "NFR-02",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.992,
+        "best_match_ratio": 0.308,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-03",
+      "fr_id": "NFR-03",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.979,
+        "best_match_ratio": 0.321,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-04",
+      "fr_id": "NFR-04",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 1.0,
+        "best_match_ratio": 0.212,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-05",
+      "fr_id": "NFR-05",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.998,
+        "best_match_ratio": 0.302,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-06",
+      "fr_id": "NFR-06",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.941,
+        "best_match_ratio": 0.359,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-07",
+      "fr_id": "NFR-07",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.991,
+        "best_match_ratio": 0.309,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-08",
+      "fr_id": "NFR-08",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 1.0,
+        "best_match_ratio": 0.196,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-09",
+      "fr_id": "NFR-09",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.979,
+        "best_match_ratio": 0.321,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-10",
+      "fr_id": "NFR-10",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.923,
+        "best_match_ratio": 0.377,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-11",
+      "fr_id": "NFR-11",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 1.0,
+        "best_match_ratio": 0.239,
+        "derived_present": false,
+        "verdict": "unmatched_and_uncited",
+        "citation": null,
+        "citation_resolves": null
+      }
+    },
+    {
+      "label": "NFR-12",
+      "fr_id": "NFR-12",
+      "unit": "requirement",
+      "score": {
+        "over_spec_score": 0.786,
+        "best_match_ratio": 0.214,
+        "derived_present": true,
+        "verdict": "cites_canonical",
+        "citation": "DERIVED: SPEC L382 — §8 #26 has no owning NFR; attached to NFR-12 as the nearest system-level verification. `grep -c \"^TASKQ_\" .env.example` returns \"**12**(§5.1 全部宣告)\" — decided by that grep command (SPEC §8 #26), per SPEC L325, L382.",
+        "citation_resolves": null
+      }
+    }
+  ]
+}

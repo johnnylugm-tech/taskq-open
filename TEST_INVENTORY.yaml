@@ -1,88 +1,684 @@
-# TEST_INVENTORY.yaml — P1 Naming Authority
-# <!-- harness:template-stub --> — remove this line once you start filling this inventory.
-# While present, harness load-context emits a stub warning.
-# Maps every FR to expected test function names. These are the AUTHORITATIVE names
-# that derive_test_cases.md preserves in TEST_SPEC.md (P2 single source of truth).
-# Specified per FR and per test category (unit/integration/cross_cutting).
-# If no name is specified for a category, derive_test_cases.md fills the gap with
-# names derived via the 7-Question Protocol.
+# TEST_INVENTORY.yaml — P1 Naming Authority (taskq-api)
+# Authoritative test function names, 1:1 with TRACEABILITY_MATRIX.md section 3 (one entry per tc_id, no ranges).
+# Cross-cutting coverage is signalled via cross_ref_frs, never by omission.
 format_version: "1.1"
 
-# ── test_inventory ────────────────────────────────────────────────────────
-# Round 74 站5. The P1 prompt (scripts/workflowgen/spec_phase1.py) calls this
-# key REQUIRED — "Non-conforming schema fails the load step" — and this file,
-# which cli/project_cmds.py copies into every new project root on day one, did
-# not contain it. Nor did anything say what goes under it. Seven projects
-# invented four spellings of the same field (test_function, test_name,
-# test_function_name, none at all) and three different container shapes, and
-# the rule in cli/checks/specs.py that reads this block could see three of
-# nine of them.
-#
-# `tests:` is the enumerated 1:1 mapping with TRACEABILITY_MATRIX §1 the
-# prompt already describes; the summary blocks are the arithmetic it already
-# checks. Each entry carries:
-#
-#   tc_id          the matrix id, one entry per id — never a range
-#   fr / nfr       the requirement this test verifies (exactly one of them,
-#                  and the whole value is the id — a test that merely touches
-#                  another requirement says so in cross_ref_frs/cross_ref_nfrs)
-#   layer          unit | static | integration | e2e — what runs it, and the
-#                  field the NFR Layering Hard Rule reads
-#   test_function  the name, identical to TEST_SPEC.md's `Test Function` cell
-#
-# No placement field (Round 113 站D): placement is not decided here, before any
-# architecture exists. Gate 1 requires `<test dir>/test_frNN.py`, and any other
-# test is attributed to its FR by the `test_frNN` prefix of its name.
 test_inventory:
   tests:
     - tc_id: TC-FR01-01
       fr: FR-01
       ac: AC-1.1
       layer: integration
-      test_function: test_fr01_example_integration  # EXAMPLE — replace
+      test_function: test_fr01_create_task_returns_201
     - tc_id: TC-FR01-02
       fr: FR-01
       ac: AC-1.2
+      layer: integration
+      test_function: test_fr01_get_task_returns_all_fields
+    - tc_id: TC-FR01-03
+      fr: FR-01
+      ac: AC-1.3
+      layer: integration
+      test_function: test_fr01_list_tasks_filters_and_cursor
+    - tc_id: TC-FR01-04
+      fr: FR-01
+      ac: AC-1.4
+      layer: integration
+      test_function: test_fr01_delete_task_removes_results_same_txn
+    - tc_id: TC-FR01-05
+      fr: FR-01
+      ac: AC-1.5
+      layer: integration
+      test_function: test_fr01_invalid_body_returns_422
+    - tc_id: TC-FR01-06
+      fr: FR-01
+      ac: AC-1.6
+      layer: integration
+      test_function: test_fr01_unknown_id_returns_404
+    - tc_id: TC-FR01-07
+      fr: FR-01
+      ac: AC-1.7
+      layer: integration
+      test_function: test_fr01_pagination_is_cursor_based
+    - tc_id: TC-FR01-08
+      fr: FR-01
+      ac: AC-1.8
+      layer: integration
+      test_function: test_fr01_list_limit_default_50_max_200
+    - tc_id: TC-FR02-01
+      fr: FR-02
+      ac: AC-2.1
+      layer: integration
+      test_function: test_fr02_run_returns_202_with_run_id
+    - tc_id: TC-FR02-02
+      fr: FR-02
+      ac: AC-2.2
+      layer: integration
+      test_function: test_fr02_run_uses_exec_without_shell_and_times_out
+    - tc_id: TC-FR02-03
+      fr: FR-02
+      ac: AC-2.3
+      layer: integration
+      test_function: test_fr02_run_lifecycle_state_machine
+    - tc_id: TC-FR02-04
+      fr: FR-02
+      ac: AC-2.4
+      layer: integration
+      test_function: test_fr02_results_persisted_in_task_results
+    - tc_id: TC-FR02-05
+      fr: FR-02
+      ac: AC-2.5
+      layer: integration
+      test_function: test_fr02_runs_history_newest_first
+    - tc_id: TC-FR03-01
+      fr: FR-03
+      ac: AC-3.1
+      layer: integration
+      test_function: test_fr03_missing_or_invalid_key_returns_401
+    - tc_id: TC-FR03-02
+      fr: FR-03
+      ac: AC-3.2
+      layer: integration
+      test_function: test_fr03_key_stored_as_sha256_hash_only
+    - tc_id: TC-FR03-03
+      fr: FR-03
+      ac: AC-3.3
+      layer: integration
+      test_function: test_fr03_key_create_cli_prints_plaintext_once
+    - tc_id: TC-FR03-04
+      fr: FR-03
+      ac: AC-3.4
+      layer: integration
+      test_function: test_fr03_revoked_key_returns_401
+    - tc_id: TC-FR03-05
+      fr: FR-03
+      ac: AC-3.5
+      layer: integration
+      test_function: test_fr03_health_endpoints_need_no_key
+    - tc_id: TC-FR04-01
+      fr: FR-04
+      ac: AC-4.1
+      layer: integration
+      test_function: test_fr04_scope_hierarchy_matrix
+    - tc_id: TC-FR04-02
+      fr: FR-04
+      ac: AC-4.2
+      layer: integration
+      test_function: test_fr04_insufficient_scope_returns_403
+    - tc_id: TC-FR04-03
+      fr: FR-04
+      ac: AC-4.3
+      layer: integration
+      test_function: test_fr04_403_does_not_leak_existence
+    - tc_id: TC-FR04-04
+      fr: FR-04
+      ac: AC-4.4
       layer: unit
-      test_function: test_fr01_example_unit  # EXAMPLE — replace
-      cross_ref_nfrs: [NFR-02]
-    # An NFR whose verifier is a unit or static check belongs here with its
-    # layer, and in TEST_SPEC.md's "Deferred to Downstream Phases" section.
+      test_function: test_fr04_every_v1_route_uses_scope_dependency
+    - tc_id: TC-FR05-01
+      fr: FR-05
+      ac: AC-5.1
+      layer: integration
+      test_function: test_fr05_bucket_trigger_and_recovery
+    - tc_id: TC-FR05-02
+      fr: FR-05
+      ac: AC-5.2
+      layer: integration
+      test_function: test_fr05_over_limit_returns_429_retry_after
+    - tc_id: TC-FR05-03
+      fr: FR-05
+      ac: AC-5.3
+      layer: unit
+      test_function: test_fr05_bucket_update_single_txn_row_lock
+    - tc_id: TC-FR05-04
+      fr: FR-05
+      ac: AC-5.4
+      layer: integration
+      test_function: test_fr05_health_endpoints_not_rate_limited
+    - tc_id: TC-FR06-01
+      fr: FR-06
+      ac: AC-6.1
+      layer: static
+      test_function: test_fr06_service_layer_holds_no_session
+    - tc_id: TC-FR06-02
+      fr: FR-06
+      ac: AC-6.2
+      layer: unit
+      test_function: test_fr06_session_commit_on_success_rollback_on_error
+    - tc_id: TC-FR06-03
+      fr: FR-06
+      ac: AC-6.3
+      layer: static
+      test_function: test_fr06_no_string_built_sql
+    - tc_id: TC-FR06-04
+      fr: FR-06
+      ac: AC-6.4
+      layer: integration
+      test_function: test_fr06_list_query_count_constant
+    - tc_id: TC-FR06-05
+      fr: FR-06
+      ac: AC-6.5
+      layer: unit
+      test_function: test_fr06_engine_pool_size_and_pre_ping
+    - tc_id: TC-FR07-01
+      fr: FR-07
+      ac: AC-7.1
+      layer: integration
+      test_function: test_fr07_three_revisions_each_with_downgrade
+    - tc_id: TC-FR07-02
+      fr: FR-07
+      ac: AC-7.2
+      layer: integration
+      test_function: test_fr07_upgrade_head_and_downgrade_base_clean
+    - tc_id: TC-FR07-03
+      fr: FR-07
+      ac: AC-7.3
+      layer: integration
+      test_function: test_fr07_roundtrip_sample_data_identical_per_column
+    - tc_id: TC-FR07-04
+      fr: FR-07
+      ac: AC-7.4
+      layer: integration
+      test_function: test_fr07_downgrade_is_real_not_drop_shortcut
+    - tc_id: TC-FR07-05
+      fr: FR-07
+      ac: AC-7.5
+      layer: unit
+      test_function: test_fr07_offline_sql_generation
+    - tc_id: TC-FR08-01
+      fr: FR-08
+      ac: AC-8.1
+      layer: integration
+      test_function: test_fr08_graceful_drain_marks_interrupted
+    - tc_id: TC-FR08-02
+      fr: FR-08
+      ac: AC-8.2
+      layer: unit
+      test_function: test_fr08_concurrency_cap_queues_excess
+    - tc_id: TC-FR08-03
+      fr: FR-08
+      ac: AC-8.3
+      layer: integration
+      test_function: test_fr08_timeout_kills_process_no_orphan
+    - tc_id: TC-FR08-04
+      fr: FR-08
+      ac: AC-8.4
+      layer: unit
+      test_function: test_fr08_cancelled_error_propagates
+    - tc_id: TC-FR09-01
+      fr: FR-09
+      ac: AC-9.1
+      layer: integration
+      test_function: test_fr09_healthz_returns_ok
+    - tc_id: TC-FR09-02
+      fr: FR-09
+      ac: AC-9.2
+      layer: integration
+      test_function: test_fr09_readyz_ok_when_db_up_and_at_head
+    - tc_id: TC-FR09-03
+      fr: FR-09
+      ac: AC-9.3
+      layer: integration
+      test_function: test_fr09_readyz_503_when_db_down
+    - tc_id: TC-FR09-04
+      fr: FR-09
+      ac: AC-9.4
+      layer: integration
+      test_function: test_fr09_readyz_503_when_migration_behind
+    - tc_id: TC-FR09-05
+      fr: FR-09
+      ac: AC-9.5
+      layer: integration
+      test_function: test_fr09_metrics_admin_payload
+    - tc_id: TC-FR10-01
+      fr: FR-10
+      ac: AC-10.1
+      layer: integration
+      test_function: test_fr10_non_2xx_content_type_problem_json
+    - tc_id: TC-FR10-02
+      fr: FR-10
+      ac: AC-10.2
+      layer: integration
+      test_function: test_fr10_problem_body_required_fields
+    - tc_id: TC-FR10-03
+      fr: FR-10
+      ac: AC-10.3
+      layer: integration
+      test_function: test_fr10_500_body_leaks_no_internals
+    - tc_id: TC-FR10-04
+      fr: FR-10
+      ac: AC-10.4
+      layer: integration
+      test_function: test_fr10_correlation_id_header_matches_log
+    - tc_id: TC-FR10-05
+      fr: FR-10
+      ac: AC-10.5
+      layer: integration
+      test_function: test_fr10_status_to_problem_type_mapping
+    - tc_id: TC-FR10-06
+      fr: FR-10
+      ac: AC-10.6
+      layer: integration
+      test_function: test_fr10_timeout_is_200_and_cancel_not_500
+    - tc_id: TC-N01-01
+      nfr: NFR-01
+      ac: AC-N1.1
+      layer: integration
+      test_function: test_nfr01_get_task_p95_under_30ms
+    - tc_id: TC-N01-02
+      nfr: NFR-01
+      ac: AC-N1.2
+      layer: integration
+      test_function: test_nfr01_list_p95_under_80ms
+    - tc_id: TC-N01-03
+      nfr: NFR-01
+      ac: AC-N1.3
+      layer: integration
+      test_function: test_nfr01_sql_statement_count_constant
+      cross_ref_frs: [FR-06]
     - tc_id: TC-N02-01
       nfr: NFR-02
       ac: AC-N2.1
       layer: static
-      test_function: test_security_example  # EXAMPLE — replace
+      test_function: test_nfr02_no_shell_eval_exec
+    - tc_id: TC-N02-02
+      nfr: NFR-02
+      ac: AC-N2.2
+      layer: static
+      test_function: test_nfr02_no_sql_concatenation
+      cross_ref_frs: [FR-06]
+    - tc_id: TC-N02-03
+      nfr: NFR-02
+      ac: AC-N2.3
+      layer: integration
+      test_function: test_nfr02_api_key_hashed_compare_digest
+      cross_ref_frs: [FR-03]
+    - tc_id: TC-N02-04
+      nfr: NFR-02
+      ac: AC-N2.4
+      layer: integration
+      test_function: test_nfr02_403_no_existence_leak
+      cross_ref_frs: [FR-04]
+    - tc_id: TC-N02-05
+      nfr: NFR-02
+      ac: AC-N2.5
+      layer: integration
+      test_function: test_nfr02_error_body_no_internals
+      cross_ref_frs: [FR-10]
+    - tc_id: TC-N02-06
+      nfr: NFR-02
+      ac: AC-N2.6
+      layer: integration
+      test_function: test_nfr02_cors_default_deny
+    - tc_id: TC-N02-07
+      nfr: NFR-02
+      ac: AC-N2.7
+      layer: static
+      test_function: test_nfr02_bandit_zero_high_medium
+    - tc_id: TC-N03-01
+      nfr: NFR-03
+      ac: AC-N3.1
+      layer: unit
+      test_function: test_nfr03_request_txn_commit_rollback
+      cross_ref_frs: [FR-06]
+    - tc_id: TC-N03-02
+      nfr: NFR-03
+      ac: AC-N3.2
+      layer: static
+      test_function: test_nfr03_no_bare_except_or_swallow
+    - tc_id: TC-N03-03
+      nfr: NFR-03
+      ac: AC-N3.3
+      layer: unit
+      test_function: test_nfr03_cancelled_error_reraised
+      cross_ref_frs: [FR-08, FR-10]
+    - tc_id: TC-N03-04
+      nfr: NFR-03
+      ac: AC-N3.4
+      layer: integration
+      test_function: test_nfr03_db_failure_readyz_503_no_infinite_retry
+    - tc_id: TC-N03-05
+      nfr: NFR-03
+      ac: AC-N3.5
+      layer: integration
+      test_function: test_nfr03_timeout_leaves_no_orphan
+      cross_ref_frs: [FR-08]
+    - tc_id: TC-N03-06
+      nfr: NFR-03
+      ac: AC-N3.6
+      layer: integration
+      test_function: test_nfr03_failed_migration_rolls_back
+    - tc_id: TC-N04-01
+      nfr: NFR-04
+      ac: AC-N4.1
+      layer: unit
+      test_function: test_nfr04_secret_lines_redacted
+    - tc_id: TC-N04-02
+      nfr: NFR-04
+      ac: AC-N4.2
+      layer: integration
+      test_function: test_nfr04_db_url_absent_from_logs_errors_metrics
+    - tc_id: TC-N04-03
+      nfr: NFR-04
+      ac: AC-N4.3
+      layer: integration
+      test_function: test_nfr04_key_plaintext_never_persisted
+    - tc_id: TC-N05-01
+      nfr: NFR-05
+      ac: AC-N5.1
+      layer: static
+      test_function: test_nfr05_public_symbols_docstring_with_fr_ref
+    - tc_id: TC-N05-02
+      nfr: NFR-05
+      ac: AC-N5.2
+      layer: integration
+      test_function: test_nfr05_openapi_summary_description_per_operation
+    - tc_id: TC-N06-01
+      nfr: NFR-06
+      ac: AC-N6.1
+      layer: static
+      test_function: test_nfr06_layers_contract_declared
+    - tc_id: TC-N06-02
+      nfr: NFR-06
+      ac: AC-N6.2
+      layer: static
+      test_function: test_nfr06_sqlalchemy_forbidden_outside_repository
+      cross_ref_frs: [FR-06]
+    - tc_id: TC-N06-03
+      nfr: NFR-06
+      ac: AC-N6.3
+      layer: static
+      test_function: test_nfr06_lint_imports_exit_zero
+    - tc_id: TC-N06-04
+      nfr: NFR-06
+      ac: AC-N6.4
+      layer: static
+      test_function: test_nfr06_contract_not_weakened
+    - tc_id: TC-N07-01
+      nfr: NFR-07
+      ac: AC-N7.1
+      layer: static
+      test_function: test_nfr07_runtime_deps_pinned_and_locked
+    - tc_id: TC-N07-02
+      nfr: NFR-07
+      ac: AC-N7.2
+      layer: static
+      test_function: test_nfr07_licenses_within_allowlist
+    - tc_id: TC-N07-03
+      nfr: NFR-07
+      ac: AC-N7.3
+      layer: static
+      test_function: test_nfr07_license_scan_covers_full_tree
+    - tc_id: TC-N07-04
+      nfr: NFR-07
+      ac: AC-N7.4
+      layer: static
+      test_function: test_nfr07_sbom_content
+    - tc_id: TC-N08-01
+      nfr: NFR-08
+      ac: AC-N8.1
+      layer: static
+      test_function: test_nfr08_mutation_feature_enabled
+    - tc_id: TC-N08-02
+      nfr: NFR-08
+      ac: AC-N8.2
+      layer: static
+      test_function: test_nfr08_mutation_score_at_least_70
+    - tc_id: TC-N08-03
+      nfr: NFR-08
+      ac: AC-N8.3
+      layer: static
+      test_function: test_nfr08_scope_service_repository_with_rationale
     - tc_id: TC-N09-01
       nfr: NFR-09
       ac: AC-N9.1
+      layer: static
+      test_function: test_nfr09_no_skip_xfail_or_stub_tests
+    - tc_id: TC-N09-02
+      nfr: NFR-09
+      ac: AC-N9.2
+      layer: static
+      test_function: test_nfr09_skipped_count_zero
+    - tc_id: TC-N09-03
+      nfr: NFR-09
+      ac: AC-N9.3
+      layer: static
+      test_function: test_nfr09_every_test_has_assert
+    - tc_id: TC-N09-04
+      nfr: NFR-09
+      ac: AC-N9.4
+      layer: static
+      test_function: test_nfr09_no_test_exclusion_mechanisms
+    - tc_id: TC-N09-05
+      nfr: NFR-09
+      ac: AC-N9.5
       layer: integration
-      test_function: test_deployment_example  # EXAMPLE — replace
+      test_function: test_nfr09_migration_tests_use_real_sqlite_file
+      cross_ref_frs: [FR-07]
+    - tc_id: TC-N09-06
+      nfr: NFR-09
+      ac: AC-N9.6
+      layer: static
+      test_function: test_nfr09_verified_only_when_tests_pass
+    - tc_id: TC-N10-01
+      nfr: NFR-10
+      ac: AC-N10.1
+      layer: integration
+      test_function: test_nfr10_integration_line_coverage_80
+    - tc_id: TC-N10-02
+      nfr: NFR-10
+      ac: AC-N10.2
+      layer: static
+      test_function: test_nfr10_integration_uses_asgi_transport
+    - tc_id: TC-N10-03
+      nfr: NFR-10
+      ac: AC-N10.3
+      layer: static
+      test_function: test_nfr10_required_scenarios_enumerated
+    - tc_id: TC-N11-01
+      nfr: NFR-11
+      ac: AC-N11.1
+      layer: static
+      test_function: test_nfr11_mi_at_least_80
+    - tc_id: TC-N11-02
+      nfr: NFR-11
+      ac: AC-N11.2
+      layer: static
+      test_function: test_nfr11_function_cc_at_most_10
+    - tc_id: TC-N11-03
+      nfr: NFR-11
+      ac: AC-N11.3
+      layer: static
+      test_function: test_nfr11_file_and_directory_size_limits
+    - tc_id: TC-N11-04
+      nfr: NFR-11
+      ac: AC-N11.4
+      layer: static
+      test_function: test_nfr11_handler_length_at_most_40
+    - tc_id: TC-N12-01
+      nfr: NFR-12
+      ac: AC-N12.1
+      layer: static
+      test_function: test_nfr12_makefile_verify_system_steps
+    - tc_id: TC-N12-02
+      nfr: NFR-12
+      ac: AC-N12.2
+      layer: e2e
+      test_function: test_nfr12_verify_system_prints_pass
+    - tc_id: TC-N12-03
+      nfr: NFR-12
+      ac: AC-N12.3
+      layer: static
+      test_function: test_nfr12_env_example_declares_12_vars
   coverage_summary:
-    total_test_cases: 4
+    total_test_cases: 99
     by_fr:
-      FR-01: {tc_count: 2}
-      NFR-02: {tc_count: 1}
-      NFR-09: {tc_count: 1}
+      FR-01: {tc_count: 8}
+      FR-02: {tc_count: 5}
+      FR-03: {tc_count: 5}
+      FR-04: {tc_count: 4}
+      FR-05: {tc_count: 4}
+      FR-06: {tc_count: 5}
+      FR-07: {tc_count: 5}
+      FR-08: {tc_count: 4}
+      FR-09: {tc_count: 5}
+      FR-10: {tc_count: 6}
+      NFR-01: {tc_count: 3}
+      NFR-02: {tc_count: 7}
+      NFR-03: {tc_count: 6}
+      NFR-04: {tc_count: 3}
+      NFR-05: {tc_count: 2}
+      NFR-06: {tc_count: 4}
+      NFR-07: {tc_count: 4}
+      NFR-08: {tc_count: 3}
+      NFR-09: {tc_count: 6}
+      NFR-10: {tc_count: 3}
+      NFR-11: {tc_count: 4}
+      NFR-12: {tc_count: 3}
     by_layer:
-      integration: {count: 2}
-      unit: {count: 1}
-      static: {count: 1}
+      unit: {count: 10}
+      static: {count: 31}
+      integration: {count: 57}
+      e2e: {count: 1}
 
-# ── fr_tests / cross_cutting ──────────────────────────────────────────────
-# The name-only view, read by spec_coverage._flatten_test_names (P1 Naming
-# Authority) and required by the P1→P2 handoff validator. Every name here
-# must also appear as a `tests:` entry above; these lists carry no layer, so
-# they cannot answer which NFR tests are unit or static.
+# Name-only view (P1 Naming Authority); every name also appears in tests: above.
 fr_tests:
   FR-01:
-    unit:
-      - test_fr01_example_unit  # EXAMPLE — replace
     integration:
-      - test_fr01_example_integration  # EXAMPLE — replace
+      - test_fr01_create_task_returns_201
+      - test_fr01_get_task_returns_all_fields
+      - test_fr01_list_tasks_filters_and_cursor
+      - test_fr01_delete_task_removes_results_same_txn
+      - test_fr01_invalid_body_returns_422
+      - test_fr01_unknown_id_returns_404
+      - test_fr01_pagination_is_cursor_based
+      - test_fr01_list_limit_default_50_max_200
+  FR-02:
+    integration:
+      - test_fr02_run_returns_202_with_run_id
+      - test_fr02_run_uses_exec_without_shell_and_times_out
+      - test_fr02_run_lifecycle_state_machine
+      - test_fr02_results_persisted_in_task_results
+      - test_fr02_runs_history_newest_first
+  FR-03:
+    integration:
+      - test_fr03_missing_or_invalid_key_returns_401
+      - test_fr03_key_stored_as_sha256_hash_only
+      - test_fr03_key_create_cli_prints_plaintext_once
+      - test_fr03_revoked_key_returns_401
+      - test_fr03_health_endpoints_need_no_key
+  FR-04:
+    unit:
+      - test_fr04_every_v1_route_uses_scope_dependency
+    integration:
+      - test_fr04_scope_hierarchy_matrix
+      - test_fr04_insufficient_scope_returns_403
+      - test_fr04_403_does_not_leak_existence
+  FR-05:
+    unit:
+      - test_fr05_bucket_update_single_txn_row_lock
+    integration:
+      - test_fr05_bucket_trigger_and_recovery
+      - test_fr05_over_limit_returns_429_retry_after
+      - test_fr05_health_endpoints_not_rate_limited
+  FR-06:
+    unit:
+      - test_fr06_session_commit_on_success_rollback_on_error
+      - test_fr06_engine_pool_size_and_pre_ping
+    static:
+      - test_fr06_service_layer_holds_no_session
+      - test_fr06_no_string_built_sql
+    integration:
+      - test_fr06_list_query_count_constant
+  FR-07:
+    unit:
+      - test_fr07_offline_sql_generation
+    integration:
+      - test_fr07_three_revisions_each_with_downgrade
+      - test_fr07_upgrade_head_and_downgrade_base_clean
+      - test_fr07_roundtrip_sample_data_identical_per_column
+      - test_fr07_downgrade_is_real_not_drop_shortcut
+  FR-08:
+    unit:
+      - test_fr08_concurrency_cap_queues_excess
+      - test_fr08_cancelled_error_propagates
+    integration:
+      - test_fr08_graceful_drain_marks_interrupted
+      - test_fr08_timeout_kills_process_no_orphan
+  FR-09:
+    integration:
+      - test_fr09_healthz_returns_ok
+      - test_fr09_readyz_ok_when_db_up_and_at_head
+      - test_fr09_readyz_503_when_db_down
+      - test_fr09_readyz_503_when_migration_behind
+      - test_fr09_metrics_admin_payload
+  FR-10:
+    integration:
+      - test_fr10_non_2xx_content_type_problem_json
+      - test_fr10_problem_body_required_fields
+      - test_fr10_500_body_leaks_no_internals
+      - test_fr10_correlation_id_header_matches_log
+      - test_fr10_status_to_problem_type_mapping
+      - test_fr10_timeout_is_200_and_cancel_not_500
 
 cross_cutting:
-  security:
-    - test_security_example  # EXAMPLE — replace
-  deployment:
-    - test_deployment_example  # EXAMPLE — replace
+  nfr_01:
+    - test_nfr01_get_task_p95_under_30ms
+    - test_nfr01_list_p95_under_80ms
+    - test_nfr01_sql_statement_count_constant
+  nfr_02:
+    - test_nfr02_no_shell_eval_exec
+    - test_nfr02_no_sql_concatenation
+    - test_nfr02_api_key_hashed_compare_digest
+    - test_nfr02_403_no_existence_leak
+    - test_nfr02_error_body_no_internals
+    - test_nfr02_cors_default_deny
+    - test_nfr02_bandit_zero_high_medium
+  nfr_03:
+    - test_nfr03_request_txn_commit_rollback
+    - test_nfr03_no_bare_except_or_swallow
+    - test_nfr03_cancelled_error_reraised
+    - test_nfr03_db_failure_readyz_503_no_infinite_retry
+    - test_nfr03_timeout_leaves_no_orphan
+    - test_nfr03_failed_migration_rolls_back
+  nfr_04:
+    - test_nfr04_secret_lines_redacted
+    - test_nfr04_db_url_absent_from_logs_errors_metrics
+    - test_nfr04_key_plaintext_never_persisted
+  nfr_05:
+    - test_nfr05_public_symbols_docstring_with_fr_ref
+    - test_nfr05_openapi_summary_description_per_operation
+  nfr_06:
+    - test_nfr06_layers_contract_declared
+    - test_nfr06_sqlalchemy_forbidden_outside_repository
+    - test_nfr06_lint_imports_exit_zero
+    - test_nfr06_contract_not_weakened
+  nfr_07:
+    - test_nfr07_runtime_deps_pinned_and_locked
+    - test_nfr07_licenses_within_allowlist
+    - test_nfr07_license_scan_covers_full_tree
+    - test_nfr07_sbom_content
+  nfr_08:
+    - test_nfr08_mutation_feature_enabled
+    - test_nfr08_mutation_score_at_least_70
+    - test_nfr08_scope_service_repository_with_rationale
+  nfr_09:
+    - test_nfr09_no_skip_xfail_or_stub_tests
+    - test_nfr09_skipped_count_zero
+    - test_nfr09_every_test_has_assert
+    - test_nfr09_no_test_exclusion_mechanisms
+    - test_nfr09_migration_tests_use_real_sqlite_file
+    - test_nfr09_verified_only_when_tests_pass
+  nfr_10:
+    - test_nfr10_integration_line_coverage_80
+    - test_nfr10_integration_uses_asgi_transport
+    - test_nfr10_required_scenarios_enumerated
+  nfr_11:
+    - test_nfr11_mi_at_least_80
+    - test_nfr11_function_cc_at_most_10
+    - test_nfr11_file_and_directory_size_limits
+    - test_nfr11_handler_length_at_most_40
+  nfr_12:
+    - test_nfr12_makefile_verify_system_steps
+    - test_nfr12_verify_system_prints_pass
+    - test_nfr12_env_example_declares_12_vars
