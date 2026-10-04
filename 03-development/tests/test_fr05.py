@@ -249,7 +249,8 @@ def test_fr05_bucket_update_single_txn_row_lock(tmp_path, monkeypatch):
         and begins[0] < min(bucket_reads) < max(bucket_writes) < commits[0]
     )
     # AC5.3-for-update
-    assert result_select_has_for_update == (expected_for_update == "True")
+    assert expected_for_update == "True"
+    assert result_select_has_for_update, trace
     # AC5.3-one-txn
     assert result_read_and_write_in_one_txn, trace
 
