@@ -33,6 +33,7 @@ if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
 from taskq_api.app import create_app  # noqa: E402
+from taskq_api.errors import ValidationFailed  # noqa: E402
 from taskq_api.models.base import Base  # noqa: E402
 
 PROBLEM_JSON = "application/problem+json"
@@ -423,3 +424,26 @@ def test_sec_t08_sql_metacharacters_treated_as_data(env):
     tables = {row[0] for row in env.sql("SELECT name FROM sqlite_master WHERE type = 'table'")}
     result_tables_intact = {"tasks", "task_results", "api_keys"} <= tables
     assert result_tables_intact
+
+
+# --- Coverage: validation edge cases -----------------------------------------
+
+# NFR-10
+def test_fr01_invalid_cursor_returns_422(env):
+    resp = env.client.get("/v1/tasks", params={"cursor": "not-a-cursor!"}, headers=_headers("read"))
+    assert resp.status_code == 422, resp.text
+    _assert_problem(resp, 422, "validation")
+
+
+@pytest.mark.parametrize("name", ["   ", "n" * 256])
+def test_fr01_validate_name_rejects_blank_or_too_long(name):
+    from taskq_api.service.tasks import validate_name
+
+    with pytest.raises(ValidationFailed):
+        validate_name(name)
+
+
+def test_fr01_validate_name_accepts_max_length():
+    from taskq_api.service.tasks import MAX_NAME_LENGTH, validate_name
+
+    validate_name("n" * MAX_NAME_LENGTH)
