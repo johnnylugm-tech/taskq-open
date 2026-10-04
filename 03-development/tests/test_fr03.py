@@ -219,6 +219,15 @@ def test_fr03_key_create_rejects_unknown_scope(db_file):
     assert result_new_key_rows == 0
 
 
+def test_fr03_key_create_rejects_unknown_scope_in_process(db_file):
+    stderr = io.StringIO()
+    with contextlib.redirect_stderr(stderr), pytest.raises(SystemExit) as exc_info:
+        cli.main(["key", "create", "--scope", "superuser"])
+    assert exc_info.value.code == 2
+    assert "invalid choice" in stderr.getvalue()
+    assert _sql(db_file, "SELECT COUNT(*) FROM api_keys")[0][0] == 0
+
+
 # --- AC-3.4 -----------------------------------------------------------------
 
 def test_fr03_revoked_key_returns_401(client):
