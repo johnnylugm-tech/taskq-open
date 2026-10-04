@@ -1,0 +1,30 @@
+[importlinter]
+root_package = taskq_api
+include_external_packages = True
+
+[importlinter:contract:NFR-06-layers]
+name = taskq_api layers
+type = layers
+layers =
+    taskq_api.api
+    taskq_api.service
+    taskq_api.repository
+    taskq_api.models
+
+[importlinter:contract:NFR-06-independence]
+name = taskq_api independence
+type = independence
+modules =
+    taskq_api.config
+    taskq_api.errors
+
+[importlinter:contract:NFR-06-no-sqlalchemy-outside-repository]
+name = no sqlalchemy outside repository
+type = forbidden
+source_modules =
+    taskq_api.api
+    taskq_api.service
+    taskq_api.config
+    taskq_api.errors
+forbidden_modules =
+    sqlalchemy

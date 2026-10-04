@@ -1,8 +1,8 @@
 # Harness Methodology — Session Handover
 
-**Checkpoint**: `P2-exit-20261003`  
+**Checkpoint**: `P2-exit-20261004`  
 **Phase**: P2 — Architecture & Design  
-**Generated**: 2026-10-03T21:11:55Z
+**Generated**: 2026-10-04T04:59:38Z
 
 > ⚠️  **開始下一個工作階段前，請先執行 `/compact` 壓縮上下文**，再從「接下來的工作」繼續。
 
@@ -127,28 +127,32 @@ P2 phase completed — pushed for record.
   - ? / aci-post-sab: **complete**
   - ? / preview-fix-r1: **complete**
   - ? / preview-next-phase-r2: **complete**
+  - ? / b-sad-final-r1: **complete**
+  - ? / b-adr-final-r1: **complete**
+  - ? / stale-approvals-2: **complete**
+  - ? / stale-approvals-3: **complete**
 
 **Recently Committed Files:**
+  - `harness`
+  - `.methodology/SAB.json`
+  - `.methodology/agent_b_approvals/ADR.md.json`
+  - `.methodology/agent_b_approvals/SAD.md.json`
+  - `.methodology/agent_b_approvals/TEST_SPEC.md.json`
   - `.methodology/state.json`
+  - `.methodology/trace/attestation.json`
+  - `01-requirements/SRS.md`
+  - `02-architecture/SAD.md`
+  - `02-architecture/TEST_SPEC.md`
+  - `02-architecture/adr/ADR.md`
+  - `HANDOVER.md`
   - `.methodology/fr_progress.json`
   - `00-summary/Phase1_STAGE_PASS.md`
   - `CLAUDE.md`
-  - `HANDOVER.md`
   - `.methodology/.state.lock`
   - `.methodology/agent_b_approvals/SPEC_TRACKING.md.json`
   - `.methodology/agent_b_approvals/SRS.md.json`
   - `.methodology/agent_b_approvals/TEST_INVENTORY.yaml.json`
   - `.methodology/agent_b_approvals/TRACEABILITY_MATRIX.md.json`
-  - `.methodology/workflow_blocks.jsonl`
-  - `01-requirements/SPEC_TRACKING.md`
-  - `01-requirements/SRS.md`
-  - `01-requirements/TRACEABILITY_MATRIX.md`
-  - `TEST_INVENTORY.yaml`
-  - `srs_vs_spec_diff.json`
-  - `harness`
-  - `.github/workflows/harness_quality_gate.yml`
-  - `.gitignore`
-  - `.gitleaks.toml`
 
 ## 接下來的工作
 

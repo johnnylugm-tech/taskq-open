@@ -1,17 +1,14 @@
 {
   "fr": "SAD.md",
   "review_status": "APPROVE",
-  "reason": "I re-read SAD.md (604 lines) and the SRS.md NFR sections from disk. All 10 FRs map to at least one module in §2.3 and in fr_module_traceability. Every module named in the SAB block exists in the §2.2 tree. The layer DAG (entry > api > service > repository > models, with config and errors as leaves and migrations standalone) has no cycles. The SAB markers are present and `phase: 2` is a bare int. All NFR `type` values are legal. Every `dimension` matches SRS.md verbatim (performance, security, error_handling, documentation, architecture_constraints, license_compliance, mutation_testing, test_assertion_quality, integration_coverage, readability, execute_verification_target). NFR-08 carries scope_layers [service, repository], matching the SRS limit to those two layers. The SEC block has appli",
+  "reason": "I re-read SAD.md (675 lines) in full from disk and checked the SRS NFR sections. All 10 FRs map to modules in §2.3 and in fr_module_traceability. The layer DAG api>service>repository>models has no cycles, with config and errors as leaves, and the §3.5 diagram matches the SAB allowed_dependencies. The SAB block (marker at line 272) has `phase: 2` as a bare int. All 12 NFR `type` values are legal. Each `dimension` matches SRS.md verbatim, for example error_handling, architecture_constraints, license_compliance and execute_verification_target. NFR-08 carries scope_layers [service, repository], matching SRS AC-N8.3. The decision_issues resolution_ref lines 491-494 point at the matching resolution records. The SEC block (marker at line 504) has applicability full, 4 trust boundaries and 13 thre",
   "citations": [
     "02-architecture/SAD.md:272",
-    "02-architecture/SAD.md:278",
     "02-architecture/SAD.md:412",
-    "02-architecture/SAD.md:439",
-    "02-architecture/SAD.md:477",
     "02-architecture/SAD.md:469",
-    "01-requirements/SRS.md:233",
-    "01-requirements/SRS.md:255",
-    "01-requirements/SRS.md:288"
+    "02-architecture/SAD.md:504",
+    "02-architecture/SAD.md:531",
+    "01-requirements/SRS.md:260"
   ],
   "docs_embedded": [
     "SRS.md",
@@ -22,27 +19,19 @@
     {
       "severity": "low",
       "evidence_type": "over_interpretation",
-      "canonical_ref": "01-requirements/SRS.md:240",
-      "message": "AC-N6.2 says no layer other than repository may import sqlalchemy, yet models and migrations must import it. SAD.md §5 line 469 resolves this by naming api, service, config and errors as forbidden sources. It is flagged as Requires Verification, and the SAB nfr_traceability NFR-06 target text 'forbidden outside repository' is slightly looser than that resolution.",
+      "canonical_ref": "01-requirements/SRS.md:290",
+      "message": "NFR-11 AC-N11.4 (handler <=40 lines) applies only to the api layer. nfr_traceability for NFR-11 has no scope_layers: [api]. The other NFR-11 limits (file size, directory size, CC) apply project-wide, so the omission is arguable.",
       "fr_id": null,
       "category": "nit"
     },
     {
       "severity": "low",
       "evidence_type": "methodology_artifact",
-      "canonical_ref": "02-architecture/SAD.md:24",
-      "message": "SAD.md notes that SPEC.md has no section 6 (directory structure), so the module tree is derived rather than quoted. It is marked Unknown and needs confirmation from the SPEC owner.",
-      "fr_id": null,
-      "category": "nit"
-    },
-    {
-      "severity": "low",
-      "evidence_type": "over_interpretation",
-      "canonical_ref": "01-requirements/SRS.md:290",
-      "message": "The NFR-11 SAB target omits the MI >= 80 criterion (AC-N11.1) and lists only CC, file size and directory size. It is harmless but incomplete.",
+      "canonical_ref": "02-architecture/SAD.md:329",
+      "message": "The SAB entry layer lists only taskq_api.app and taskq_api.cli. taskq_api.__main__ (§2.2 line 45) and migrations/env.py are not listed in any SAB layers modules.",
       "fr_id": null,
       "category": "nit"
     }
   ],
-  "reviewed_sha256": "61a62c627b6e146b96ba50fb1c6a98a2d874cf1bff6d5edb87cb6d0fe5adc9b2"
+  "reviewed_sha256": "0df2a104e8dbd63eedd6fb1c304d7c653c434ffe9038637aeb1b2ae7051ea974"
 }

@@ -1,17 +1,17 @@
 {
   "fr": "TEST_SPEC.md",
   "review_status": "APPROVE",
-  "reason": "I re-read TEST_SPEC.md from disk (612 lines). Both gates pass: check-test-spec-consistency reports 0 contradictions, and check-property-spec reports OK. The 224 needs-review notes are advisory items for Agent B. All 10 FR sections have a Classification, Active Patterns, a test table with happy_path and validation rows, and a Sub-assertions table. Inputs are written as key=\"value\" pairs. The NP-13, NP-15 and NP-07 forced cases exist at TEST_SPEC.md lines 211, 303 and 330. Integration NFRs have concrete Inputs. The 32 unit/static NFR rows sit in the Deferred table. Summary counts are consistent: 111 FR and cross-cutting rows plus 32 deferred rows give 143, and the per-type counts add up to 111. The ADR caveats are carried forward in the header decisions, with NFR-99.2, 99.3 and 99.4 marked a",
+  "reason": "I re-read TEST_SPEC.md (lines 1-140 and 390-612) and ran both gates. check-test-spec-consistency returned OK with 0 contradictions and 224 needs-review items for Agent B sign-off. check-property-spec returned OK. The Summary counts match the file: 111 named case rows plus 32 Deferred rows give 143, and the per-type counts (19, 29, 13, 7, 7, 30, 4, 2) sum to 111. The forced NP-13, NP-15 and NP-07 integration cases exist at lines 211, 303 and 330. Cross-cutting NFRs have concrete Inputs and Sub-assertions, and static or unit NFRs sit in the Deferred table. The spec decisions on NFR-99.3 (409) and NFR-99.4 (interrupted) agree with SRS.md open issues at lines 356 and 168. I did not read FR-03 to FR-10 line by line (lines 138-389). Only the gate output and greps cover them. Only low-severity ga",
   "citations": [
     "02-architecture/TEST_SPEC.md:40",
     "02-architecture/TEST_SPEC.md:211",
     "02-architecture/TEST_SPEC.md:303",
     "02-architecture/TEST_SPEC.md:330",
-    "02-architecture/TEST_SPEC.md:593",
-    "01-requirements/SRS.md:57",
-    "01-requirements/SRS.md:237",
-    "01-requirements/SRS.md:320",
-    "01-requirements/SRS.md:354"
+    "02-architecture/TEST_SPEC.md:349",
+    "02-architecture/TEST_SPEC.md:602",
+    "01-requirements/SRS.md:356",
+    "01-requirements/SRS.md:168",
+    "01-requirements/SRS.md:137"
   ],
   "docs_embedded": [
     "SRS.md",
@@ -23,41 +23,25 @@
   "gaps": [
     {
       "severity": "low",
-      "evidence_type": "over_interpretation",
-      "canonical_ref": "01-requirements/SRS.md:57",
-      "message": "AC-1.5 says a rule violation returns HTTP 422, and that rule list includes unique name. TEST_SPEC case FR-01 #14 asserts 409 for a duplicate name, following SRS.md:320 and NFR-99.3. The choice is recorded in the header and on the row, but the SPEC owner still has to confirm it.",
-      "fr_id": "FR-01",
-      "category": "nit"
-    },
-    {
-      "severity": "low",
-      "evidence_type": "over_interpretation",
-      "canonical_ref": "01-requirements/SRS.md:354",
-      "message": "NFR-99.2 leaves the injection blacklist character set unspecified. Cases FR-01 #13 and #15 and FR-02 #10 assume ';' is blacklisted and '$' is accepted, and each row records that as a precondition. These assumptions need confirmation from the SPEC owner.",
-      "fr_id": "FR-01",
-      "category": "nit"
-    },
-    {
-      "severity": "low",
-      "evidence_type": "over_interpretation",
-      "canonical_ref": "01-requirements/SRS.md:237",
-      "message": "The Deferred row for NFR-06 (test_nfr06_sqlalchemy_forbidden_outside_repository) uses forbidden_source_modules=\"4\" (api, service, config, errors). SRS AC-N6.2 says any layer other than repository, a wider reading that matches the open point in ADR-002. This is the same unresolved question carried over from the ADR review.",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "02-architecture/TEST_SPEC.md:512",
+      "message": "The NFR-10 and NFR-12 cases (lines 512-543) are whole-suite criteria. They are kept as report-reading tests only because TEST_INVENTORY declares the names, and the spec itself flags them for Agent B. They are weak verifiers but acceptable. The consistency gate also lists 224 predicates as needing Agent B review. These are not contradictions.",
       "fr_id": null,
       "category": "nit"
     },
     {
       "severity": "low",
-      "evidence_type": "methodology_artifact",
-      "canonical_ref": "02-architecture/TEST_SPEC.md:593",
-      "message": "The Summary reports 2 smoke cases, but the Deployment Smoke table lists only one row. The second smoke case is presumably in another section. The totals are consistent, but the smoke attribution is not obvious.",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "02-architecture/TEST_SPEC.md:445",
+      "message": "NFR-03 case 1 sets a 5 s response deadline for /readyz when the database is down. SRS only says 'not retried infinitely', so the bound is the catalog's own and should be confirmed in P3. The same applies to the `;` and `$` injection-blacklist assumption (NFR-99.2).",
       "fr_id": null,
       "category": "nit"
     },
     {
       "severity": "low",
-      "evidence_type": "methodology_artifact",
-      "canonical_ref": "harness_cli.py check-test-spec-consistency",
-      "message": "The consistency gate flags 224 predicates as needing Agent B review because they reference production outputs outside its recognised length/count patterns. These are advisory notes only and the gate result is OK.",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "02-architecture/TEST_SPEC.md:3",
+      "message": "The header cites '99 AC' and '99 tc_ids', but the file has 143 cases (111 named rows plus 32 Deferred). The extra rows come from SEC-forced and sub-rows. A grep for 'tc_id' in TEST_INVENTORY.yaml returned 100 matches, which may include a header line. I did not confirm the count.",
       "fr_id": null,
       "category": "nit"
     }
