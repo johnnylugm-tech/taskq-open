@@ -34,3 +34,9 @@ useDefault = true
 description = "Framework-produced audit records under .methodology/ trip generic-api-key on test names and coverage summaries, not real credentials"
 targetRules = ["generic-api-key"]
 paths = ['''(^|/)\.methodology(-archive)?/''']
+
+[[allowlists]]
+description = "Deliberately fake API-key fixtures in tests and TEST_SPEC.md (sk-test-* and sk-abcdefgh12345678); present in git history, so they cannot be removed from scan scope by editing source"
+targetRules = ["generic-api-key"]
+regexTarget = "match"
+regexes = ['''sk-test-[A-Za-z0-9-]+''', '''sk-abcdefgh12345678''']

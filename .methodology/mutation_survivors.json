@@ -1,0 +1,69 @@
+{
+  "generated_at": "2026-10-04T22:06:11.716118+00:00",
+  "tool": "mutmut",
+  "survivor_count": 10,
+  "survivors": [
+    {
+      "file": "/Users/johnny/projects/taskq-open/03-development/src/taskq_api/repository/tasks.py",
+      "line": null,
+      "mutant_id": "21",
+      "mutator": null
+    },
+    {
+      "file": "/Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/auth.py",
+      "line": null,
+      "mutant_id": "108",
+      "mutator": null
+    },
+    {
+      "file": "/Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/executor.py",
+      "line": null,
+      "mutant_id": "277",
+      "mutator": null
+    },
+    {
+      "file": "/Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/executor.py",
+      "line": null,
+      "mutant_id": "278",
+      "mutator": null
+    },
+    {
+      "file": "/Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/executor.py",
+      "line": null,
+      "mutant_id": "283",
+      "mutator": null
+    },
+    {
+      "file": "/Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/health.py",
+      "line": null,
+      "mutant_id": "225",
+      "mutator": null
+    },
+    {
+      "file": "/Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/redact.py",
+      "line": null,
+      "mutant_id": "258",
+      "mutator": null
+    },
+    {
+      "file": "/Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/runner.py",
+      "line": null,
+      "mutant_id": "148",
+      "mutator": null
+    },
+    {
+      "file": "/Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/runner.py",
+      "line": null,
+      "mutant_id": "166",
+      "mutator": null
+    },
+    {
+      "file": "/Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/runs.py",
+      "line": null,
+      "mutant_id": "260",
+      "mutator": null
+    }
+  ],
+  "raw": "To apply a mutant on disk:\n    mutmut apply <id>\n\nTo show a mutant:\n    mutmut show <id>\n\n\nSurvived 🙁 (10)\n\n---- /Users/johnny/projects/taskq-open/03-development/src/taskq_api/repository/tasks.py (1) ----\n\n21\n\n---- /Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/auth.py (1) ----\n\n108\n\n---- /Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/executor.py (3) ----\n\n277-278, 283\n\n---- /Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/health.py (1) ----\n\n225\n\n---- /Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/redact.py (1) ----\n\n258\n\n---- /Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/runner.py (2) ----\n\n148, 166\n\n---- /Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/runs.py (1) ----\n\n260",
+  "reported_total": 10
+}

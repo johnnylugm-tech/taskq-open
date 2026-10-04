@@ -27,6 +27,7 @@ import hashlib
 import io
 import os
 import re
+import runpy
 import sqlite3
 import subprocess
 import sys
@@ -247,6 +248,16 @@ def test_fr03_key_create_rejects_unknown_scope(db_file):
     assert result_exit_code != 0
     # AC3.3-no-row
     assert result_new_key_rows == 0
+
+
+def test_fr03_dunder_main_entry_point_issues_key_in_process(db_file, monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["taskq_api", "key", "create", "--scope", "read"])
+    stdout = io.StringIO()
+    with contextlib.redirect_stdout(stdout), pytest.raises(SystemExit) as exc_info:
+        runpy.run_module("taskq_api", run_name="__main__")
+    assert exc_info.value.code == 0
+    key_hash = _sql(db_file, "SELECT key_hash FROM api_keys")[0][0]
+    assert _issued_plaintext(stdout.getvalue(), key_hash)
 
 
 def test_fr03_key_create_rejects_unknown_scope_in_process(db_file):

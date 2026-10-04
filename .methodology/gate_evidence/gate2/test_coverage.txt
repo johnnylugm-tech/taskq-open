@@ -1,10 +1,27 @@
-# Harness-executed: pytest-cov
-# returncode: 0
-# agent_score: 100.0 | threshold: 80.0
+============================= test session starts ==============================
+platform darwin -- Python 3.11.15, pytest-8.4.2, pluggy-1.6.0
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: /Users/johnny/projects/taskq-open
+plugins: benchmark-5.2.3, platformdirs-4.12.2, cov-7.1.0, anyio-4.15.1
+collected 205 items
 
-........................................................................ [ 35%]
-........................................................................ [ 70%]
-.............................................................            [100%]
+03-development/tests/integration/test_nfr10_integration.py ............. [  6%]
+....                                                                     [  8%]
+03-development/tests/test_fr01.py ....................                   [ 18%]
+03-development/tests/test_fr02.py .............                          [ 24%]
+03-development/tests/test_fr03.py ............                           [ 30%]
+03-development/tests/test_fr04.py ..........                             [ 35%]
+03-development/tests/test_fr05.py .........                              [ 39%]
+03-development/tests/test_fr06.py .........                              [ 43%]
+03-development/tests/test_fr07.py ........                               [ 47%]
+03-development/tests/test_fr08.py ..........                             [ 52%]
+03-development/tests/test_fr09.py .......                                [ 56%]
+03-development/tests/test_fr10.py ..................                     [ 64%]
+03-development/tests/test_nfr08_mutation_kills.py ...................... [ 75%]
+.....                                                                    [ 78%]
+03-development/tests/test_nfr_runtime.py ..............                  [ 84%]
+03-development/tests/test_nfr_static.py ...............................  [100%]
+
 =============================== warnings summary ===============================
 .venv/lib/python3.11/site-packages/fastapi/testclient.py:1
   /Users/johnny/projects/taskq-open/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
@@ -65,4 +82,5 @@ Name                                                         Stmts   Miss  Cover
 03-development/src/taskq_api/service/uow.py                      2      0   100%
 ------------------------------------------------------------------------------------------
 TOTAL                                                         1020      0   100%
-205 passed, 1 warning in 15.05s
+Coverage JSON written to file .sessi-work/coverage.json
+======================= 205 passed, 1 warning in 14.97s ========================

@@ -1,0 +1,45 @@
+{
+  "community_cohesion": {
+    "score": 100.0,
+    "healthy": 16,
+    "total": 16,
+    "total_all": 40,
+    "excluded_test_communities": 24,
+    "unhealthy": [],
+    "low_cohesion": [
+      {
+        "name": "api-key",
+        "cohesion": 0.2816,
+        "size": 26
+      },
+      {
+        "name": "repository-cursor",
+        "cohesion": 0.2697,
+        "size": 17
+      },
+      {
+        "name": "scripts-end",
+        "cohesion": 0.186,
+        "size": 6,
+        "dominant_file": "scripts/smoke_probe.py"
+      }
+    ],
+    "_formula": "size<=50; cohesion reported, not scored (Round 113)",
+    "_cohesion_threshold": 0.3,
+    "_community_oversized": 50,
+    "_community_min_size": 5,
+    "_extra_excludes": [],
+    "excludes_matched": {},
+    "excludes_files_matched": {}
+  },
+  "large_functions_critical": [],
+  "large_functions_penalty": 0,
+  "architecture_score": 100.0,
+  "_source": "framework-independent",
+  "_graph_files": 64,
+  "_source_files": 64,
+  "_unparsed_files": [],
+  "_build_type": "update",
+  "_baseline_sha": "7159f0109616e3c3cec10718ed78dad8318eef17",
+  "_baseline_phase": 3
+}

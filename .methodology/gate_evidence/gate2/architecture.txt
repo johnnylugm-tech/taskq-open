@@ -1,0 +1,5 @@
+[DEGRADED] crg:graph-scope: incremental graph covered 5 of 64 delivered source file(s) — rebuilding in full (59 file(s) missing from the graph)
+[DEGRADED] crg:graph-scope: after a full build the graph covers 58 file(s) and the project delivers 64 — the architecture score is measured over the graph's set (6 delivered file(s) still unparsed)
+[crg-arch-check] floor 80 from gate config (phase 3)
+[crg-arch-check] architecture_score=100.0 (threshold 80)
+[crg-arch-check] OK

@@ -446,4 +446,4 @@ def test_fr01_validate_name_rejects_blank_or_too_long(name):
 def test_fr01_validate_name_accepts_max_length():
     from taskq_api.service.tasks import MAX_NAME_LENGTH, validate_name
 
-    validate_name("n" * MAX_NAME_LENGTH)
+    assert validate_name("n" * MAX_NAME_LENGTH) is None

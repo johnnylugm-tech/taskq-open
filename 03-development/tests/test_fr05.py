@@ -27,12 +27,10 @@ import asyncio
 import hashlib
 import sqlite3
 import sys
-import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import httpx
-import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import Delete, Insert, Select, Update, create_engine, event
 from sqlalchemy.dialects import postgresql

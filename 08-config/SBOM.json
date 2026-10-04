@@ -1,0 +1,110 @@
+[
+  {
+    "name": "alembic",
+    "version": "1.20.0",
+    "license": "MIT",
+    "relation": "direct"
+  },
+  {
+    "name": "annotated-doc",
+    "version": "0.0.5",
+    "license": "MIT",
+    "relation": "transitive"
+  },
+  {
+    "name": "annotated-types",
+    "version": "0.8.0",
+    "license": "MIT",
+    "relation": "transitive"
+  },
+  {
+    "name": "anyio",
+    "version": "4.15.1",
+    "license": "MIT",
+    "relation": "transitive"
+  },
+  {
+    "name": "click",
+    "version": "8.5.0",
+    "license": "BSD-3-Clause",
+    "relation": "transitive"
+  },
+  {
+    "name": "fastapi",
+    "version": "0.142.2",
+    "license": "MIT",
+    "relation": "direct"
+  },
+  {
+    "name": "h11",
+    "version": "0.16.0",
+    "license": "MIT License",
+    "relation": "transitive"
+  },
+  {
+    "name": "idna",
+    "version": "3.20",
+    "license": "BSD-3-Clause",
+    "relation": "transitive"
+  },
+  {
+    "name": "mako",
+    "version": "1.4.3",
+    "license": "MIT",
+    "relation": "transitive"
+  },
+  {
+    "name": "markupsafe",
+    "version": "3.0.4",
+    "license": "BSD-3-Clause",
+    "relation": "transitive"
+  },
+  {
+    "name": "opentelemetry-api",
+    "version": "1.45.0",
+    "license": "Apache-2.0",
+    "relation": "transitive"
+  },
+  {
+    "name": "pydantic",
+    "version": "2.13.5",
+    "license": "MIT",
+    "relation": "direct"
+  },
+  {
+    "name": "pydantic-core",
+    "version": "2.46.5",
+    "license": "MIT",
+    "relation": "transitive"
+  },
+  {
+    "name": "sqlalchemy",
+    "version": "2.1.3",
+    "license": "MIT",
+    "relation": "direct"
+  },
+  {
+    "name": "starlette",
+    "version": "1.7.0",
+    "license": "BSD-3-Clause",
+    "relation": "transitive"
+  },
+  {
+    "name": "typing-extensions",
+    "version": "4.16.0",
+    "license": "PSF-2.0",
+    "relation": "transitive"
+  },
+  {
+    "name": "typing-inspection",
+    "version": "0.4.4",
+    "license": "MIT",
+    "relation": "transitive"
+  },
+  {
+    "name": "uvicorn",
+    "version": "0.54.0",
+    "license": "BSD-3-Clause",
+    "relation": "direct"
+  }
+]

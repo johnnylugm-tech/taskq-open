@@ -1,9 +1,9 @@
 {
   "state": "RUNNING",
   "current_phase": 3,
-  "last_gate": 1,
-  "last_fr": "FR-03",
-  "last_update": "2026-10-04T18:19:33.926104+00:00",
+  "last_gate": 2,
+  "last_fr": null,
+  "last_update": "2026-10-04T22:13:57.080411+00:00",
   "language": "python",
   "phase_completed": {
     "1": {
@@ -34,6 +34,7 @@
   "last_milestone_command": "push-milestone --type p3-pre-gate2",
   "integrity": 100.0,
   "last_milestone_head": {
-    "p3-mid": "31063698d535c49d9fdf845c66985e52d7121ca7"
+    "p3-mid": "31063698d535c49d9fdf845c66985e52d7121ca7",
+    "p3-pre-gate2": "7159f0109616e3c3cec10718ed78dad8318eef17"
   }
 }

@@ -21,7 +21,7 @@ branch_labels = None
 depends_on = None
 
 # Result columns carried between ``tasks.result_json`` and ``task_results``;
-# the single source for the table schema and both data-migration statements.
+# the single source for the table schema.
 _RESULT_COLUMNS = (
     ("exit_code", sa.Integer),
     ("stdout_tail", sa.Text),
@@ -29,25 +29,28 @@ _RESULT_COLUMNS = (
     ("duration_ms", sa.Integer),
     ("finished_at", lambda: sa.String(40)),
 )
-_FIELDS = tuple(name for name, _ in _RESULT_COLUMNS)
 
+# Literal SQL (no string-built statements, NFR-02): the column lists below must
+# match ``_RESULT_COLUMNS``.
 _SPLIT_RESULTS = (
-    "INSERT INTO task_results (id, task_id, {cols}) "
-    "SELECT COALESCE(json_extract(r.value, '$.id'), lower(hex(randomblob(16)))), t.id, {extracts} "
+    "INSERT INTO task_results (id, task_id, exit_code, stdout_tail, stderr_tail, duration_ms, finished_at) "
+    "SELECT COALESCE(json_extract(r.value, '$.id'), lower(hex(randomblob(16)))), t.id, "
+    "json_extract(r.value, '$.exit_code'), json_extract(r.value, '$.stdout_tail'), "
+    "json_extract(r.value, '$.stderr_tail'), json_extract(r.value, '$.duration_ms'), "
+    "json_extract(r.value, '$.finished_at') "
     "FROM tasks AS t, json_each(CASE WHEN json_type(t.result_json) = 'array' "
     "THEN t.result_json ELSE json_array(json(t.result_json)) END) AS r "
     "WHERE t.result_json IS NOT NULL"
-).format(
-    cols=", ".join(_FIELDS),
-    extracts=", ".join(f"json_extract(r.value, '$.{f}')" for f in _FIELDS),
 )
 
 _FOLD_RESULTS = (
     "UPDATE tasks SET result_json = ("
-    "SELECT json_group_array(json_object('id', r.id, {pairs})) "
+    "SELECT json_group_array(json_object('id', r.id, 'exit_code', r.exit_code, "
+    "'stdout_tail', r.stdout_tail, 'stderr_tail', r.stderr_tail, "
+    "'duration_ms', r.duration_ms, 'finished_at', r.finished_at)) "
     "FROM task_results AS r WHERE r.task_id = tasks.id) "
     "WHERE EXISTS (SELECT 1 FROM task_results AS r WHERE r.task_id = tasks.id)"
-).format(pairs=", ".join(f"'{f}', r.{f}" for f in _FIELDS))
+)
 
 
 def upgrade() -> None:
