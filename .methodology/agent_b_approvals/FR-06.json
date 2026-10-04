@@ -1,32 +1,38 @@
 {
-  "review_status": "REJECT",
-  "reason": "Most FR-06 requirements map to a failing assertion. No-Session-in-service maps to test_fr06.py:187. Commit and rollback map to :208-210, :228-230 and :251-255. No string-built SQL maps to :319. N+1 maps to :382 and :388. pool_size and pool_pre_ping map to :403 and :405. The requirement 每個 API 請求一個 Session (one Session per API request) has no assertion. Every commit and rollback test calls make_uow() directly, with no HTTP request. The endpoint test at :339-346 only counts SQL statements and never counts Sessions per request. An implementation that opened two Sessions per request, or shared one across requests, would pass every test. The scan at :171-183 also checks only the service layer for the name Session, so it does not show that all data access goes through repository/. SQL_KEYWORD at :54-56 matches only uppercase keywords, so lowercase string-built SQL would not be caught.",
+  "review_status": "APPROVE",
+  "reason": "Each FR-06 rule maps to an assertion that fails when it is violated. (1) No Session in the business layer: test_fr06.py:187 AST-scans service/ for the name Session, and :185 checks UnitOfWork is not a Session. (2) Commit on success and rollback on exception: :208/:210 on success, :226/:228/:230 on RuntimeError, :251/:253/:255 on CancelledError, all counting real Session after_commit and after_rollback events and checking persistence. (3) No string-built SQL: :320 AST-scans every module under taskq_api for f-string, % and + SQL. (4) N+1: :383 requires equal statement counts for 10 and 100 seeded rows, and :389 caps the repository count at 2. (5) Pool: :404 and :406 check pool size and pre_ping, but 5 is also the default, so :404 alone would not catch an implementation that ignores TASKQ_DB_POOL_SIZE. The non-default case at :414 (pool_size=7) does catch that.",
   "citations": [
     "SPEC.md:122",
+    "SPEC.md:123",
+    "SPEC.md:124",
     "SPEC.md:125",
+    "SPEC.md:126",
+    "SPEC.md:127",
     "03-development/tests/test_fr06.py:187",
     "03-development/tests/test_fr06.py:208",
-    "03-development/tests/test_fr06.py:319",
-    "03-development/tests/test_fr06.py:339",
-    "03-development/tests/test_fr06.py:382",
-    "03-development/tests/test_fr06.py:403"
+    "03-development/tests/test_fr06.py:230",
+    "03-development/tests/test_fr06.py:255",
+    "03-development/tests/test_fr06.py:320",
+    "03-development/tests/test_fr06.py:383",
+    "03-development/tests/test_fr06.py:406",
+    "03-development/tests/test_fr06.py:414"
   ],
   "docs_embedded": [
     "SPEC.md"
   ],
   "gaps": [
     {
-      "severity": "medium",
-      "evidence_type": "real_invention",
-      "canonical_ref": "SPEC.md:125",
-      "message": "No assertion pins 'one Session per API request'. The commit and rollback tests drive the UnitOfWork directly and never go through the HTTP layer. A request that opens several Sessions, or a shared one, would still pass.",
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "03-development/tests/test_fr06.py:404",
+      "message": "The declared test test_fr06_engine_pool_size_and_pre_ping uses pool size 5, which equals the default, so its pool-size assertion cannot detect an implementation that ignores TASKQ_DB_POOL_SIZE. Only the undeclared test at line 414 (value 7) does.",
       "fr_id": "FR-06"
     },
     {
       "severity": "low",
-      "evidence_type": "real_invention",
-      "canonical_ref": "SPEC.md:126",
-      "message": "The SQL_KEYWORD regex is uppercase-only, so concatenated lowercase SQL would evade test_fr06_no_string_built_sql.",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "03-development/tests/test_fr06.py:187",
+      "message": "The first bullet says all data access goes through repository/. No test checks this beyond the service layer, for example that api/ code does not issue SQL directly.",
       "fr_id": "FR-06"
     }
   ],

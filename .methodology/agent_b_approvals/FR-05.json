@@ -1,25 +1,25 @@
 {
   "review_status": "APPROVE",
-  "reason": "Each FR-05 requirement maps to an assertion that fails if it is violated. Capacity (BURST=20): 03-development/tests/test_fr05.py:132 and :149 need exactly 20 successes, and :150 needs a 429 after that. Refill rate: :136 and :203, where 1s at 2.0/s gives exactly 2 tokens and the third request gets 429. Per-token: :189 fails if the bucket is shared. HTTP 429 and problem+json: :134, :165, :168, :172. Retry-After in seconds: :164 (int parse) and :202 (exact value 1). Bucket state in the database across workers: :315-316 and :319, where 40 concurrent requests give exactly 20 successes and one rate_buckets row. Row-level lock: :285, where every bucket SELECT must compile to FOR UPDATE on the postgresql dialect. Single transaction: :287, one begin and one commit around the read and write. Health endpoints: :334 and :342, where /healthz and /readyz never return non-200 after the bucket is drained. Weak assertions (:284 tautology, :321 >=0, :170 >=1) are backed by real ones on the same behaviour.",
+  "reason": "Each FR-05 clause maps to an assertion that fails if it is violated. Capacity (TASKQ_RATE_BURST) is checked at test_fr05.py:130 and :147, where the OK count must equal the burst of 20 and the next request must be 429. Refill (TASKQ_RATE_PER_SEC) is checked at :134 and :201, where 2.0/s over 1s must admit exactly 2 more requests. Per-token isolation is checked at :187. The 429 status is checked at :166. The problem+json content type and type are checked at :163 and :170. Retry-After in seconds is checked at :168 and :200. DB-backed state is checked at :313-317, where a rate_buckets row exists and 40 concurrent requests admit exactly 20. The row-level lock is checked at :283, where every bucket SELECT compiles with FOR UPDATE. The single transaction is checked at :285, where there is one begin, one commit, and read and write between them. Health endpoints being unlimited is checked at :340, after the bucket is shown drained at :332. Weak assertions such as :282 and :319 are redundant. The substantive assertions around them cover the requirement.",
   "citations": [
-    "SPEC.md:115",
     "SPEC.md:117",
     "SPEC.md:118",
     "SPEC.md:119",
     "SPEC.md:120",
-    "03-development/tests/test_fr05.py:132",
+    "03-development/tests/test_fr05.py:130",
     "03-development/tests/test_fr05.py:134",
-    "03-development/tests/test_fr05.py:136",
-    "03-development/tests/test_fr05.py:165",
-    "03-development/tests/test_fr05.py:172",
-    "03-development/tests/test_fr05.py:189",
-    "03-development/tests/test_fr05.py:202",
-    "03-development/tests/test_fr05.py:203",
+    "03-development/tests/test_fr05.py:163",
+    "03-development/tests/test_fr05.py:166",
+    "03-development/tests/test_fr05.py:168",
+    "03-development/tests/test_fr05.py:170",
+    "03-development/tests/test_fr05.py:187",
+    "03-development/tests/test_fr05.py:200",
+    "03-development/tests/test_fr05.py:201",
+    "03-development/tests/test_fr05.py:283",
     "03-development/tests/test_fr05.py:285",
-    "03-development/tests/test_fr05.py:287",
-    "03-development/tests/test_fr05.py:316",
-    "03-development/tests/test_fr05.py:319",
-    "03-development/tests/test_fr05.py:342"
+    "03-development/tests/test_fr05.py:313",
+    "03-development/tests/test_fr05.py:317",
+    "03-development/tests/test_fr05.py:340"
   ],
   "docs_embedded": [
     "SPEC.md"

@@ -1,51 +1,41 @@
 {
-  "review_status": "REJECT",
-  "reason": "Most of FR-01 maps to assertions that would fail if the requirement broke: non-empty→422 test_fr01.py:250-252; ≤1000 chars test_fr01.py:352,364; blacklist→422 test_fr01.py:374-376; unknown id 404+problem+json test_fr01.py:266-268; GET returns all fields test_fr01.py:167; ?status filter + cursor test_fr01.py:193,211; no OFFSET in SQL test_fr01.py:295,305; default limit 50 test_fr01.py:320; 200 accepted test_fr01.py:332; 201→422 test_fr01.py:339; DELETE removes result rows test_fr01.py:231,235. Two problems remain. (1) Inverted assertion: the requirement block lists 名稱唯一 (name uniqueness) among the rules whose violation must return HTTP 422, but test_fr01.py:390 asserts 409 and test_fr01.py:392 asserts /errors/conflict, so a correct 422 fails the test. SPEC.md:168, SPEC.md:341 and SPEC.md:364 say 409, so SPEC contradicts itself, and the spec has to settle it. (2) Scope column not checked: every call uses the matching key (write for POST, read for GET, admin for DELETE). No assertion fails if DELETE accepts a read or write key, or if POST accepts a read key.",
+  "review_status": "APPROVE",
+  "reason": "Each FR-01 requirement maps to an assertion that fails when it is violated. POST/GET/DELETE behaviour and scope: test_fr01.py:148 (201), :168 (all fields), :230 and :232-:236 (delete removes the task and its result rows), :467 and :481 (403 and 401 per scope). Validation: :251-:254 (empty command → 422), :353-:356 (1001 chars → 422), :366 (exactly 1000 accepted), :375-:379 and :405-:407 (`;` rejected, nothing stored), :518 (blank or over-long name → 422). Name uniqueness: :391-:394 asserts 409, which SPEC.md:341 and :364 resolve for name conflicts even though SPEC.md:88 says 422. Unknown id: :267-:269 (GET) and :492-:493 (DELETE) → 404 problem+json. Cursor pagination: :289-:296 (3 pages of 50/50/20, no OFFSET in the captured SQL, no duplicate ids) and :300-:308 (opaque cursor, `offset` param does not shift the page). Limits: :321 (default 50), :333 (200 accepted), :340-:341 (201 → 422). Delete atomicity: :510-:511 (a forced failure rolls back and restores the result rows). The limit numbers come from the requirement, not from the implementation. The only open point is that the injection blacklist is exercised only with `;`, because SPEC.md does not enumerate the blacklist members.",
   "citations": [
-    "SPEC.md:79-91",
+    "SPEC.md:79",
     "SPEC.md:88",
-    "SPEC.md:168",
     "SPEC.md:341",
     "SPEC.md:364",
-    "03-development/tests/test_fr01.py:390",
-    "03-development/tests/test_fr01.py:392",
-    "03-development/tests/test_fr01.py:227-229",
-    "03-development/tests/test_fr01.py:94-96",
-    "03-development/tests/test_fr01.py:250-252",
-    "03-development/tests/test_fr01.py:266-268",
-    "03-development/tests/test_fr01.py:167",
-    "03-development/tests/test_fr01.py:193",
-    "03-development/tests/test_fr01.py:295",
-    "03-development/tests/test_fr01.py:320",
-    "03-development/tests/test_fr01.py:332",
-    "03-development/tests/test_fr01.py:339",
-    "03-development/tests/test_fr01.py:352",
-    "03-development/tests/test_fr01.py:374",
-    "03-development/tests/test_fr01.py:231-235"
+    "03-development/tests/test_fr01.py:148",
+    "03-development/tests/test_fr01.py:168",
+    "03-development/tests/test_fr01.py:212",
+    "03-development/tests/test_fr01.py:236",
+    "03-development/tests/test_fr01.py:254",
+    "03-development/tests/test_fr01.py:269",
+    "03-development/tests/test_fr01.py:290",
+    "03-development/tests/test_fr01.py:296",
+    "03-development/tests/test_fr01.py:308",
+    "03-development/tests/test_fr01.py:321",
+    "03-development/tests/test_fr01.py:333",
+    "03-development/tests/test_fr01.py:341",
+    "03-development/tests/test_fr01.py:356",
+    "03-development/tests/test_fr01.py:366",
+    "03-development/tests/test_fr01.py:379",
+    "03-development/tests/test_fr01.py:393",
+    "03-development/tests/test_fr01.py:467",
+    "03-development/tests/test_fr01.py:481",
+    "03-development/tests/test_fr01.py:492",
+    "03-development/tests/test_fr01.py:511"
   ],
   "docs_embedded": [
     "SPEC.md"
   ],
   "gaps": [
     {
-      "severity": "high",
-      "evidence_type": "methodology_artifact",
-      "canonical_ref": "03-development/tests/test_fr01.py:390",
-      "message": "The FR-01 block (SPEC.md:88) lists name uniqueness among the rules whose violation must return HTTP 422 + problem+json. test_fr01_duplicate_name_returns_409 asserts 409 and /errors/conflict, so a 422 that meets the block fails the test. SPEC.md:168, SPEC.md:341 and SPEC.md:364 (§8 #8) require 409, so SPEC contradicts itself. The spec must be amended (edit FR-01 to exclude uniqueness from the 422 rule, or change §7/§8) before this test can be approved either way.",
-      "fr_id": "FR-01"
-    },
-    {
-      "severity": "high",
-      "evidence_type": "real_invention",
-      "canonical_ref": "03-development/tests/test_fr01.py:227",
-      "message": "The FR-01 table sets per-endpoint scopes: write for POST, read for both GETs, admin for DELETE. No test sends a lower-privilege key: DELETE always uses admin, POST always uses write. If DELETE accepted a read or write key, or POST accepted a read key, no assertion in test_fr01.py would fail. Add tests that send a key with the wrong scope (e.g. read key → DELETE, read key → POST) and assert the call is rejected.",
-      "fr_id": "FR-01"
-    },
-    {
       "severity": "low",
       "evidence_type": "over_interpretation",
-      "canonical_ref": "03-development/tests/test_fr01.py:231-235",
-      "message": "The delete test checks that the task and its result rows are gone afterwards. It does not check the 同一交易 (same transaction) part: deleting results and the task in two separate commits would still pass. A test that forces the task delete to fail and asserts the result rows survive would cover it.",
+      "canonical_ref": "SPEC.md:88",
+      "message": "SPEC.md:88 says every validation violation, including name uniqueness, returns 422. SPEC.md:341 and :364 say a duplicate name returns 409, and test_fr01.py:393 follows the 409 reading. The injection blacklist members are not enumerated in SPEC.md, so only `;` is tested.",
       "fr_id": "FR-01"
     }
   ],
