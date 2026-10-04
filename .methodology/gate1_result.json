@@ -1,22 +1,23 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-05",
-  "overall_score": 99.52,
+  "fr_id": "FR-06",
+  "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
     "linting": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "All checks passed! ruff rc=0",
+      "tool_evidence": "All checks passed!",
+      "evidence_file": ".sessi-work/round_1/tools/linting.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt"
     },
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154378445\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.25\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154482739\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.246\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
@@ -26,16 +27,16 @@
       "tests_passed": 9,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "collected 9 items; 9 passed, 1 warning; ratelimit.py+rate_buckets.py coverage 51/52 stmts = 98.08%; spec coverage 7/7",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-05.txt",
+      "tool_evidence": "9 passed, 1 warning; coverage of session.py+uow.py 100.0%; 7/7 required tests present",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-06.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-05",
+      "coverage_scope_fr": "FR-06",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Contracts: 3 kept, 0 broken. rc=0",
+      "tool_evidence": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -71,33 +72,33 @@
     "linting": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "eccd81697e6f3b6051664b6d410166f0c75627a30e056fd6326091a63ee2025d",
-      "bytes": 28,
-      "head": "All checks passed! ruff rc=0"
+      "sha256": "f0d0b1081d9d3ebb26c4c93543053ecdc0a58998f22c071dc4ddb26021b57645",
+      "bytes": 18,
+      "head": "All checks passed!"
     },
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "99752bbdd43d9aaa7e4fd2494070adb8c250012d9eef86dae8c7702cb0c879eb",
-      "bytes": 249,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154378445\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.25\n    }\n}"
+      "sha256": "949518890fb066876e7409287ebdcb4bc3fa06a71a64a015c7fa8ee73f62f2a2",
+      "bytes": 250,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154482739\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.246\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "c134d1e60cc132e87d4978f54f113fbf570072abcceb1918b4aa78e5371a1cd7",
-      "bytes": 117,
-      "head": "collected 9 items; 9 passed, 1 warning; ratelimit.py+rate_buckets.py coverage 51/52 stmts = 98.08%; spec coverage 7/7"
+      "sha256": "9466bc1b67ec83d7aa8925ed53735a07f3fe203ff241ccf7f60d00a59a5286cc",
+      "bytes": 85,
+      "head": "9 passed, 1 warning; coverage of session.py+uow.py 100.0%; 7/7 required tests present"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "42c14bdabeb0799f68a1c76e3e15e3b81ecae53018557f494db129fa64d44fed",
-      "bytes": 33,
-      "head": "Contracts: 3 kept, 0 broken. rc=0"
+      "sha256": "6f2d7060a41682c338a5c47fb3a43a5a9c2e00c0716c93b3422b98147e1c630f",
+      "bytes": 65,
+      "head": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken."
     }
   },
-  "composite_score": 99.52,
+  "composite_score": 100.0,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
