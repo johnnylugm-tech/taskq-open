@@ -467,10 +467,10 @@ sab:
       source_modules: ["taskq_api.app", "taskq_api.api", "taskq_api.service", "taskq_api.config", "taskq_api.errors"]
       forbidden_modules: ["sqlalchemy"]
   decision_issues:
-    - {id: "NFR-99.1", status: resolved, blocks_phase: 3, resolution_ref: "02-architecture/SAD.md:491"}
-    - {id: "NFR-99.2", status: resolved, blocks_phase: 3, resolution_ref: "02-architecture/SAD.md:492"}
-    - {id: "NFR-99.3", status: resolved, blocks_phase: 3, resolution_ref: "02-architecture/SAD.md:493"}
-    - {id: "NFR-99.4", status: resolved, blocks_phase: 3, resolution_ref: "02-architecture/SAD.md:494"}
+    - {id: "NFR-99.1", status: resolved, blocks_phase: 3, resolution_ref: "02-architecture/SAD.md:492"}
+    - {id: "NFR-99.2", status: resolved, blocks_phase: 3, resolution_ref: "02-architecture/SAD.md:493"}
+    - {id: "NFR-99.3", status: resolved, blocks_phase: 3, resolution_ref: "02-architecture/SAD.md:494"}
+    - {id: "NFR-99.4", status: resolved, blocks_phase: 3, resolution_ref: "02-architecture/SAD.md:495"}
 
   high_risk_modules:
     - "taskq_api.service.runner"
