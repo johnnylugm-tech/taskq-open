@@ -48,7 +48,8 @@ class Executor:
         exc: BaseException | None,
         tb: TracebackType | None,
     ) -> bool | None:
-        return await self._group.__aexit__(exc_type, exc, tb)
+        await self._group.__aexit__(exc_type, exc, tb)
+        return None
 
     def enqueue(self, job: Job, on_dropped: OnDropped | None = None) -> None:
         """[FR-08] Queue ``job``; it is called only once a concurrency slot is free.

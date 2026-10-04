@@ -64,8 +64,8 @@ def list_tasks(
     Citations: SPEC.md L85, L90-91.
     """
     with uow_factory() as uow:
-        items, next_cursor = task_service.list_tasks(uow, status, limit, cursor)
-        items = [TaskOut.model_validate(task) for task in items]
+        tasks, next_cursor = task_service.list_tasks(uow, status, limit, cursor)
+        items = [TaskOut.model_validate(task) for task in tasks]
     return TaskPage(items=items, next_cursor=next_cursor)
 
 

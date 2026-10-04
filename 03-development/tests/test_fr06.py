@@ -300,6 +300,7 @@ def _sql_concat_hits(path: Path, patterns: set[str]) -> list[str]:
         ):
             kind = "format"
         if kind is not None:
+            assert isinstance(node, (ast.expr, ast.stmt))
             hits.append(f"{path.name}:{node.lineno}:{kind}")
     return hits
 

@@ -74,7 +74,7 @@ class Env:
             conn.close()
 
     def seed_tasks(self, count: int, status: str = "pending", prefix: str = "seed") -> list[str]:
-        ids = []
+        ids: list[str] = []
         conn = sqlite3.connect(self.db_file)
         try:
             for i in range(count):
