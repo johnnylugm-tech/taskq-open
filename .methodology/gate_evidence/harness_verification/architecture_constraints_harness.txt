@@ -10,8 +10,8 @@
 [1mContracts[0m
 [1m---------[0m
 [22m[0m
-[1mAnalyzed 36 files, 79 dependencies.[0m
-[1m-----------------------------------[0m
+[1mAnalyzed 45 files, 113 dependencies.[0m
+[1m------------------------------------[0m
 [22m[0m
 [22mtaskq_api layers [0m[32m[22mKEPT[0m[33m[22m[0m[22m[0m
 [22mtaskq_api independence [0m[32m[22mKEPT[0m[33m[22m[0m[22m[0m

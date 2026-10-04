@@ -1,0 +1,94 @@
+{
+  "review_status": "REJECT",
+  "reason": "Most of FR-01 maps to assertions that would fail if the requirement broke: non-empty→422 test_fr01.py:250-252; ≤1000 chars test_fr01.py:352,364; blacklist→422 test_fr01.py:374-376; unknown id 404+problem+json test_fr01.py:266-268; GET returns all fields test_fr01.py:167; ?status filter + cursor test_fr01.py:193,211; no OFFSET in SQL test_fr01.py:295,305; default limit 50 test_fr01.py:320; 200 accepted test_fr01.py:332; 201→422 test_fr01.py:339; DELETE removes result rows test_fr01.py:231,235. Two problems remain. (1) Inverted assertion: the requirement block lists 名稱唯一 (name uniqueness) among the rules whose violation must return HTTP 422, but test_fr01.py:390 asserts 409 and test_fr01.py:392 asserts /errors/conflict, so a correct 422 fails the test. SPEC.md:168, SPEC.md:341 and SPEC.md:364 say 409, so SPEC contradicts itself, and the spec has to settle it. (2) Scope column not checked: every call uses the matching key (write for POST, read for GET, admin for DELETE). No assertion fails if DELETE accepts a read or write key, or if POST accepts a read key.",
+  "citations": [
+    "SPEC.md:79-91",
+    "SPEC.md:88",
+    "SPEC.md:168",
+    "SPEC.md:341",
+    "SPEC.md:364",
+    "03-development/tests/test_fr01.py:390",
+    "03-development/tests/test_fr01.py:392",
+    "03-development/tests/test_fr01.py:227-229",
+    "03-development/tests/test_fr01.py:94-96",
+    "03-development/tests/test_fr01.py:250-252",
+    "03-development/tests/test_fr01.py:266-268",
+    "03-development/tests/test_fr01.py:167",
+    "03-development/tests/test_fr01.py:193",
+    "03-development/tests/test_fr01.py:295",
+    "03-development/tests/test_fr01.py:320",
+    "03-development/tests/test_fr01.py:332",
+    "03-development/tests/test_fr01.py:339",
+    "03-development/tests/test_fr01.py:352",
+    "03-development/tests/test_fr01.py:374",
+    "03-development/tests/test_fr01.py:231-235"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "high",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "03-development/tests/test_fr01.py:390",
+      "message": "The FR-01 block (SPEC.md:88) lists name uniqueness among the rules whose violation must return HTTP 422 + problem+json. test_fr01_duplicate_name_returns_409 asserts 409 and /errors/conflict, so a 422 that meets the block fails the test. SPEC.md:168, SPEC.md:341 and SPEC.md:364 (§8 #8) require 409, so SPEC contradicts itself. The spec must be amended (edit FR-01 to exclude uniqueness from the 422 rule, or change §7/§8) before this test can be approved either way.",
+      "fr_id": "FR-01"
+    },
+    {
+      "severity": "high",
+      "evidence_type": "real_invention",
+      "canonical_ref": "03-development/tests/test_fr01.py:227",
+      "message": "The FR-01 table sets per-endpoint scopes: write for POST, read for both GETs, admin for DELETE. No test sends a lower-privilege key: DELETE always uses admin, POST always uses write. If DELETE accepted a read or write key, or POST accepted a read key, no assertion in test_fr01.py would fail. Add tests that send a key with the wrong scope (e.g. read key → DELETE, read key → POST) and assert the call is rejected.",
+      "fr_id": "FR-01"
+    },
+    {
+      "severity": "low",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "03-development/tests/test_fr01.py:231-235",
+      "message": "The delete test checks that the task and its result rows are gone afterwards. It does not check the 同一交易 (same transaction) part: deleting results and the task in two separate commits would still pass. A test that forces the task delete to fail and asserts the result rows survive would cover it.",
+      "fr_id": "FR-01"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr01_command_exactly_1000_chars_accepted",
+      "test_fr01_command_over_1000_chars_returns_422",
+      "test_fr01_create_task_returns_201",
+      "test_fr01_delete_task_removes_results_same_txn",
+      "test_fr01_duplicate_name_returns_409",
+      "test_fr01_get_task_returns_all_fields",
+      "test_fr01_injection_chars_in_command_returns_422",
+      "test_fr01_invalid_body_returns_422",
+      "test_fr01_list_limit_200_accepted",
+      "test_fr01_list_limit_201_returns_422",
+      "test_fr01_list_limit_default_50_max_200",
+      "test_fr01_list_tasks_filters_and_cursor",
+      "test_fr01_pagination_is_cursor_based",
+      "test_fr01_unknown_id_returns_404",
+      "test_sec_t05_injection_chars_rejected_422",
+      "test_sec_t08_sql_metacharacters_treated_as_data"
+    ],
+    "assertion_digests": {
+      "test_fr01_command_exactly_1000_chars_accepted": "996050cef17766e50b0324bd5e846942bb9f261e26b384b9ee2cc815c323a056",
+      "test_fr01_command_over_1000_chars_returns_422": "1f449afb0f1517e1e102766974b13b86222bca2ab93da1c115f28a3f2c86f3a5",
+      "test_fr01_create_task_returns_201": "50d7f25c25711c760315e4f986a7dc271d87ca4cec903987d68d69a8cb991201",
+      "test_fr01_delete_task_removes_results_same_txn": "800a4d53079a01800c04f5b9a8db26b941a0b1b99027df0a49bd9dbe2360ebfd",
+      "test_fr01_duplicate_name_returns_409": "c0108f11b59a70e72dc8e0f46cf96862c350f36d1eec5564257e9e5164cbee7f",
+      "test_fr01_get_task_returns_all_fields": "6fbde2eb2861dd9729c1fa00cebc0a39ae0c67092e896a6ef2f77ac311d9818a",
+      "test_fr01_injection_chars_in_command_returns_422": "febd85569a7817fbdea712e72f7bb2e7adc48f55878a2299449928d6b4827c79",
+      "test_fr01_invalid_body_returns_422": "9b26697c860a587ca346bb9f00a0b2544f65ac65eee9ed5bb61d2f1138d5be26",
+      "test_fr01_list_limit_200_accepted": "b9a2394beebdad76a91d245d38690d06920cccacd83228f1ac774e8fe8c8524c",
+      "test_fr01_list_limit_201_returns_422": "fcd3cf689454c32fb09e0645b6088ae00f195a2e84917de5e72d98897cee0305",
+      "test_fr01_list_limit_default_50_max_200": "ba10afeefa5fca779cbb0cffe87b1f7b1bb7c142ab18e1f8bd3134f1744d6a8d",
+      "test_fr01_list_tasks_filters_and_cursor": "730f71f745e83270cb5a775e01940834c2e79a47af4fad28e622a1142179639f",
+      "test_fr01_pagination_is_cursor_based": "ac0802c1d3096531aa0e8cffc648ff2faed1ec1a86e0547959fb6a16b85cce5b",
+      "test_fr01_unknown_id_returns_404": "c1ec2d2b6f03d0288c5f4377afc25ba1c4eb36fcb108161637e15ead0647bd4a",
+      "test_sec_t05_injection_chars_rejected_422": "f1449b5c68e44581b180080a5f6cd313b3a745d523419a869eec45e1792974ca",
+      "test_sec_t08_sql_metacharacters_treated_as_data": "c48872805d3c8169be8e41157ccd8d37411157a8b8a4fa0333df49f62468e5ff"
+    },
+    "test_files": [
+      "03-development/tests/test_fr01.py"
+    ]
+  }
+}
