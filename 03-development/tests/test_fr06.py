@@ -396,3 +396,17 @@ def test_fr06_engine_pool_size_and_pre_ping(tmp_path, monkeypatch):
     assert result_pool_size == int(TASKQ_DB_POOL_SIZE)
     # AC6.5-pre-ping
     assert result_pool_pre_ping
+
+
+def test_fr06_limit_with_offset_uses_default_rendering(tmp_path, monkeypatch):
+    from sqlalchemy import select
+
+    _make_db(tmp_path, monkeypatch, pool_size="5")
+    engine = build_engine(load_settings())
+    try:
+        sql = str(
+            select(Task.id).limit(5).offset(10).compile(engine)
+        )
+    finally:
+        engine.dispose()
+    assert "LIMIT" in sql and "OFFSET" in sql
