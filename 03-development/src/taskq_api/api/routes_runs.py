@@ -14,12 +14,14 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
-from taskq_api.api.deps import get_background_runs, get_uow_factory
+from taskq_api.api.deps import authenticate, get_background_runs, get_uow_factory
 from taskq_api.api.schemas import RunAccepted, RunOut, RunPage
 from taskq_api.service import runs as run_service
 from taskq_api.service.uow import UnitOfWork
 
-router = APIRouter(prefix="/v1/tasks", tags=["runs"])
+router = APIRouter(
+    prefix="/v1/tasks", tags=["runs"], dependencies=[Depends(authenticate)]
+)
 
 UowFactory = Annotated[Callable[[], UnitOfWork], Depends(get_uow_factory)]
 BackgroundRuns = Annotated[set[asyncio.Task[None]], Depends(get_background_runs)]

@@ -2,8 +2,10 @@
 
 [FR-01] Wires settings, the database engine and the ``/v1/tasks`` routes.
 [FR-02] Adds the run routes; in-flight runs finish before the engine closes.
+[FR-03] Adds the unauthenticated health routes.
 
-Citations: SPEC.md L79-91 (FR-01); SPEC.md L93-99 (FR-02); SPEC.md L287-302 (5.1 settings);
+Citations: SPEC.md L79-91 (FR-01); SPEC.md L93-99 (FR-02); SPEC.md L107 (FR-03);
+SPEC.md L287-302 (5.1 settings);
 02-architecture/SAD.md L46.
 """
 
@@ -15,7 +17,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from taskq_api.api import error_handlers, routes_runs, routes_tasks
+from taskq_api.api import error_handlers, routes_health, routes_runs, routes_tasks
 from taskq_api.config import load_settings
 from taskq_api.repository.session import build_engine, uow_factory
 
@@ -42,4 +44,5 @@ def create_app() -> FastAPI:
     error_handlers.register(app)
     app.include_router(routes_tasks.router)
     app.include_router(routes_runs.router)
+    app.include_router(routes_health.router)
     return app

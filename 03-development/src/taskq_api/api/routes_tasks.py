@@ -13,12 +13,14 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query, Response
 
-from taskq_api.api.deps import get_uow_factory
+from taskq_api.api.deps import authenticate, get_uow_factory
 from taskq_api.api.schemas import TaskCreate, TaskOut, TaskPage, TaskStatus
 from taskq_api.service import tasks as task_service
 from taskq_api.service.uow import UnitOfWork
 
-router = APIRouter(prefix="/v1/tasks", tags=["tasks"])
+router = APIRouter(
+    prefix="/v1/tasks", tags=["tasks"], dependencies=[Depends(authenticate)]
+)
 
 UowFactory = Annotated[Callable[[], UnitOfWork], Depends(get_uow_factory)]
 

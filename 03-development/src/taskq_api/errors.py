@@ -63,3 +63,14 @@ class Conflict(TaskqError):
     status = 409
     slug = "conflict"
     title = "Conflict"
+
+
+class Unauthenticated(TaskqError):
+    """[FR-03] Missing, unknown or revoked API key -> 401.
+
+    Citations: SPEC.md L103, L106, L337.
+    """
+
+    status = 401
+    slug = "unauthenticated"
+    title = "Unauthenticated"

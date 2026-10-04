@@ -18,6 +18,7 @@ from sqlalchemy.orm import Session, sessionmaker
 
 import taskq_api.models  # noqa: F401  (registers every table on Base.metadata)
 from taskq_api.config import Settings
+from taskq_api.repository.api_keys import ApiKeyRepository
 from taskq_api.repository.results import ResultRepository
 from taskq_api.repository.tags import TagRepository
 from taskq_api.repository.tasks import TaskRepository
@@ -63,8 +64,9 @@ class UnitOfWork:
     """[FR-01] Transaction scope exposing repositories; never leaks a ``Session``.
 
     [FR-02] Also exposes the ``task_results`` repository.
+    [FR-03] Also exposes the ``api_keys`` repository.
 
-    Citations: SPEC.md L98, L125; 02-architecture/SAD.md L134, L166.
+    Citations: SPEC.md L98, L104, L125; 02-architecture/SAD.md L134, L166.
     """
 
     def __init__(self, session_factory: sessionmaker[Session]) -> None:
@@ -75,6 +77,7 @@ class UnitOfWork:
         self.tasks = TaskRepository(self._session)
         self.tags = TagRepository(self._session)
         self.results = ResultRepository(self._session)
+        self.api_keys = ApiKeyRepository(self._session)
         return self
 
     def __exit__(self, exc_type, exc, tb) -> None:
