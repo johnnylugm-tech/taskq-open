@@ -149,6 +149,7 @@ def test_fr09_readyz_ok_when_db_up_and_at_head(head_db):
 
 # --- AC-9.3 (SPEC §8 #10, NP-07) --------------------------------------------
 
+# NFR-10
 def test_fr09_readyz_503_when_db_down(tmp_path, monkeypatch):
     endpoint = "/readyz"
     fault_type = "db_unavailable"
@@ -178,6 +179,7 @@ def test_fr09_readyz_503_when_db_down(tmp_path, monkeypatch):
 
 # --- AC-9.4 (SPEC §8 #11) ---------------------------------------------------
 
+# NFR-10
 def test_fr09_readyz_503_when_migration_behind(tmp_path, monkeypatch):
     endpoint = "/readyz"
     db_revision = "v2"
@@ -203,6 +205,7 @@ def test_fr09_readyz_503_when_migration_behind(tmp_path, monkeypatch):
 
 # --- AC-9.5 -----------------------------------------------------------------
 
+# NFR-04
 def test_fr09_metrics_admin_payload(tmp_path, monkeypatch):
     endpoint = "/v1/metrics"
     key_scope = "admin"
