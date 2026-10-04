@@ -14,7 +14,7 @@ import binascii
 import json
 from datetime import datetime
 
-from sqlalchemy import and_, delete, or_, select
+from sqlalchemy import ColumnElement, and_, delete, or_, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -42,6 +42,18 @@ def decode_cursor(cursor: str) -> tuple[datetime, str]:
         return datetime.fromisoformat(data["c"]), str(data["i"])
     except (binascii.Error, ValueError, KeyError, TypeError) as exc:
         raise ValidationFailed("cursor is invalid") from exc
+
+
+def after_cursor(cursor: str) -> ColumnElement[bool]:
+    """[FR-01] Keyset predicate selecting rows strictly after ``cursor``.
+
+    Citations: SPEC.md L90.
+    """
+    created_at, task_id = decode_cursor(cursor)
+    return or_(
+        Task.created_at > created_at,
+        and_(Task.created_at == created_at, Task.id > task_id),
+    )
 
 
 class TaskRepository:
@@ -86,18 +98,12 @@ class TaskRepository:
         if status is not None:
             stmt = stmt.where(Task.status == status)
         if cursor is not None:
-            created_at, task_id = decode_cursor(cursor)
-            stmt = stmt.where(
-                or_(
-                    Task.created_at > created_at,
-                    and_(Task.created_at == created_at, Task.id > task_id),
-                )
-            )
+            stmt = stmt.where(after_cursor(cursor))
         rows = list(self._session.scalars(stmt))
-        if len(rows) > limit:
-            rows = rows[:limit]
-            return rows, encode_cursor(rows[-1])
-        return rows, None
+        if len(rows) <= limit:
+            return rows, None
+        page = rows[:limit]
+        return page, encode_cursor(page[-1])
 
     def delete(self, task: Task) -> None:
         """[FR-01] Delete ``task`` and its result rows in the current transaction.

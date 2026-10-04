@@ -57,9 +57,8 @@ def list_tasks(
     """
     with uow_factory() as uow:
         items, next_cursor = task_service.list_tasks(uow, status, limit, cursor)
-        return TaskPage(
-            items=[TaskOut.model_validate(t) for t in items], next_cursor=next_cursor
-        )
+        items = [TaskOut.model_validate(task) for task in items]
+    return TaskPage(items=items, next_cursor=next_cursor)
 
 
 @router.delete("/{task_id}", status_code=204)

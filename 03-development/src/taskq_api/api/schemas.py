@@ -38,7 +38,7 @@ class TaskOut(BaseModel):
     id: str
     command: str
     name: str
-    status: str
+    status: TaskStatus
     created_at: datetime
 
 

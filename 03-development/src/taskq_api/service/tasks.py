@@ -1,8 +1,8 @@
 """Task use cases and validation rules.
 
-[FR-01] Validates commands (non-empty, <=1000 chars, injection blacklist) and
-orchestrates create / get / list / delete; name uniqueness is enforced by the
-repository on insert.
+[FR-01] Validates task input (non-empty name/command, length bounds, command
+injection blacklist) and orchestrates create / get / list / delete; name
+uniqueness is enforced by the repository on insert.
 
 Citations: SPEC.md L79-91 (FR-01); SPEC.md L88 (validation rules);
 02-architecture/SAD.md L97.
@@ -17,7 +17,10 @@ from taskq_api.errors import NotFound, ValidationFailed
 from taskq_api.models.task import Task
 from taskq_api.service.uow import UnitOfWork
 
+INITIAL_STATUS = "pending"
 MAX_COMMAND_LENGTH = 1000
+# Matches the ``tasks.name`` column width so an over-long name is a 422, not a DB error.
+MAX_NAME_LENGTH = 255
 # `;` is mandated; the remaining members are pending open decision NFR-99.2.
 INJECTION_CHARS = frozenset(";&|`$<>\n\r")
 
@@ -35,17 +38,29 @@ def validate_command(command: str) -> None:
         raise ValidationFailed("command contains forbidden characters")
 
 
+def validate_name(name: str) -> None:
+    """[FR-01] Reject empty or over-long task names.
+
+    Citations: SPEC.md L88, L309.
+    """
+    if not name.strip():
+        raise ValidationFailed("name must not be empty")
+    if len(name) > MAX_NAME_LENGTH:
+        raise ValidationFailed(f"name must be at most {MAX_NAME_LENGTH} characters")
+
+
 def create_task(uow: UnitOfWork, name: str, command: str) -> Task:
     """[FR-01] Validate and persist a new ``pending`` task.
 
     Citations: SPEC.md L83, L88.
     """
+    validate_name(name)
     validate_command(command)
     task = Task(
         id=str(uuid.uuid4()),
         name=name,
         command=command,
-        status="pending",
+        status=INITIAL_STATUS,
         created_at=datetime.now(timezone.utc),
     )
     return uow.tasks.add(task)
