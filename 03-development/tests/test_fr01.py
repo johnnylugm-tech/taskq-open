@@ -20,6 +20,7 @@ import hashlib
 import sqlite3
 import sys
 import uuid
+from contextlib import suppress
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -479,3 +480,39 @@ def test_fr01_missing_key_is_rejected_on_every_task_route(env):
     ]
     assert [r.status_code for r in responses] == [401, 401, 401, 401]
     assert env.sql("SELECT COUNT(*) FROM tasks") == [(1,)]
+
+
+# --- AC-1.4 / AC-1.5 / AC-1.6 gaps: delete 404, delete atomicity, name rules --
+
+def test_fr01_delete_unknown_id_returns_404(env):
+    seeded = env.seed_tasks(1)[0]
+    resp = env.client.delete(
+        "/v1/tasks/00000000-0000-0000-0000-000000000000", headers=_headers("admin")
+    )
+    _assert_problem(resp, 404, "not-found")
+    assert env.sql("SELECT COUNT(*) FROM tasks WHERE id = ?", (seeded,)) == [(1,)]
+
+
+def test_fr01_delete_is_atomic_when_task_row_delete_fails(env):
+    task_id = env.seed_tasks(1)[0]
+    for run_id in ("r1", "r2"):
+        env.sql(
+            "INSERT INTO task_results (id, task_id, exit_code, finished_at) VALUES (?, ?, ?, ?)",
+            (run_id, task_id, 0, BASE_TIME.isoformat()),
+        )
+    env.sql(
+        "CREATE TRIGGER block_task_delete BEFORE DELETE ON tasks "
+        "BEGIN SELECT RAISE(ABORT, 'forced failure'); END"
+    )
+    with suppress(Exception):
+        env.client.delete(f"/v1/tasks/{task_id}", headers=_headers("admin"))
+    # Result rows are deleted before the task row; a rollback must restore them.
+    assert env.sql("SELECT COUNT(*) FROM tasks WHERE id = ?", (task_id,)) == [(1,)]
+    assert env.sql("SELECT COUNT(*) FROM task_results WHERE task_id = ?", (task_id,)) == [(2,)]
+
+
+@pytest.mark.parametrize("name", ["", "   ", "n" * 256])
+def test_fr01_invalid_name_returns_422(env, name):
+    resp = env.create(name, "echo hi")
+    _assert_problem(resp, 422, "validation")
+    assert env.sql("SELECT COUNT(*) FROM tasks") == [(0,)]
