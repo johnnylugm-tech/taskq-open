@@ -281,6 +281,13 @@ def _sql_concat_hits(path: Path, patterns: set[str]) -> list[str]:
         elif isinstance(node, ast.BinOp) and isinstance(node.op, ast.Mod) and "percent" in patterns:
             if isinstance(node.left, ast.Constant) and literal_is_sql(node.left):
                 kind = "percent"
+        elif (
+            isinstance(node, ast.AugAssign)
+            and isinstance(node.op, ast.Add)
+            and "plus" in patterns
+            and literal_is_sql(node.value)
+        ):
+            kind = "plus"
         elif isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add) and "plus" in patterns:
             if literal_is_sql(node.left) or literal_is_sql(node.right):
                 kind = "plus"
@@ -396,6 +403,16 @@ def test_fr06_engine_pool_size_and_pre_ping(tmp_path, monkeypatch):
     assert result_pool_size == int(TASKQ_DB_POOL_SIZE)
     # AC6.5-pre-ping
     assert result_pool_pre_ping
+
+
+def test_fr06_engine_pool_size_honours_non_default_setting(tmp_path, monkeypatch):
+    """[FR-06] A non-default TASKQ_DB_POOL_SIZE must reach the engine pool."""
+    _make_db(tmp_path, monkeypatch, pool_size="7")
+    engine = build_engine(load_settings())
+    try:
+        assert engine.pool.size() == 7
+    finally:
+        engine.dispose()
 
 
 def test_fr06_limit_with_offset_uses_default_rendering(tmp_path, monkeypatch):
