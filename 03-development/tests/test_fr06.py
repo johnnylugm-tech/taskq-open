@@ -159,6 +159,7 @@ def _new_task() -> Task:
 
 # --- AC-6.1 -----------------------------------------------------------------
 
+# NFR-06
 def test_fr06_service_layer_holds_no_session():
     scan_root = "03-development/src/taskq_api/service"
     forbidden_symbol = "Session"
@@ -190,6 +191,7 @@ def test_fr06_service_layer_holds_no_session():
 
 # --- AC-6.2 -----------------------------------------------------------------
 
+# NFR-03
 def test_fr06_session_commit_on_success_rollback_on_error(make_uow, tx_counter):
     scenario = "success"
     expected_commits = "1"
@@ -232,7 +234,6 @@ def test_fr06_session_rollback_on_cancelled_error(make_uow, tx_counter):
     scenario = "cancelled"
     expected_commits = "0"
     expected_rollbacks = "1"
-    expected_reraised = "True"
     task = _new_task()
     result_cancelled_error_reraised = False
     try:
@@ -251,7 +252,7 @@ def test_fr06_session_rollback_on_cancelled_error(make_uow, tx_counter):
     # AC6.2-rollbacks
     assert result_rollback_count == int(expected_rollbacks)
     # AC6.2-cancel-reraised
-    assert result_cancelled_error_reraised is (expected_reraised == "True")
+    assert result_cancelled_error_reraised
 
 
 # --- AC-6.3 / NP-08 ---------------------------------------------------------
@@ -296,6 +297,7 @@ def _sql_concat_hits(path: Path, patterns: set[str]) -> list[str]:
     return hits
 
 
+# NFR-02
 def test_fr06_no_string_built_sql():
     scan_root = "03-development/src/taskq_api"
     patterns = "f-string,percent,plus"
@@ -351,6 +353,7 @@ def _count_list_statements(tmp_path: Path, monkeypatch, rows: int, query_limit: 
     return endpoint_count, repo_count
 
 
+# NFR-01
 def test_fr06_list_query_count_constant(tmp_path, monkeypatch):
     endpoint = "/v1/tasks"
     query_limit = "50"
@@ -382,7 +385,6 @@ def test_fr06_list_query_count_constant(tmp_path, monkeypatch):
 
 def test_fr06_engine_pool_size_and_pre_ping(tmp_path, monkeypatch):
     TASKQ_DB_POOL_SIZE = "5"
-    expected_pre_ping = "True"
     _make_db(tmp_path, monkeypatch, pool_size=TASKQ_DB_POOL_SIZE)
     engine = build_engine(load_settings())
     try:
@@ -393,4 +395,4 @@ def test_fr06_engine_pool_size_and_pre_ping(tmp_path, monkeypatch):
     # AC6.5-pool
     assert result_pool_size == int(TASKQ_DB_POOL_SIZE)
     # AC6.5-pre-ping
-    assert result_pool_pre_ping is (expected_pre_ping == "True")
+    assert result_pool_pre_ping
