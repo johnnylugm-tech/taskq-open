@@ -8,15 +8,15 @@ Citations: SPEC.md L93-99 (FR-02).
 
 from __future__ import annotations
 
-import asyncio
 from collections.abc import Callable
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
-from taskq_api.api.deps import authenticate, rate_limit, get_background_runs, get_uow_factory
+from taskq_api.api.deps import authenticate, rate_limit, get_executor, get_uow_factory
 from taskq_api.api.schemas import RunAccepted, RunOut, RunPage
 from taskq_api.service import runs as run_service
+from taskq_api.service.executor import Executor
 from taskq_api.service.uow import UnitOfWork
 
 router = APIRouter(
@@ -24,18 +24,18 @@ router = APIRouter(
 )
 
 UowFactory = Annotated[Callable[[], UnitOfWork], Depends(get_uow_factory)]
-BackgroundRuns = Annotated[set[asyncio.Task[None]], Depends(get_background_runs)]
+BackgroundExecutor = Annotated[Executor, Depends(get_executor)]
 
 
 @router.post("/{task_id}/run", status_code=202, response_model=RunAccepted)
-async def run_task(task_id: str, uow_factory: UowFactory, background: BackgroundRuns) -> RunAccepted:
+async def run_task(task_id: str, uow_factory: UowFactory, executor: BackgroundExecutor) -> RunAccepted:
     """[FR-02] Queue a run of the task on the app's event loop -> 202, or 404.
 
     Citations: SPEC.md L95.
     """
     with uow_factory() as uow:
         run_id, command = run_service.submit(uow, task_id)
-    run_service.start(background, uow_factory, task_id, run_id, command)
+    run_service.start(executor, uow_factory, task_id, run_id, command)
     return RunAccepted(run_id=run_id)
 
 

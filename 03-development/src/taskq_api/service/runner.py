@@ -3,8 +3,10 @@
 [FR-02] Runs a task command via ``asyncio.create_subprocess_exec`` on its
 ``shlex.split`` argv (never a shell), enforces ``TASKQ_TASK_TIMEOUT`` and
 drives ``pending -> running -> done | failed | timeout``.
+[FR-08] Kills and reaps the subprocess on timeout and on cancellation;
+``CancelledError`` propagates.
 
-Citations: SPEC.md L93-99 (FR-02); SPEC.md L149 (kill then wait on timeout);
+Citations: SPEC.md L93-99 (FR-02); SPEC.md L149-150 (kill then wait; CancelledError);
 SPEC.md L209-210 (NFR-04 redaction); SPEC.md L293 (TASKQ_TASK_TIMEOUT).
 """
 
@@ -26,6 +28,8 @@ RUNNING = "running"
 DONE = "done"
 FAILED = "failed"
 TIMEOUT = "timeout"
+# [FR-08] Task status for a run cut off by the shutdown drain (NFR-99.4).
+INTERRUPTED = "interrupted"
 
 TRANSITIONS = {
     PENDING: frozenset({RUNNING}),
@@ -86,6 +90,15 @@ def tail(raw: bytes) -> str:
     return redact(raw.decode(errors="replace"))[-TAIL_CHARS:]
 
 
+async def _kill(process: asyncio.subprocess.Process) -> None:
+    """[FR-08] ``process.kill()`` then ``await process.wait()`` so no orphan is left.
+
+    Citations: SPEC.md L149.
+    """
+    process.kill()
+    await process.wait()
+
+
 async def run_command(command: str, machine: TaskStateMachine) -> RunOutcome:
     """[FR-02] Execute ``command`` without a shell under ``TASKQ_TASK_TIMEOUT``.
 
@@ -94,7 +107,10 @@ async def run_command(command: str, machine: TaskStateMachine) -> RunOutcome:
     ``failed`` with no exit code and the reason in ``stderr_tail``, rather
     than leaving the run stuck in ``running``.
 
-    Citations: SPEC.md L96-98, L149, L293.
+    [FR-08] If the caller is cancelled the process is likewise killed and
+    reaped before ``CancelledError`` is re-raised.
+
+    Citations: SPEC.md L96-98, L149-150, L293.
     """
     timeout = load_settings().task_timeout
     started = time.monotonic()
@@ -116,9 +132,11 @@ async def run_command(command: str, machine: TaskStateMachine) -> RunOutcome:
             stdout, stderr = await asyncio.wait_for(process.communicate(), timeout)
             status = DONE if process.returncode == 0 else FAILED
         except TimeoutError:
-            process.kill()
-            await process.wait()
+            await _kill(process)
             stdout, stderr, status = b"", b"", TIMEOUT
+        except asyncio.CancelledError:
+            await _kill(process)
+            raise
         exit_code = process.returncode
     machine.transition(status)
     return RunOutcome(

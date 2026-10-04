@@ -3,8 +3,11 @@
 [FR-02] Submits a run (task reset to ``pending`` plus an unfinished
 ``task_results`` row), executes it in the background and records the
 outcome; lists a task's run history.
+[FR-08] Runs are submitted through the bounded executor; a run cancelled by
+the shutdown drain ends with task status ``interrupted``.
 
-Citations: SPEC.md L93-99 (FR-02); 02-architecture/SAD.md L185-198 (run flow).
+Citations: SPEC.md L93-99 (FR-02); SPEC.md L145-150 (FR-08);
+02-architecture/SAD.md L185-198 (run flow).
 """
 
 from __future__ import annotations
@@ -15,6 +18,7 @@ from collections.abc import Callable
 
 from taskq_api.models.result import TaskResult
 from taskq_api.service import runner
+from taskq_api.service.executor import Executor
 from taskq_api.service.tasks import get_task
 from taskq_api.service.uow import UnitOfWork
 
@@ -44,10 +48,17 @@ def set_status(uow_factory: UowFactory, task_id: str, status: str) -> None:
 async def execute(uow_factory: UowFactory, task_id: str, run_id: str, command: str) -> None:
     """[FR-02] Run ``command`` and store the outcome and final task status together.
 
-    Citations: SPEC.md L96-98.
+    [FR-08] If cancelled (drain timeout), the task is marked ``interrupted``
+    and ``CancelledError`` is re-raised.
+
+    Citations: SPEC.md L96-98, L147, L150.
     """
     set_status(uow_factory, task_id, runner.RUNNING)
-    outcome = await runner.run_command(command, machine=runner.TaskStateMachine())
+    try:
+        outcome = await runner.run_command(command, machine=runner.TaskStateMachine())
+    except asyncio.CancelledError:
+        set_status(uow_factory, task_id, runner.INTERRUPTED)
+        raise
     with uow_factory() as uow:
         result = uow.results.get(run_id)
         assert result is not None, f"run {run_id} was not created by submit()"
@@ -67,14 +78,14 @@ def record_outcome(result: TaskResult, outcome: runner.RunOutcome) -> None:
     result.finished_at = outcome.finished_at
 
 
-def start(background: set[asyncio.Task[None]], uow_factory: UowFactory, task_id: str, run_id: str, command: str) -> None:
-    """[FR-02] Schedule :func:`execute` on the running loop, holding a reference until done.
+def start(executor: Executor, uow_factory: UowFactory, task_id: str, run_id: str, command: str) -> None:
+    """[FR-02] Schedule :func:`execute` in the background.
 
-    Citations: SPEC.md L95.
+    [FR-08] Queued on the executor, which starts it once a slot is free.
+
+    Citations: SPEC.md L95, L148.
     """
-    job = asyncio.create_task(execute(uow_factory, task_id, run_id, command))
-    background.add(job)
-    job.add_done_callback(background.discard)
+    executor.enqueue(lambda: execute(uow_factory, task_id, run_id, command))
 
 
 def list_runs(uow: UnitOfWork, task_id: str) -> list[TaskResult]:

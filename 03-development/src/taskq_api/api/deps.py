@@ -1,7 +1,7 @@
 """FastAPI dependencies.
 
 [FR-01] Provides the per-request :class:`UnitOfWork` factory.
-[FR-02] Provides the app-wide set of background run jobs.
+[FR-02] Provides the app-wide background run executor.
 [FR-03] Authenticates ``/v1`` requests by their ``X-API-Key`` header.
 [FR-05] Rate-limits authenticated ``/v1`` requests per key.
 
@@ -12,7 +12,6 @@ SPEC.md L115-120 (FR-05);
 
 from __future__ import annotations
 
-import asyncio
 from collections.abc import Callable
 from typing import Annotated
 
@@ -21,6 +20,7 @@ from fastapi import Depends, Header, Request
 from taskq_api.errors import RateLimited
 from taskq_api.models.api_key import ApiKey
 from taskq_api.service import auth, ratelimit
+from taskq_api.service.executor import Executor
 from taskq_api.service.uow import UnitOfWork
 
 
@@ -32,12 +32,14 @@ def get_uow_factory(request: Request) -> Callable[[], UnitOfWork]:
     return request.app.state.uow_factory
 
 
-def get_background_runs(request: Request) -> set[asyncio.Task[None]]:
-    """[FR-02] Return the app-wide set of in-flight background run jobs.
+def get_executor(request: Request) -> Executor:
+    """[FR-02] Return the app-wide executor that runs background jobs.
 
-    Citations: SPEC.md L95.
+    [FR-08] The executor lives for the app's lifespan.
+
+    Citations: SPEC.md L95, L147.
     """
-    return request.app.state.background_runs
+    return request.app.state.executor
 
 
 def authenticate(request: Request, x_api_key: Annotated[str | None, Header()] = None) -> ApiKey:

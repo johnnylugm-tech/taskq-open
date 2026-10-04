@@ -3,8 +3,10 @@
 [FR-01] Supplies the database location used by the task CRUD API.
 [FR-02] Supplies ``TASKQ_TASK_TIMEOUT`` for task runs.
 [FR-05] Supplies the token-bucket burst and refill rate.
+[FR-08] Supplies the executor concurrency cap and drain timeout.
 
-Citations: SPEC.md L287-302 (5.1 environment variables); SPEC.md L122-128 (FR-06 pool).
+Citations: SPEC.md L287-302 (5.1 environment variables); SPEC.md L122-128 (FR-06 pool);
+SPEC.md L145-150 (FR-08).
 """
 
 from __future__ import annotations
@@ -25,6 +27,8 @@ class Settings:
     task_timeout: float
     rate_burst: int
     rate_per_sec: float
+    max_concurrent: int
+    drain_timeout: float
 
 
 def load_settings() -> Settings:
@@ -32,8 +36,9 @@ def load_settings() -> Settings:
 
     [FR-02] Adds the per-task subprocess timeout.
     [FR-05] Adds the rate-limit burst and refill rate.
+    [FR-08] Adds the executor concurrency cap and graceful-drain timeout.
 
-    Citations: SPEC.md L291-293, L296-297.
+    Citations: SPEC.md L291-297, L147-148.
     """
     return Settings(
         db_url=os.environ.get("TASKQ_DB_URL", "sqlite:///./taskq.db"),
@@ -41,4 +46,6 @@ def load_settings() -> Settings:
         task_timeout=float(os.environ.get("TASKQ_TASK_TIMEOUT", "10.0")),
         rate_burst=int(os.environ.get("TASKQ_RATE_BURST", "20")),
         rate_per_sec=float(os.environ.get("TASKQ_RATE_PER_SEC", "5.0")),
+        max_concurrent=int(os.environ.get("TASKQ_MAX_CONCURRENT", "8")),
+        drain_timeout=float(os.environ.get("TASKQ_DRAIN_TIMEOUT", "30.0")),
     )
