@@ -32,15 +32,19 @@ def problem_response(request: Request, error: TaskqError) -> JSONResponse:
     return JSONResponse(body, status_code=error.status, media_type=PROBLEM_JSON)
 
 
-async def handle_domain_error(request: Request, exc: TaskqError) -> JSONResponse:
+async def handle_domain_error(request: Request, exc: Exception) -> JSONResponse:
     """[FR-01] Handler for :class:`TaskqError` subclasses.
+
+    ``exc`` is typed ``Exception`` to match Starlette's ``ExceptionHandler``;
+    it is only ever registered for :class:`TaskqError`.
 
     Citations: SPEC.md L331-346.
     """
+    assert isinstance(exc, TaskqError)
     return problem_response(request, exc)
 
 
-async def handle_request_validation(request: Request, exc: RequestValidationError) -> JSONResponse:
+async def handle_request_validation(request: Request, exc: Exception) -> JSONResponse:
     """[FR-01] Handler turning FastAPI validation failures into 422 problems.
 
     Citations: SPEC.md L88, L91, L338.

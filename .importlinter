@@ -6,6 +6,7 @@ include_external_packages = True
 name = taskq_api layers
 type = layers
 layers =
+    taskq_api.app
     taskq_api.api
     taskq_api.service
     taskq_api.repository
@@ -22,9 +23,13 @@ modules =
 name = no sqlalchemy outside repository
 type = forbidden
 source_modules =
+    taskq_api.app
     taskq_api.api
     taskq_api.service
     taskq_api.config
     taskq_api.errors
 forbidden_modules =
     sqlalchemy
+# SAD L19: these modules never import sqlalchemy themselves; the declared
+# layers make service -> models (ORM mapping) a legitimate transitive path.
+allow_indirect_imports = True
