@@ -18,8 +18,15 @@
       "delivered_tree_sha256": "3e03be7bcde3f1e4607762fd249a31e6863f80ad39a86f18f136bd6d3d6fe076"
     },
     "2": {
-      "sha": "abac99895cd676ce63947340ecc95c0c5337853d",
-      "timestamp": "2026-10-04T04:59:38.285160+00:00"
+      "sha": "10325a2a750bf57a1d26720abde7e360c2d3492c",
+      "timestamp": "2026-10-04T05:02:51.438094+00:00",
+      "enforcer_sha": "3bf29134e715950fcf8cd23cdb9a3c22ef31b670",
+      "enforcer_surface": {
+        "core/quality_gate": "781a0e2978a280413408bec58503f13ffb1ccbf6",
+        "harness/harness_bridge.py": "e853d6a3102801dc57ec8b408dafd6e196987785",
+        "harness/gate_configs": "d91e4c3c9409081ea44b75ae3060f3293fa59cab"
+      },
+      "delivered_tree_sha256": "df0269cd26611203aa6a43c9a2967df82afed889c792499281b9593cc4a07445"
     }
   },
   "test_inventory_checksum": "2007422fca7553a6fca9573d44d2bc3e0c54676230cdc6e5764cfb0b22e6365c",
