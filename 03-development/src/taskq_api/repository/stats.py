@@ -9,6 +9,8 @@ Citations: SPEC.md L152-158 (FR-09); SPEC.md L126 (no string-built SQL);
 
 from __future__ import annotations
 
+from typing import cast
+
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
@@ -29,7 +31,7 @@ def run_durations_ms(session: Session) -> list[int]:
         .where(TaskResult.duration_ms.is_not(None))
         .order_by(TaskResult.duration_ms)
     )
-    return list(session.scalars(stmt))
+    return cast(list[int], list(session.scalars(stmt)))
 
 
 class StatsRepository:

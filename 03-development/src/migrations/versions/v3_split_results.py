@@ -10,6 +10,8 @@ Citations: SPEC.md L138 (v3 row); SPEC.md L141-142 (round trip, no shortcut);
 SPEC.md L312, L315 (task_results, result_json).
 """
 
+from typing import Any, cast
+
 import sqlalchemy as sa
 from alembic import op
 
@@ -57,7 +59,7 @@ def upgrade() -> None:
         "task_results",
         sa.Column("id", sa.String(36), primary_key=True),
         sa.Column("task_id", sa.String(36), sa.ForeignKey("tasks.id")),
-        *(sa.Column(name, column_type()) for name, column_type in _RESULT_COLUMNS),
+        *(sa.Column(name, cast("sa.types.TypeEngine[Any]", column_type())) for name, column_type in _RESULT_COLUMNS),
     )
     op.create_index("ix_task_results_task_id", "task_results", ["task_id"])
     op.execute(_SPLIT_RESULTS)
