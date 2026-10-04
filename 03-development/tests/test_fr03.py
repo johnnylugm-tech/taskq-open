@@ -45,6 +45,7 @@ if str(SRC_ROOT) not in sys.path:
 from taskq_api import cli  # noqa: E402
 from taskq_api.app import create_app  # noqa: E402
 from taskq_api.models.base import Base  # noqa: E402
+from taskq_api.service import auth as auth_module  # noqa: E402
 from taskq_api.service.auth import hash_key  # noqa: E402
 
 PROBLEM_JSON = "application/problem+json"
@@ -156,6 +157,24 @@ def test_fr03_invalid_key_returns_401(client):
     assert client.get(endpoint, headers={"X-API-Key": VALID_KEY}).status_code == 200
 
 
+# --- AC-3.1 (all /v1 routes) -------------------------------------------------
+
+def test_fr03_every_v1_route_requires_key(client):
+    v1_routes = [
+        (method, route.path)
+        for route in client.app.routes
+        if getattr(route, "path", "").startswith("/v1")
+        for method in sorted(route.methods - {"HEAD", "OPTIONS"})
+    ]
+    # Guard against a vacuous loop: FR-01/02/09 define at least these routes.
+    assert len(v1_routes) >= 6
+    for method, path in v1_routes:
+        url = path.replace("{task_id}", "x").replace("{id}", "x")
+        resp = client.request(method, url)
+        assert resp.status_code == 401, f"{method} {path} -> {resp.status_code}"
+        assert resp.headers.get("content-type", "").startswith(PROBLEM_JSON)
+
+
 # --- AC-3.2 -----------------------------------------------------------------
 
 # NFR-02
@@ -183,11 +202,22 @@ def test_fr03_key_stored_as_sha256_hash_only(db_file):
     assert hash_key(issued_key) == result_key_hash
     # AC3.2-no-plaintext
     assert not result_plaintext_in_db
-    # comparison must be constant-time (SPEC L104)
-    auth_source = (SRC_ROOT / "taskq_api" / "service" / "auth.py")
-    if not auth_source.exists():
-        auth_source = SRC_ROOT / "taskq_api" / "service" / "auth" / "__init__.py"
-    assert "hmac.compare_digest" in auth_source.read_text()
+
+
+# NFR-02
+def test_fr03_key_comparison_uses_compare_digest(client, monkeypatch):
+    calls: list[tuple] = []
+    real = auth_module.hmac.compare_digest
+
+    def spy(a, b):
+        calls.append((a, b))
+        return real(a, b)
+
+    monkeypatch.setattr(auth_module.hmac, "compare_digest", spy)
+    resp = client.get("/v1/tasks", headers={"X-API-Key": VALID_KEY})
+    assert resp.status_code == 200
+    assert calls, "hmac.compare_digest was not used to compare the key hash"
+    assert calls[0][0] == calls[0][1] == hash_key(VALID_KEY)
 
 
 # --- AC-3.3 -----------------------------------------------------------------
