@@ -1,18 +1,17 @@
 {
-  "classified_at": "2026-10-04T05:06:37Z",
+  "classified_at": "2026-10-04T14:22:07Z",
   "cli_tools": [
     "alembic",
     "anyio",
     "bandit",
     "fastapi",
     "gitleaks",
+    "grep",
     "httpx",
-    "importlinter",
     "lint-imports",
     "make",
     "mutmut",
     "pip-licenses",
-    "piplicenses",
     "pydantic",
     "pyright",
     "pytest",
@@ -25,7 +24,7 @@
     "sqlite3",
     "uvicorn"
   ],
-  "enforcer_sha": "3bf29134e715950fcf8cd23cdb9a3c22ef31b670",
+  "enforcer_sha": "78f79c1530eeb5d06e333b6c830bec3b58ff8616",
   "env_vars": {
     "dev_opt_in": [],
     "has_default": [
@@ -46,15 +45,8 @@
   },
   "infra_services": {
     "docker_compose_services": [],
-    "required": [
-      {
-        "checked_via": ".venv/bin/python sqlite3.connect(tempfile .db) + SELECT 1",
-        "name": "sqlite",
-        "reachable": true,
-        "type": "SQLite 3.50.4 (file DB, dev/test)"
-      }
-    ]
+    "required": []
   },
   "schema_version": 1,
-  "source_sha256": "650745c5992f54fdf5b202ab225938be818169787cb2ad43b2e6e7ef25d0e13c"
+  "source_sha256": "2999d7838acafebc226399196ad9680b3785145740eba3701fa83c61ee03eebb"
 }

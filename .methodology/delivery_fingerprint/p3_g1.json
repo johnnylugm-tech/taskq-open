@@ -20,7 +20,7 @@
   "spec_ambiguity": [
     {
       "file": "03-development/tests/test_fr02.py",
-      "line": 379,
+      "line": 389,
       "note": "TEST_SPEC precondition says `$` is accepted at create, but"
     }
   ],

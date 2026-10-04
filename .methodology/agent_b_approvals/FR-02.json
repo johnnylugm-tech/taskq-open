@@ -1,0 +1,80 @@
+{
+  "review_status": "REJECT",
+  "reason": "Most of FR-02 maps to assertions that fail when the requirement is broken: 202 + run_id -> test_fr02.py:182-185; exec via shlex.split with no shell -> :226, :228, :231 and T-06 :399; TASKQ_TASK_TIMEOUT honoured -> :233, :244-245; state machine pending->running->done|failed|timeout -> :257, :268, :281, :309; task_results columns and values -> :331, :334-338; GET /runs newest first -> :383. The scope part (SPEC.md:95, :99) has no assertion. No test sends a POST /v1/tasks/{id}/run with a read-scoped key, or with no key, and expects 401/403. So an implementation that lets read keys start runs passes every test. GET /runs is likewise never checked for its auth requirement. No other test file calls /run either.",
+  "citations": [
+    "SPEC.md:95",
+    "SPEC.md:96",
+    "SPEC.md:97",
+    "SPEC.md:98",
+    "SPEC.md:99",
+    "03-development/tests/test_fr02.py:97-98",
+    "03-development/tests/test_fr02.py:182-185",
+    "03-development/tests/test_fr02.py:226-233",
+    "03-development/tests/test_fr02.py:244-247",
+    "03-development/tests/test_fr02.py:257",
+    "03-development/tests/test_fr02.py:268",
+    "03-development/tests/test_fr02.py:281",
+    "03-development/tests/test_fr02.py:309",
+    "03-development/tests/test_fr02.py:331-338",
+    "03-development/tests/test_fr02.py:383",
+    "03-development/tests/test_fr02.py:399"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "high",
+      "evidence_type": "real_invention",
+      "canonical_ref": "SPEC.md:95",
+      "message": "No assertion checks that POST /v1/tasks/{id}/run requires scope `write`. Every test uses the write key (test_fr02.py:98), and no test sends a read-scoped key or no key expecting 403/401. A read key that can start runs would pass the suite.",
+      "fr_id": "FR-02"
+    },
+    {
+      "severity": "medium",
+      "evidence_type": "real_invention",
+      "canonical_ref": "SPEC.md:99",
+      "message": "No assertion checks that GET /v1/tasks/{id}/runs requires scope `read`. No unauthenticated request is sent expecting 401, so an endpoint with no auth would pass.",
+      "fr_id": "FR-02"
+    },
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "03-development/tests/test_fr02.py:337",
+      "message": "The persisted duration_ms check (`>= 0`) passes for any value the code writes. The only check of a real duration (:247, `>= 1400`) is on the in-process outcome, not on the task_results row.",
+      "fr_id": "FR-02"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr02_results_persisted_in_task_results",
+      "test_fr02_run_lifecycle_failed_on_nonzero_exit",
+      "test_fr02_run_lifecycle_state_machine",
+      "test_fr02_run_lifecycle_timeout",
+      "test_fr02_run_returns_202_with_run_id",
+      "test_fr02_run_unknown_task_returns_404",
+      "test_fr02_run_uses_exec_without_shell_and_times_out",
+      "test_fr02_runs_history_newest_first",
+      "test_fr02_state_machine_rejects_backward_transition",
+      "test_sec_t06_shell_metacharacters_not_interpreted",
+      "test_sec_t11_secrets_redacted_in_output_and_logs"
+    ],
+    "assertion_digests": {
+      "test_fr02_results_persisted_in_task_results": "c9e44a78aa6618be26940dc49d4d8f8ee763bcd7534c1395ac69a51ef7dd60b1",
+      "test_fr02_run_lifecycle_failed_on_nonzero_exit": "16ae25fa4600e078c1a26f8c0caf094f54afda0ce197774bcbe4b44c758405ce",
+      "test_fr02_run_lifecycle_state_machine": "baa4bbeea7e044384b3b005701efdb0c0a43e097fb42eadc951c9ba7b0f8585f",
+      "test_fr02_run_lifecycle_timeout": "41110e8e18e87ec37019d50a7dbb6e3ae00d393bb806f9e78cbac1b151a66050",
+      "test_fr02_run_returns_202_with_run_id": "80adeb08ef13439ddd775d1e0453e67be151fc6584bf61706bf5b4cef42bd2ed",
+      "test_fr02_run_unknown_task_returns_404": "d44388672321e8820d626402da7e097852dd782aa69abc6504ecc2d2491ba707",
+      "test_fr02_run_uses_exec_without_shell_and_times_out": "94413b25a2136f67fce8dbc5ec312c8be27880f78df3042fe073f4e604d9b768",
+      "test_fr02_runs_history_newest_first": "8345833bedeef4f6e87de0ad0891bbc243753c9b76b7ffae27bbe98da1e69cf4",
+      "test_fr02_state_machine_rejects_backward_transition": "713ea1242e2987778c3608191e982ac5ba5cea7cebfb5cca49ffde2d95e89b91",
+      "test_sec_t06_shell_metacharacters_not_interpreted": "77ad7af863cc9899ac3a9e6558c6e03944aefcf8ea5368ee0f0b5182e7ad47c3",
+      "test_sec_t11_secrets_redacted_in_output_and_logs": "44d8920c7d0aac53213ba6ab26d1f2f2a5198ce5b27d2cfd9810a88ec1715bd1"
+    },
+    "test_files": [
+      "03-development/tests/test_fr02.py"
+    ]
+  }
+}

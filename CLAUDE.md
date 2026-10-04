@@ -8,12 +8,12 @@
 <!-- harness:auto-start -->
 ## Harness Status _(auto-generated — do not edit this block)_
 
-> Phase: **3 — Implementation** | Last Gate: **Gate 1** | Last FR: FR-02 | Updated: 2026-10-04
+> Phase: **3 — Implementation** | Last Gate: **Gate 1** | Last FR: FR-04 | Updated: 2026-10-04
 
 ### Gate Progress
 | Gate | Score / FRs | Status |
 |------|-------------|--------|
-| Gate 1 | 2/10 FRs | 🔄 In Progress |
+| Gate 1 | 3/10 FRs | 🔄 In Progress |
 | Gate 2 | — | ⬜ Not Started |
 | Gate 3 | — | ⬜ Not Started |
 | Gate 4 | — | ⬜ Not Started |
@@ -24,7 +24,7 @@
 | FR-01 | 100.0 | ✅ COMPLETE |
 | FR-02 | 100.0 | ✅ COMPLETE |
 | FR-03 | — | ⬜ Pending |
-| FR-04 | — | ⬜ Pending |
+| FR-04 | 100.0 | ✅ COMPLETE |
 | FR-05 | — | ⬜ Pending |
 | FR-06 | — | ⬜ Pending |
 | FR-07 | — | ⬜ Pending |
@@ -33,9 +33,9 @@
 | FR-10 | — | ⬜ Pending |
 
 ### Architecture Constraints
-- {'id': 'NFR-06-layers', 'executor': 'import-linter', 'contract_type': 'layers', 'contract_name': 'taskq_api layers', 'source_modules': ['taskq_api.app', 'taskq_api.api', 'taskq_api.service', 'taskq_api.repository', 'taskq_api.models']}
+- {'id': 'NFR-06-layers', 'executor': 'import-linter', 'contract_type': 'layers', 'contract_name': 'taskq_api layers', 'source_modules': ['taskq_api.__main__', 'taskq_api.cli', 'taskq_api.app', 'taskq_api.api', 'taskq_api.service', 'taskq_api.repository', 'taskq_api.models']}
 - {'id': 'NFR-06-independence', 'executor': 'import-linter', 'contract_type': 'independence', 'contract_name': 'taskq_api independence', 'source_modules': ['taskq_api.config', 'taskq_api.errors']}
-- {'id': 'NFR-06-no-sqlalchemy-outside-repository', 'executor': 'import-linter', 'contract_type': 'forbidden', 'contract_name': 'no sqlalchemy outside repository', 'source_modules': ['taskq_api.app', 'taskq_api.api', 'taskq_api.service', 'taskq_api.config', 'taskq_api.errors'], 'forbidden_modules': ['sqlalchemy']}
+- {'id': 'NFR-06-no-sqlalchemy-outside-repository', 'executor': 'import-linter', 'contract_type': 'forbidden', 'contract_name': 'no sqlalchemy outside repository', 'source_modules': ['taskq_api.__main__', 'taskq_api.cli', 'taskq_api.app', 'taskq_api.api', 'taskq_api.service', 'taskq_api.config', 'taskq_api.errors'], 'forbidden_modules': ['sqlalchemy']}
 
 ### High-Risk Modules
 - taskq_api.service.runner
