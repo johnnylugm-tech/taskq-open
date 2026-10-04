@@ -14,7 +14,11 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Protocol
 
+from taskq_api.models.rate_bucket import RateBucket
 from taskq_api.service.uow import UnitOfWork
+
+_TOKEN_COST = 1.0
+"""[FR-05] Tokens one request consumes. Citations: SPEC.md L117."""
 
 
 class Clock(Protocol):
@@ -61,15 +65,32 @@ def consume(
     Citations: SPEC.md L117-119.
     """
     bucket = uow.rate_buckets.get_for_update(key_id)
-    if bucket is None:
-        tokens = float(capacity)
-    else:
-        elapsed = max((now - bucket.updated_at).total_seconds(), 0.0)
-        tokens = min(float(capacity), bucket.tokens + elapsed * rate_per_sec)
-    allowed = tokens >= 1.0
+    tokens = _refilled_tokens(bucket, capacity=capacity, rate_per_sec=rate_per_sec, now=now)
+    allowed = tokens >= _TOKEN_COST
     if allowed:
-        tokens -= 1.0
+        tokens -= _TOKEN_COST
     uow.rate_buckets.save(bucket, key_id, tokens, now)
     if allowed:
         return RateDecision(allowed=True, retry_after_s=0)
-    return RateDecision(allowed=False, retry_after_s=max(1, math.ceil((1.0 - tokens) / rate_per_sec)))
+    return RateDecision(allowed=False, retry_after_s=_seconds_until_token(tokens, rate_per_sec))
+
+
+def _refilled_tokens(
+    bucket: RateBucket | None, *, capacity: int, rate_per_sec: float, now: datetime
+) -> float:
+    """[FR-05] Tokens held at ``now``: a new bucket starts full; refill caps at capacity.
+
+    Citations: SPEC.md L117.
+    """
+    if bucket is None:
+        return float(capacity)
+    elapsed_s = max((now - bucket.updated_at).total_seconds(), 0.0)
+    return min(float(capacity), bucket.tokens + elapsed_s * rate_per_sec)
+
+
+def _seconds_until_token(tokens: float, rate_per_sec: float) -> int:
+    """[FR-05] Whole seconds (at least 1) until the bucket refills one token.
+
+    Citations: SPEC.md L118.
+    """
+    return max(1, math.ceil((_TOKEN_COST - tokens) / rate_per_sec))
