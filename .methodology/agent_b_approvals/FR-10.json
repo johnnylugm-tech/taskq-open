@@ -1,0 +1,61 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Every FR-10 requirement maps to a failing assertion. (1) Content-Type problem+json: test_fr10.py:164 (_assert_mapping, run for 401/403/404/409/422/429/503/500) and :183. (2) Body fields type/title/status/detail/instance/correlation_id: :197-203, including instance == request path at :202. (3) detail leaks no SQL, trace, path or schema: the 500 route is injected with a leaky message and checked at :218-220, with the _assert_no_leak patterns at :137-152. The same check also runs on the 409, 422 and 503 bodies at :251, :310 and :345. (4) correlation_id in header, body and log: header equals body at :168 and :240. The log id must equal the header at :238, which fails if nothing is logged or a different id is logged. The 500 body id must be in the logs at :458. (5) Status-to-type mapping: :160 and :162 are called with 422 (:250), 401 (:265), 403 (:280), 404 (:293), 409 (:309), 429 (:327), 503 (:344) and 500 (:360). The expected values are the SPEC status codes, not hardcoded outputs. I found no inverted or tautological assertion among these.",
+  "citations": [
+    "SPEC.md:162-168",
+    "03-development/tests/test_fr10.py:164",
+    "03-development/tests/test_fr10.py:197-203",
+    "03-development/tests/test_fr10.py:218-220",
+    "03-development/tests/test_fr10.py:238-240",
+    "03-development/tests/test_fr10.py:160-162",
+    "03-development/tests/test_fr10.py:458"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr10_500_body_leaks_no_internals",
+      "test_fr10_cancelled_error_not_converted_to_500",
+      "test_fr10_correlation_id_header_matches_log",
+      "test_fr10_mapping_401_unauthenticated",
+      "test_fr10_mapping_403_forbidden",
+      "test_fr10_mapping_404_not_found",
+      "test_fr10_mapping_409_conflict",
+      "test_fr10_mapping_429_rate_limited",
+      "test_fr10_mapping_500_internal",
+      "test_fr10_mapping_503_not_ready",
+      "test_fr10_non_2xx_content_type_problem_json",
+      "test_fr10_problem_body_required_fields",
+      "test_fr10_status_to_problem_type_mapping",
+      "test_fr10_timeout_is_200_and_cancel_not_500",
+      "test_sec_t10_correlation_id_in_header_body_and_log",
+      "test_sec_t12_500_body_has_no_internal_details",
+      "test_sec_t13_cors_default_denies_all_origins"
+    ],
+    "assertion_digests": {
+      "test_fr10_500_body_leaks_no_internals": "26b760899c83877b626cf747db004e1cd1f0fd02bd993ac1fa8f6dab1d5ed8ea",
+      "test_fr10_cancelled_error_not_converted_to_500": "76a6b9c048bb58a4b2176f46dd3cbec3bba5fb34b1a894499a08aa0fe31fdc9d",
+      "test_fr10_correlation_id_header_matches_log": "a2e72437b4c31c85cb92de8e6e0a9ebdb73522b2d4e43cf12d5ff5be4f35774a",
+      "test_fr10_mapping_401_unauthenticated": "f752efe635c9607d3d85fa1e05b9e1762567ab0bf9ef870957a28b0cccd7cf03",
+      "test_fr10_mapping_403_forbidden": "8aafbfc7afda20029b1f3ccc01ffa1f2a0414e20f559329d9521926bd1678138",
+      "test_fr10_mapping_404_not_found": "c4b04e146e78aaf59b4a66d7293a2d58ffcf18b7909b0e641ebf9ef47a321719",
+      "test_fr10_mapping_409_conflict": "297ae97ce073fc42984a7e6178a641f6e0aa2928d17a3e583f84394e695e33ea",
+      "test_fr10_mapping_429_rate_limited": "89be214f198f436828eb6826e15d35bde2f294787a67878d7978112637df195b",
+      "test_fr10_mapping_500_internal": "165d38fb935842a151c6cc2f0f9df9d70e3af26c279a7c8051741c49b6025e94",
+      "test_fr10_mapping_503_not_ready": "c4d77fc2ae3fe8075672f5e8b0c2c931a6b7999374b9b524bec2ac126f9797b7",
+      "test_fr10_non_2xx_content_type_problem_json": "aa05a1db2fe003e76212b9ff567eeeccbc1e1c489eeba300708ad46fc66f716f",
+      "test_fr10_problem_body_required_fields": "b7816d28686fb60a0f8ee97d46ffc5422c2370ff8e1c820ae228e2a08ec016c7",
+      "test_fr10_status_to_problem_type_mapping": "3fa2988c4ef4456b39582667cfd732b70864374d67c49bb587f43c8b2409029a",
+      "test_fr10_timeout_is_200_and_cancel_not_500": "21eceac59b568085b1dc180188843074c8f0e55247954d091f8b7866a33f04ae",
+      "test_sec_t10_correlation_id_in_header_body_and_log": "629da120444d263a6a360a41d03264e57b929f6cb1ec0c45055e243562947a0b",
+      "test_sec_t12_500_body_has_no_internal_details": "8af7707b9cb4bcb99938d3eb6d81735ddf27fc1f54ad58c9a35869747daf44fe",
+      "test_sec_t13_cors_default_denies_all_origins": "789e491781b8b276686c9931ae04db3fe7100a25cd4089617fffbfc14b2998f8"
+    },
+    "test_files": [
+      "03-development/tests/test_fr10.py"
+    ]
+  }
+}

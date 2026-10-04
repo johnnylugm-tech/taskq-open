@@ -1,13 +1,13 @@
 {
-  "classified_at": "2026-10-04T14:22:07Z",
+  "classified_at": "2026-10-04T18:17:20Z",
   "cli_tools": [
     "alembic",
-    "anyio",
     "bandit",
+    "curl",
     "fastapi",
     "gitleaks",
-    "grep",
     "httpx",
+    "importlinter",
     "lint-imports",
     "make",
     "mutmut",
@@ -45,8 +45,15 @@
   },
   "infra_services": {
     "docker_compose_services": [],
-    "required": []
+    "required": [
+      {
+        "checked_via": "sqlite3 binary present at /usr/bin/sqlite3; sqlalchemy importable; no server needed",
+        "name": "sqlite",
+        "reachable": true,
+        "type": "SQLite (dev/test file DB, in-process)"
+      }
+    ]
   },
   "schema_version": 1,
-  "source_sha256": "2999d7838acafebc226399196ad9680b3785145740eba3701fa83c61ee03eebb"
+  "source_sha256": "032cd726704995c427e3106f1a5267d9793151bae75f75b9f6061eb7f0a5844a"
 }
