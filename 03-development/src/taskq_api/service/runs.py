@@ -4,7 +4,8 @@
 ``task_results`` row), executes it in the background and records the
 outcome; lists a task's run history.
 [FR-08] Runs are submitted through the bounded executor; a run cancelled by
-the shutdown drain ends with task status ``interrupted``.
+the shutdown drain, or dropped by it before starting, ends with task status
+``interrupted``.
 
 Citations: SPEC.md L93-99 (FR-02); SPEC.md L145-150 (FR-08);
 02-architecture/SAD.md L185-198 (run flow).
@@ -81,11 +82,15 @@ def record_outcome(result: TaskResult, outcome: runner.RunOutcome) -> None:
 def start(executor: Executor, uow_factory: UowFactory, task_id: str, run_id: str, command: str) -> None:
     """[FR-02] Schedule :func:`execute` in the background.
 
-    [FR-08] Queued on the executor, which starts it once a slot is free.
+    [FR-08] Queued on the executor, which starts it once a slot is free; if the
+    shutdown drain drops it before it starts, the task is marked ``interrupted``.
 
-    Citations: SPEC.md L95, L148.
+    Citations: SPEC.md L95, L147-148.
     """
-    executor.enqueue(lambda: execute(uow_factory, task_id, run_id, command))
+    executor.enqueue(
+        lambda: execute(uow_factory, task_id, run_id, command),
+        on_dropped=lambda: set_status(uow_factory, task_id, runner.INTERRUPTED),
+    )
 
 
 def list_runs(uow: UnitOfWork, task_id: str) -> list[TaskResult]:

@@ -19,6 +19,7 @@ from types import TracebackType
 from taskq_api.config import load_settings
 
 Job = Callable[[], Awaitable[object]]
+OnDropped = Callable[[], object]
 
 
 class Executor:
@@ -32,7 +33,7 @@ class Executor:
         self._max_concurrent = settings.max_concurrent
         self._drain_timeout = settings.drain_timeout
         self._group = asyncio.TaskGroup()
-        self._queue: deque[Job] = deque()
+        self._queue: deque[tuple[Job, OnDropped | None]] = deque()
         self._in_flight: set[asyncio.Task[None]] = set()
         self._idle = asyncio.Event()
         self._idle.set()
@@ -49,34 +50,49 @@ class Executor:
     ) -> bool | None:
         return await self._group.__aexit__(exc_type, exc, tb)
 
-    def enqueue(self, job: Job) -> None:
+    def enqueue(self, job: Job, on_dropped: OnDropped | None = None) -> None:
         """[FR-08] Queue ``job``; it is called only once a concurrency slot is free.
 
-        Citations: SPEC.md L148.
+        ``on_dropped`` is called instead if the drain discards ``job`` before
+        it ever started, so the caller can record that outcome.
+
+        Citations: SPEC.md L147-148.
         """
-        self._queue.append(job)
+        self._queue.append((job, on_dropped))
         self._idle.clear()
         self._dispatch()
 
     def _dispatch(self) -> None:
+        """Start queued jobs while concurrency slots are free."""
         while self._queue and len(self._in_flight) < self._max_concurrent:
-            task = self._group.create_task(self._run(self._queue.popleft()))
+            job, _ = self._queue.popleft()
+            task = self._group.create_task(self._run(job))
             self._in_flight.add(task)
 
     async def _run(self, job: Job) -> None:
         try:
             await job()
         finally:
-            self._in_flight.discard(asyncio.current_task())  # type: ignore[arg-type]
+            task = asyncio.current_task()
+            assert task is not None
+            self._in_flight.discard(task)
             self._dispatch()
             if not self._in_flight:
                 self._idle.set()
 
+    def _drop_queued(self) -> None:
+        """Discard jobs that never started, notifying their ``on_dropped`` hooks."""
+        while self._queue:
+            _, on_dropped = self._queue.popleft()
+            if on_dropped is not None:
+                on_dropped()
+
     async def drain(self) -> None:
         """[FR-08] Wait up to ``TASKQ_DRAIN_TIMEOUT`` for all jobs, then cancel the rest.
 
-        Queued jobs that never started are dropped; in-flight jobs are
-        cancelled and awaited so their cleanup (kill + reap) completes.
+        Queued jobs that never started are dropped (their ``on_dropped`` hook
+        runs); in-flight jobs are cancelled and awaited so their cleanup
+        (kill + reap) completes.
 
         Citations: SPEC.md L147, L381.
         """
@@ -84,7 +100,9 @@ class Executor:
             async with asyncio.timeout(self._drain_timeout):
                 await self._idle.wait()
         except TimeoutError:
-            self._queue.clear()
+            self._drop_queued()
             for task in self._in_flight:
                 task.cancel()
-            await self._idle.wait()
+            if self._in_flight:
+                await self._idle.wait()
+            self._idle.set()
