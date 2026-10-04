@@ -20,10 +20,10 @@ from starlette.requests import Request
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from taskq_api.api import error_handlers
-from taskq_api.errors import TaskqError
+from taskq_api.errors import InternalError
 
 CORRELATION_HEADER = "X-Correlation-Id"
-INTERNAL_DETAIL = "An internal error occurred."
+INTERNAL_DETAIL = InternalError.GENERIC_DETAIL
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +64,5 @@ class CorrelationMiddleware:
             )
             if started:
                 raise
-            response = error_handlers.problem_response(
-                Request(scope), TaskqError(INTERNAL_DETAIL)
-            )
+            response = error_handlers.problem_response(Request(scope), InternalError())
             await response(scope, receive, send_with_header)

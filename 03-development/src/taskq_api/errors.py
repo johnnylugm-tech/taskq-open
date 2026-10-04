@@ -2,8 +2,11 @@
 
 [FR-01] Errors raised by the task service/repository and mapped to
 problem+json by ``api.error_handlers``.
+[FR-10] One subclass per row of the SPEC §7 error table; ``InternalError``
+is the generic 500 fallback rendered by ``api.middleware``.
 
-Citations: SPEC.md L88-91 (FR-01 422/404); SPEC.md L331-346 (7 error table).
+Citations: SPEC.md L88-91 (FR-01 422/404); SPEC.md L162-168 (FR-10);
+SPEC.md L331-346 (7 error table).
 """
 
 from __future__ import annotations
@@ -38,6 +41,21 @@ class TaskqError(Exception):
         Citations: SPEC.md L336-346.
         """
         return f"/errors/{self.slug}"
+
+
+class InternalError(TaskqError):
+    """[FR-10] Unhandled failure -> 500 with a fixed, generic ``detail``.
+
+    The detail never carries the original exception text, so SQL, stack
+    traces, file paths and schema names cannot leak into the body.
+
+    Citations: SPEC.md L166, L344.
+    """
+
+    GENERIC_DETAIL = "An internal error occurred."
+
+    def __init__(self) -> None:
+        super().__init__(self.GENERIC_DETAIL)
 
 
 class ValidationFailed(TaskqError):

@@ -10,6 +10,7 @@ SPEC.md L331-346 (7 error table).
 from __future__ import annotations
 
 import logging
+from typing import cast
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
@@ -56,14 +57,16 @@ async def handle_domain_error(request: Request, exc: Exception) -> JSONResponse:
 
     Citations: SPEC.md L331-346.
     """
-    assert isinstance(exc, TaskqError)
-    return problem_response(request, exc)
+    return problem_response(request, cast(TaskqError, exc))
 
 
 async def handle_request_validation(request: Request, exc: Exception) -> JSONResponse:
     """[FR-01] Handler turning FastAPI validation failures into 422 problems.
 
-    Citations: SPEC.md L88, L91, L338.
+    [FR-10] Pydantic's error list is deliberately not echoed: ``detail`` stays
+    generic so model/field internals do not leak.
+
+    Citations: SPEC.md L88, L91, L166, L338.
     """
     return problem_response(request, ValidationFailed("request is invalid"))
 
