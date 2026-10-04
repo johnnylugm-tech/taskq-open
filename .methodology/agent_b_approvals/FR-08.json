@@ -1,0 +1,56 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each FR-08 requirement maps to an assertion that fails if it is violated. Graceful drain: test_fr08_graceful_drain_marks_interrupted asserts status == interrupted (test_fr08.py:287), a drain bounded by TASKQ_DRAIN_TIMEOUT (:289) and no orphan (:291). test_fr08_drain_waits_for_short_task_until_done asserts the drain waited for an in-flight task, which ends done with exit_code 0 (:308, :312). Concurrency cap with queueing: peak <= cap (:333), early in-flight == cap (:337), 3 waves of elapsed time (:339), and serialized intervals for cap=1 (:362). The Tracker counts a job from the moment the executor creates its coroutine, so unbounded coroutine creation would fail :333. Timeout kills the child: status is timeout (:393), no orphan pids (:395), and kill was followed by wait_done (:397, via the spy at :69-79). The same checks appear in :413-419. CancelledError propagation: a runner job that swallowed the cancel would return normally, so job.cancelled() would be False and fail :466. An executor that swallowed it would fail the same assertion, and :472-473 check the cancelled runs were killed and reaped. Two requirement points are only checked by behaviour, not by structure: asyncio.TaskGroup and asyncio.wait_for. A conforming implementation passes and a non-conforming one that behaves differently fails, so these are not inverted or vacuous assertions.",
+  "citations": [
+    "SPEC.md:145-149",
+    "03-development/tests/test_fr08.py:287",
+    "03-development/tests/test_fr08.py:289",
+    "03-development/tests/test_fr08.py:308",
+    "03-development/tests/test_fr08.py:312",
+    "03-development/tests/test_fr08.py:333",
+    "03-development/tests/test_fr08.py:337",
+    "03-development/tests/test_fr08.py:339",
+    "03-development/tests/test_fr08.py:362",
+    "03-development/tests/test_fr08.py:393",
+    "03-development/tests/test_fr08.py:395",
+    "03-development/tests/test_fr08.py:397",
+    "03-development/tests/test_fr08.py:466",
+    "03-development/tests/test_fr08.py:472"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "SPEC.md:146",
+      "message": "No assertion inspects the use of asyncio.TaskGroup or asyncio.wait_for directly. The tests pin only the observable behaviour: drain, timeout kill and cancellation.",
+      "fr_id": "FR-08"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr08_cancelled_error_propagates",
+      "test_fr08_concurrency_cap_queues_excess",
+      "test_fr08_drain_waits_for_short_task_until_done",
+      "test_fr08_graceful_drain_marks_interrupted",
+      "test_fr08_max_concurrent_1_serializes_tasks",
+      "test_fr08_timeout_kills_process_no_orphan",
+      "test_sec_t07_timeout_kills_subprocess_no_orphan"
+    ],
+    "assertion_digests": {
+      "test_fr08_cancelled_error_propagates": "f5ef4f9c676480e71ed8330da840b7ddde789100a47ffd1c55935f1cb8791967",
+      "test_fr08_concurrency_cap_queues_excess": "992f7108884a0a0d5d945265b526a4776b3e96dd033246738e8c8e8282c4b27a",
+      "test_fr08_drain_waits_for_short_task_until_done": "f4c8797968f96113133decadc68445ab0a3a26c90bc01097469816ab51a73498",
+      "test_fr08_graceful_drain_marks_interrupted": "5013bf2ac9b119bc44020e73b1f16bdd39c14b3f6f992eff1b4f144f60762ca8",
+      "test_fr08_max_concurrent_1_serializes_tasks": "06d71edc632f218d4f3afeafba0bb92bb9f35990ce42a9a5fb002b919b49354d",
+      "test_fr08_timeout_kills_process_no_orphan": "b4f65c083723a9dcd5050e175f6d5d5bbf715ad9a3fbebc8335f09ae67b1c63a",
+      "test_sec_t07_timeout_kills_subprocess_no_orphan": "a56ffb76b11e6ddf92653808a7e43be6cabb9fe2962d9cf2f37e44545f2aae17"
+    },
+    "test_files": [
+      "03-development/tests/test_fr08.py"
+    ]
+  }
+}
