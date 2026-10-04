@@ -330,6 +330,7 @@ sab:
       modules:
         - "taskq_api.app"
         - "taskq_api.cli"
+        - "taskq_api.__main__"
       allowed_dependencies: ["api", "service", "repository", "shared"]
     - name: migrations
       modules:

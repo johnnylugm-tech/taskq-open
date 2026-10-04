@@ -294,3 +294,10 @@ Each decision above implements the specification in SRS.md and SPEC.md, and the 
 - Encrypt and TLS: transport encryption is delegated to the reverse proxy, which must terminate TLS; the service does not encrypt payloads itself (Requires Verification at deployment).
 - Signature: no request signature scheme is adopted; the API key is the only credential.
 - Vulnerability mitigation and monitoring: `bandit`, pinned dependencies and the license and SBOM checks of NFR-07 supply the vulnerability mitigation baseline.
+
+## Architecture Amendment — `taskq_api.__main__` declared in layer `entry`
+
+- **When**: 2026-10-04T12:08:12.060906+00:00
+- **Amended**: layer 'entry'
+- **Reason**: python -m taskq_api is the CLI entry point and delegates to taskq_api.cli, matching SAD section 2.2
+- **Recorded by**: `harness_cli.py amend-sab --declare` (Gate 1 Architecture Amendment Protocol)
