@@ -6,8 +6,9 @@
 [FR-05] Holds the rate-limit settings and clock; health routes stay unlimited.
 [FR-08] Runs go through the bounded executor, drained on shutdown.
 [FR-09] Adds ``/v1/metrics`` and the process-wide rate-limit rejection counter.
+[FR-10] Adds the correlation-id / 500 middleware and the CORS allow-list.
 
-Citations: SPEC.md L145-150 (FR-08); SPEC.md L152-160 (FR-09); SPEC.md L79-91 (FR-01); SPEC.md L93-99 (FR-02); SPEC.md L107 (FR-03);
+Citations: SPEC.md L162-168 (FR-10); SPEC.md L193 (NFR-02 CORS); SPEC.md L145-150 (FR-08); SPEC.md L152-160 (FR-09); SPEC.md L79-91 (FR-01); SPEC.md L93-99 (FR-02); SPEC.md L107 (FR-03);
 SPEC.md L115-120 (FR-05);
 SPEC.md L287-302 (5.1 settings);
 02-architecture/SAD.md L46.
@@ -19,8 +20,9 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-from taskq_api.api import error_handlers, routes_health, routes_metrics, routes_runs, routes_tasks
+from taskq_api.api import error_handlers, middleware, routes_health, routes_metrics, routes_runs, routes_tasks
 from taskq_api.config import load_settings
 from taskq_api.repository.session import build_engine, uow_factory
 from taskq_api.service.executor import Executor
@@ -36,8 +38,10 @@ def create_app() -> FastAPI:
     [FR-08] ``app.state.executor`` runs jobs under ``TASKQ_MAX_CONCURRENT``; on
     shutdown it drains for ``TASKQ_DRAIN_TIMEOUT`` and cancelled runs end ``interrupted``.
     [FR-09] ``app.state.rate_limit_rejections`` counts 429s for ``/v1/metrics``.
+    [FR-10] Correlation ids and the 500 fallback wrap every request; CORS allows
+    only ``TASKQ_CORS_ORIGINS``.
 
-    Citations: SPEC.md L79-91, L93-99, L117, L147-148, L158, L287-302.
+    Citations: SPEC.md L79-91, L93-99, L117, L147-148, L158, L164-168, L193, L287-302.
     """
     settings = load_settings()
     engine = build_engine(settings)
@@ -56,6 +60,8 @@ def create_app() -> FastAPI:
     app.state.uow_factory = uow_factory(engine)
     app.state.rate_limit_rejections = RejectionCounter()
     error_handlers.register(app)
+    app.add_middleware(CORSMiddleware, allow_origins=list(settings.cors_origins))
+    app.add_middleware(middleware.CorrelationMiddleware)
     app.include_router(routes_tasks.router)
     app.include_router(routes_runs.router)
     app.include_router(routes_health.router)

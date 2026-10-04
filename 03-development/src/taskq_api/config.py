@@ -4,9 +4,10 @@
 [FR-02] Supplies ``TASKQ_TASK_TIMEOUT`` for task runs.
 [FR-05] Supplies the token-bucket burst and refill rate.
 [FR-08] Supplies the executor concurrency cap and drain timeout.
+[FR-10] Supplies the CORS allow-list (empty by default -> deny all).
 
 Citations: SPEC.md L287-302 (5.1 environment variables); SPEC.md L122-128 (FR-06 pool);
-SPEC.md L145-150 (FR-08).
+SPEC.md L145-150 (FR-08); SPEC.md L193 (NFR-02 CORS).
 """
 
 from __future__ import annotations
@@ -29,6 +30,7 @@ class Settings:
     rate_per_sec: float
     max_concurrent: int
     drain_timeout: float
+    cors_origins: tuple[str, ...] = ()
 
 
 def load_settings() -> Settings:
@@ -37,8 +39,9 @@ def load_settings() -> Settings:
     [FR-02] Adds the per-task subprocess timeout.
     [FR-05] Adds the rate-limit burst and refill rate.
     [FR-08] Adds the executor concurrency cap and graceful-drain timeout.
+    [FR-10] Adds the comma-separated ``TASKQ_CORS_ORIGINS`` allow-list.
 
-    Citations: SPEC.md L291-297, L147-148.
+    Citations: SPEC.md L291-297, L147-148, L193.
     """
     return Settings(
         db_url=os.environ.get("TASKQ_DB_URL", "sqlite:///./taskq.db"),
@@ -48,4 +51,9 @@ def load_settings() -> Settings:
         rate_per_sec=float(os.environ.get("TASKQ_RATE_PER_SEC", "5.0")),
         max_concurrent=int(os.environ.get("TASKQ_MAX_CONCURRENT", "8")),
         drain_timeout=float(os.environ.get("TASKQ_DRAIN_TIMEOUT", "30.0")),
+        cors_origins=tuple(
+            origin.strip()
+            for origin in os.environ.get("TASKQ_CORS_ORIGINS", "").split(",")
+            if origin.strip()
+        ),
     )

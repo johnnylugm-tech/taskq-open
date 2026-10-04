@@ -2,8 +2,9 @@
 
 [FR-01] POST / GET one / GET list / DELETE; each request runs in one
 :class:`UnitOfWork` transaction.
+[FR-10] ``POST`` requires the ``write`` scope (403 ``/errors/forbidden``).
 
-Citations: SPEC.md L79-91 (FR-01); SPEC.md L125 (per-request transaction).
+Citations: SPEC.md L79-91 (FR-01); SPEC.md L168, L339 (FR-10 403); SPEC.md L125 (per-request transaction).
 """
 
 from __future__ import annotations
@@ -13,7 +14,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query, Response
 
-from taskq_api.api.deps import authenticate, rate_limit, get_uow_factory
+from taskq_api.api.deps import authenticate, get_uow_factory, rate_limit, require_scope
 from taskq_api.api.schemas import TaskCreate, TaskOut, TaskPage, TaskStatus
 from taskq_api.service import tasks as task_service
 from taskq_api.service.uow import UnitOfWork
@@ -25,11 +26,15 @@ router = APIRouter(
 UowFactory = Annotated[Callable[[], UnitOfWork], Depends(get_uow_factory)]
 
 
-@router.post("", status_code=201, response_model=TaskOut)
+@router.post(
+    "", status_code=201, response_model=TaskOut, dependencies=[Depends(require_scope("write"))]
+)
 def create_task(body: TaskCreate, uow_factory: UowFactory) -> TaskOut:
     """[FR-01] Create a task -> 201 with the stored task.
 
-    Citations: SPEC.md L83, L88.
+    [FR-10] A key below ``write`` scope gets 403.
+
+    Citations: SPEC.md L83, L88, L339.
     """
     with uow_factory() as uow:
         task = task_service.create_task(uow, body.name, body.command)
