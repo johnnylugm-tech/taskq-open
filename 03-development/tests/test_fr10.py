@@ -29,6 +29,7 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import logging
+import re
 import sqlite3
 import sys
 import time
@@ -132,6 +133,25 @@ def _logged_correlation_ids(caplog) -> list[str]:
     return [str(rec.correlation_id) for rec in caplog.records if getattr(rec, "correlation_id", None)]
 
 
+# [FR-10] SPEC.md:166 detail must not leak SQL, stack traces, file paths or DB schema.
+LEAK_PATTERNS = (
+    r"\b(SELECT|INSERT|UPDATE|DELETE|CREATE TABLE|PRAGMA)\b",
+    r"Traceback",
+    r"\.py\b",
+    r"(/Users/|/private/|/var/|/tmp/|[A-Za-z]:\\)",
+    r"\b(tasks|task_results|api_keys|rate_buckets)\.\w+",
+    r"constraint failed|sqlite3?|sqlalchemy|IntegrityError|OperationalError",
+)
+
+
+def _assert_no_leak(resp) -> None:
+    """Fail if detail (or the whole body) matches any internal-leak pattern."""
+    detail = str(resp.json().get("detail", ""))
+    for pattern in LEAK_PATTERNS:
+        assert not re.search(pattern, detail, re.IGNORECASE), (pattern, detail)
+        assert not re.search(pattern, resp.text, re.IGNORECASE), (pattern, resp.text)
+
+
 def _assert_mapping(resp, expected_status: str, expected_type: str) -> None:
     result_status = resp.status_code
     result_content_type = resp.headers.get("content-type", "")
@@ -197,6 +217,7 @@ def test_fr10_500_body_leaks_no_internals(db_file):
     # AC10.3-no-internals
     assert all(tok not in result_detail for tok in forbidden_tokens.split(",")), result_detail
     assert all(tok not in resp.text for tok in forbidden_tokens.split(",")), resp.text
+    _assert_no_leak(resp)
     assert resp.headers.get("content-type", "").startswith(PROBLEM_JSON)
 
 
@@ -227,6 +248,7 @@ def test_fr10_status_to_problem_type_mapping(client):
     expected_type = "/errors/validation"
     resp = client.post("/v1/tasks", json={}, headers=_headers("write"))  # trigger="invalid body"
     _assert_mapping(resp, expected_status, expected_type)
+    _assert_no_leak(resp)
     result_problem_type, _ = _problem(resp)
     result_content_type = resp.headers.get("content-type", "")
     # AC10.5-type
@@ -285,6 +307,7 @@ def test_fr10_mapping_409_conflict(client):
     assert first.status_code == 201, first.text
     resp = client.post("/v1/tasks", json=payload, headers=_headers("write"))  # trigger="duplicate task name"
     _assert_mapping(resp, expected_status, expected_type)
+    _assert_no_leak(resp)
     result_problem_type, _ = _problem(resp)
     result_content_type = resp.headers.get("content-type", "")
     # AC10.5-type
@@ -319,6 +342,7 @@ def test_fr10_mapping_503_not_ready(tmp_path, monkeypatch):
     with TestClient(create_app()) as test_client:
         resp = test_client.get("/readyz")
     _assert_mapping(resp, expected_status, expected_type)
+    _assert_no_leak(resp)
     result_problem_type, _ = _problem(resp)
     result_content_type = resp.headers.get("content-type", "")
     # AC10.5-type
