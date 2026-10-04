@@ -18,7 +18,7 @@ from alembic import command
 from alembic.config import Config
 from alembic.runtime.migration import MigrationContext
 from alembic.script import ScriptDirectory
-from sqlalchemy import create_engine, pool
+from sqlalchemy import create_engine, inspect, pool
 from sqlalchemy.exc import SQLAlchemyError
 
 _SCRIPT_LOCATION = Path(__file__).resolve().parents[2] / "migrations"
@@ -64,6 +64,19 @@ class MigrationProbe:
     reachable: bool
     current: str | None
     head: str | None
+    has_schema: bool = False
+
+
+def has_schema(db_url: str) -> bool:
+    """[FR-05] True when the application tables exist (schema built without alembic).
+
+    Citations: SPEC.md L157.
+    """
+    engine = create_engine(db_url, poolclass=pool.NullPool)
+    try:
+        return inspect(engine).has_table("api_keys")
+    finally:
+        engine.dispose()
 
 
 def head_revision(db_url: str) -> str | None:
@@ -79,9 +92,10 @@ def probe(db_url: str) -> MigrationProbe:
     head = head_revision(db_url)
     try:
         current = current_revision(db_url)
+        schema = current is None and has_schema(db_url)
     except SQLAlchemyError:
         return MigrationProbe(reachable=False, current=None, head=head)
-    return MigrationProbe(reachable=True, current=current, head=head)
+    return MigrationProbe(reachable=True, current=current, head=head, has_schema=schema)
 
 
 def offline_sql(db_url: str, start: str = "base", end: str = "head") -> str:

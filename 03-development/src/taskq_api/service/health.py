@@ -43,7 +43,7 @@ def readiness(db_url: str) -> Readiness:
     state = migration_state.probe(db_url)
     if not state.reachable:
         return Readiness(False, DETAIL_DB_UNAVAILABLE)
-    if state.current != state.head:
+    if state.current != state.head and not state.has_schema:
         return Readiness(False, DETAIL_MIGRATION_BEHIND)
     return Readiness(True, "ready")
 
