@@ -265,3 +265,10 @@ def test_fr09_metrics_requires_admin_scope(head_db):
     assert result_status == int(expected_status), resp.text
     assert resp.headers.get("content-type", "").startswith(PROBLEM_JSON)
     assert resp.json()["type"].endswith("/errors/forbidden")
+
+
+def test_fr09_percentile_empty_returns_none():
+    from taskq_api.service.health import _percentile
+
+    assert _percentile([], 50) is None
+    assert _percentile([5], 99) == 5
