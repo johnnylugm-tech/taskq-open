@@ -471,3 +471,36 @@ def test_fr08_cancelled_error_propagates(process_spy, monkeypatch):
     # The cancelled runs killed and reaped their children (AC-8.3).
     assert process_spy.orphan_pids() == []
     assert process_spy.waited_after_kill()
+
+
+# --- coverage: edge branches -------------------------------------------------
+
+def test_fr08_run_command_unspawnable_fails(monkeypatch):
+    monkeypatch.setenv("TASKQ_TASK_TIMEOUT", "5")
+    for command in ("", "/nonexistent/definitely-not-a-binary"):
+        machine = runner.TaskStateMachine()
+        outcome = asyncio.run(runner.run_command(command, machine=machine))
+        assert machine.state == "failed"
+        assert outcome.exit_code is None
+
+
+def test_fr08_invalid_transition_raises():
+    machine = runner.TaskStateMachine()
+    with pytest.raises(runner.InvalidTransition):
+        machine.transition("done")
+
+
+def test_fr08_drop_queued_notifies_on_dropped(monkeypatch):
+    monkeypatch.setenv("TASKQ_MAX_CONCURRENT", "1")
+    monkeypatch.setenv("TASKQ_DRAIN_TIMEOUT", "0.2")
+    dropped: list[int] = []
+
+    async def scenario() -> None:
+        async with executor.Executor() as ex:
+            ex.enqueue(lambda: asyncio.sleep(30))
+            ex.enqueue(lambda: asyncio.sleep(30), on_dropped=lambda: dropped.append(1))
+            ex.enqueue(lambda: asyncio.sleep(30))
+            await ex.drain()
+
+    asyncio.run(scenario())
+    assert dropped == [1]
