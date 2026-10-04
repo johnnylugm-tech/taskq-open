@@ -18,7 +18,16 @@ down_revision = "v2"
 branch_labels = None
 depends_on = None
 
-_FIELDS = ("exit_code", "stdout_tail", "stderr_tail", "duration_ms", "finished_at")
+# Result columns carried between ``tasks.result_json`` and ``task_results``;
+# the single source for the table schema and both data-migration statements.
+_RESULT_COLUMNS = (
+    ("exit_code", sa.Integer),
+    ("stdout_tail", sa.Text),
+    ("stderr_tail", sa.Text),
+    ("duration_ms", sa.Integer),
+    ("finished_at", lambda: sa.String(40)),
+)
+_FIELDS = tuple(name for name, _ in _RESULT_COLUMNS)
 
 _SPLIT_RESULTS = (
     "INSERT INTO task_results (id, task_id, {cols}) "
@@ -48,11 +57,7 @@ def upgrade() -> None:
         "task_results",
         sa.Column("id", sa.String(36), primary_key=True),
         sa.Column("task_id", sa.String(36), sa.ForeignKey("tasks.id")),
-        sa.Column("exit_code", sa.Integer()),
-        sa.Column("stdout_tail", sa.Text()),
-        sa.Column("stderr_tail", sa.Text()),
-        sa.Column("duration_ms", sa.Integer()),
-        sa.Column("finished_at", sa.String(40)),
+        *(sa.Column(name, column_type()) for name, column_type in _RESULT_COLUMNS),
     )
     op.create_index("ix_task_results_task_id", "task_results", ["task_id"])
     op.execute(_SPLIT_RESULTS)
