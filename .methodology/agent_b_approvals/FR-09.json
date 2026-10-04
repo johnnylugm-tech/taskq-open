@@ -1,0 +1,46 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each FR-09 requirement maps to an assertion that fails if it is violated. /healthz 200 {\"status\":\"ok\"} with no key: test_fr09.py:126 and :129. /readyz 200 when the DB is up and at head: :145. /readyz 503 when the DB is down: :169, and the body names \"database\" at :172. /readyz fails closed with 503 when the migration is behind (v2 vs v3): :198, and the body names \"migration\" at :201. /v1/metrics admin returns 200 with exact task counts by status at :239-241, latency percentiles at :242-244 and rate-limit rejections at :245. The rejection count is only >=1, but the test provokes a real 429 first, so a counter stuck at 0 would fail. A write-scope key gets 403 at :265. Neither the no-auth requirement for the health endpoints nor the metrics admin gate is violated without an assertion failing.",
+  "citations": [
+    "SPEC.md:152",
+    "SPEC.md:107",
+    "03-development/tests/test_fr09.py:126",
+    "03-development/tests/test_fr09.py:129",
+    "03-development/tests/test_fr09.py:145",
+    "03-development/tests/test_fr09.py:169",
+    "03-development/tests/test_fr09.py:172",
+    "03-development/tests/test_fr09.py:198",
+    "03-development/tests/test_fr09.py:201",
+    "03-development/tests/test_fr09.py:236",
+    "03-development/tests/test_fr09.py:239",
+    "03-development/tests/test_fr09.py:243",
+    "03-development/tests/test_fr09.py:245",
+    "03-development/tests/test_fr09.py:265"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr09_healthz_returns_ok",
+      "test_fr09_metrics_admin_payload",
+      "test_fr09_metrics_requires_admin_scope",
+      "test_fr09_readyz_503_when_db_down",
+      "test_fr09_readyz_503_when_migration_behind",
+      "test_fr09_readyz_ok_when_db_up_and_at_head"
+    ],
+    "assertion_digests": {
+      "test_fr09_healthz_returns_ok": "cb5813c4170e24eda992fed646984460c5d31b4f16c9bedd502ed3dcc4a14051",
+      "test_fr09_metrics_admin_payload": "f04d68bf933aec400b24c0bc85eec9a09894b604c27d2853c17330a8ebce4502",
+      "test_fr09_metrics_requires_admin_scope": "cbdbd16666c817046285760ad9d4ea3345a88b1b3abe17ff4ddc1c9079823638",
+      "test_fr09_readyz_503_when_db_down": "8e6f21a934680d885e41884bf874fecb479f1ae1b5367811a2b1465f6fca72b9",
+      "test_fr09_readyz_503_when_migration_behind": "fbd48c578e4da26963a55fc09c1715a122815484121b2fc3fdfc4f191b40ccf4",
+      "test_fr09_readyz_ok_when_db_up_and_at_head": "8143706e4f07d6a303070ad4660c0b062d99f9846ca7a130459ec4b78c53a11b"
+    },
+    "test_files": [
+      "03-development/tests/test_fr09.py"
+    ]
+  }
+}
