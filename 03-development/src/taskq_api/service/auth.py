@@ -21,6 +21,7 @@ from taskq_api.service.uow import UnitOfWork
 
 SCOPES = ("read", "write", "admin")
 KEY_PREFIX = "tq_"
+KEY_ENTROPY_BYTES = 32
 
 
 def hash_key(plaintext: str) -> str:
@@ -31,12 +32,20 @@ def hash_key(plaintext: str) -> str:
     return hashlib.sha256(plaintext.encode()).hexdigest()
 
 
+def _new_plaintext() -> str:
+    """[FR-03] Generate a fresh random plaintext key.
+
+    Citations: SPEC.md L105.
+    """
+    return KEY_PREFIX + secrets.token_urlsafe(KEY_ENTROPY_BYTES)
+
+
 def create_key(uow: UnitOfWork, scope: str) -> str:
     """[FR-03] Persist a new key of ``scope`` and return its plaintext (never stored).
 
     Citations: SPEC.md L104-105.
     """
-    plaintext = KEY_PREFIX + secrets.token_urlsafe(32)
+    plaintext = _new_plaintext()
     uow.api_keys.add(
         ApiKey(
             id=str(uuid.uuid4()),
@@ -57,10 +66,14 @@ def verify(uow: UnitOfWork, presented: str | None) -> ApiKey:
         raise Unauthenticated("missing API key")
     digest = hash_key(presented)
     api_key = uow.api_keys.get_by_hash(digest)
-    if (
-        api_key is None
-        or not hmac.compare_digest(api_key.key_hash, digest)
-        or api_key.revoked_at is not None
-    ):
+    if api_key is None or not _is_active(api_key, digest):
         raise Unauthenticated("invalid API key")
     return api_key
+
+
+def _is_active(api_key: ApiKey, digest: str) -> bool:
+    """[FR-03] True when ``api_key`` matches ``digest`` and has not been revoked.
+
+    Citations: SPEC.md L104, L106.
+    """
+    return hmac.compare_digest(api_key.key_hash, digest) and api_key.revoked_at is None
