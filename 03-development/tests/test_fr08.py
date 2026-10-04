@@ -463,10 +463,11 @@ def test_fr08_cancelled_error_propagates(process_spy, monkeypatch):
     result_cancelled_error_propagated = runner_propagated and executor_propagated
 
     # rule_id: AC8.4-propagated
-    assert str(result_cancelled_error_propagated) == expected_propagated, (
+    assert result_cancelled_error_propagated, (
         runner_propagated,
         executor_propagated,
     )
+    assert str(result_cancelled_error_propagated) == expected_propagated
     # The cancelled runs killed and reaped their children (AC-8.3).
     assert process_spy.orphan_pids() == []
     assert process_spy.waited_after_kill()
