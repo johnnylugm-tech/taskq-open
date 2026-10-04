@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine, event, make_url
 from sqlalchemy.dialects.sqlite.base import SQLiteCompiler
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -51,11 +51,14 @@ class KeysetSQLiteCompiler(SQLiteCompiler):
 
 
 def build_engine(settings: Settings) -> Engine:
-    """[FR-01] Create the pooled engine (``pool_pre_ping=True``).
+    """[FR-01] Create the pooled engine.
+
+    [FR-06] ``pool_size`` comes from ``TASKQ_DB_POOL_SIZE`` and stale pooled
+    connections are detected with ``pool_pre_ping=True``.
 
     Citations: SPEC.md L90, L128.
     """
-    is_sqlite = settings.db_url.startswith("sqlite")
+    is_sqlite = make_url(settings.db_url).get_backend_name() == "sqlite"
     engine = create_engine(
         settings.db_url,
         pool_size=settings.db_pool_size,
@@ -101,14 +104,28 @@ class UnitOfWork:
 
     def __enter__(self) -> UnitOfWork:
         self._session = self._session_factory()
-        self.tasks = TaskRepository(self._session)
-        self.tags = TagRepository(self._session)
-        self.results = ResultRepository(self._session)
-        self.api_keys = ApiKeyRepository(self._session)
-        self.rate_buckets = RateBucketRepository(self._session)
+        self._bind_repositories(self._session)
         return self
 
+    def _bind_repositories(self, session: Session) -> None:
+        """[FR-06] Attach every repository to this unit's single ``Session``.
+
+        Citations: SPEC.md L124-125.
+        """
+        self.tasks = TaskRepository(session)
+        self.tags = TagRepository(session)
+        self.results = ResultRepository(session)
+        self.api_keys = ApiKeyRepository(session)
+        self.rate_buckets = RateBucketRepository(session)
+
     def __exit__(self, exc_type, exc, tb) -> None:
+        """[FR-06] Commit on clean exit, otherwise roll back; always close.
+
+        Any ``BaseException`` (including ``asyncio.CancelledError``) takes the
+        rollback path, and returning ``None`` lets it propagate unchanged.
+
+        Citations: SPEC.md L125.
+        """
         try:
             if exc_type is None:
                 self._session.commit()
