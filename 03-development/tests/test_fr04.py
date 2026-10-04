@@ -75,8 +75,8 @@ def _h(scope: str) -> dict[str, str]:
     return {"X-API-Key": KEYS[scope]}
 
 
-def _create_task(client: TestClient) -> str:
-    response = client.post("/v1/tasks", json=NEW_TASK, headers=_h("admin"))
+def _create_task(client: TestClient, name: str = NEW_TASK["name"]) -> str:
+    response = client.post("/v1/tasks", json={**NEW_TASK, "name": name}, headers=_h("admin"))
     assert response.status_code == 201
     return response.json()["id"]
 
@@ -100,7 +100,7 @@ def test_fr04_scope_hierarchy_matrix(client):
     write_task = {**NEW_TASK, "name": "fr04-write-task"}
     assert client.post("/v1/tasks", json=write_task, headers=_h("write")).status_code == 201
     assert client.post("/v1/tasks", json=NEW_TASK, headers=_h("read")).status_code == 403
-    task_id = _create_task(client)
+    task_id = _create_task(client, "fr04-delete-target")
     assert client.delete(f"/v1/tasks/{task_id}", headers=_h("read")).status_code == 403
     assert client.delete(f"/v1/tasks/{task_id}", headers=_h("write")).status_code == 403
     assert client.delete(f"/v1/tasks/{task_id}", headers=_h("admin")).status_code == 204
