@@ -6,7 +6,8 @@ include_external_packages = True
 name = taskq_api layers
 type = layers
 layers =
-    taskq_api.app
+    taskq_api.__main__
+    taskq_api.cli | taskq_api.app
     taskq_api.api
     taskq_api.service
     taskq_api.repository
@@ -23,6 +24,8 @@ modules =
 name = no sqlalchemy outside repository
 type = forbidden
 source_modules =
+    taskq_api.__main__
+    taskq_api.cli
     taskq_api.app
     taskq_api.api
     taskq_api.service
