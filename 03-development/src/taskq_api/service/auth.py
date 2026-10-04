@@ -71,6 +71,14 @@ def verify(uow: UnitOfWork, presented: str | None) -> ApiKey:
     return api_key
 
 
+def scope_includes(held: str, required: str) -> bool:
+    """[FR-04] True when scope ``held`` is at least ``required`` (read < write < admin).
+
+    Citations: SPEC.md L111.
+    """
+    return SCOPES.index(held) >= SCOPES.index(required)
+
+
 def _is_active(api_key: ApiKey, digest: str) -> bool:
     """[FR-03] True when ``api_key`` matches ``digest`` and has not been revoked.
 

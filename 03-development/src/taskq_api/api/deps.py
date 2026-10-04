@@ -82,10 +82,11 @@ def require_scope(minimum: str) -> Callable[[ApiKey], None]:
 
     Citations: SPEC.md L111-112, L158, L339.
     """
-    required_rank = auth.SCOPES.index(minimum)
+    if minimum not in auth.SCOPES:
+        raise ValueError(f"unknown scope: {minimum}")
 
     def check(api_key: Annotated[ApiKey, Depends(authenticate)]) -> None:
-        if auth.SCOPES.index(api_key.scope) < required_rank:
+        if not auth.scope_includes(api_key.scope, minimum):
             raise Forbidden("insufficient scope")
 
     return check
