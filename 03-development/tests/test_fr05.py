@@ -172,6 +172,7 @@ def test_fr05_over_limit_returns_429_retry_after(tmp_path, monkeypatch):
     assert result_problem_type == "/errors/rate-limited"
 
 
+# NFR-02
 def test_sec_t04_burst_exceeded_returns_429(tmp_path, monkeypatch):
     TASKQ_RATE_BURST = "20"
     requests_sent = "21"
@@ -258,6 +259,7 @@ def test_fr05_bucket_update_single_txn_row_lock(tmp_path, monkeypatch):
 # NP-13 forced integration case (SAD: repository.rate_buckets): 40 concurrent
 # requests through the ASGI app (httpx.AsyncClient + ASGITransport, NFR-10);
 # sync dependencies run in the threadpool, so bucket updates really race.
+# NFR-10
 def test_fr05_concurrent_requests_never_overdraw_bucket(tmp_path, monkeypatch):
     TASKQ_RATE_BURST = "20"
     TASKQ_RATE_PER_SEC = "5.0"
