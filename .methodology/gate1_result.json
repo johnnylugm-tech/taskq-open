@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-07",
-  "overall_score": 97.09,
+  "fr_id": "FR-08",
+  "overall_score": 99.715,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -16,20 +16,20 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154587954\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.267\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154692373\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.257\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 8,
+      "tests_passed": 25,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "test_fr07.py 8 passed; FR-07 source coverage 88.35% (target 100); spec coverage 8/8",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-07.txt",
+      "tool_evidence": "25 passed; coverage 98.86% (173/175 stmts) on executor/runner/app; spec coverage 7/7",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-08.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-07",
+      "coverage_scope_fr": "FR-08",
       "score_source": "framework"
     },
     "architecture_constraints": {
@@ -78,16 +78,16 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "f359599f15466025ea635396f573a5794eb0ed894e75d1a04967a41b83b8d3db",
+      "sha256": "6240e97c17f6514caf54025618eff518ad8a672b97d38aed0b3820ec8a2ae5df",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154587954\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.267\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154692373\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.257\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "2646074667f41e9f3b00f2ae59fc532e3ac847e19d9d233ca7c97cbbc6be37be",
-      "bytes": 83,
-      "head": "test_fr07.py 8 passed; FR-07 source coverage 88.35% (target 100); spec coverage 8/8"
+      "sha256": "de12b9b8f258ad0aa100341055a60bad9580074ce9652affe9e6132e866578df",
+      "bytes": 84,
+      "head": "25 passed; coverage 98.86% (173/175 stmts) on executor/runner/app; spec coverage 7/7"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
@@ -97,7 +97,7 @@
       "head": "Contracts: 3 kept, 0 broken."
     }
   },
-  "composite_score": 97.09,
+  "composite_score": 99.715,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
