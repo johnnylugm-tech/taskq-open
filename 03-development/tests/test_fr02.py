@@ -422,3 +422,27 @@ def test_sec_t11_secrets_redacted_in_output_and_logs(env, caplog):
 
     result_log_text = caplog.text
     assert secret_literal not in result_log_text
+
+
+# --- AC-2.x scope binding (SPEC 95/99: POST /run=write, GET /runs=read) ------
+
+def test_fr02_run_requires_write_scope(env):
+    task_id = env.seed_task("echo ok")
+    denied = env.client.post(f"/v1/tasks/{task_id}/run", headers=_headers("read"))
+    assert denied.status_code == 403, denied.text
+    assert denied.headers["content-type"].startswith(PROBLEM_JSON)
+    assert denied.json()["type"].endswith("/errors/forbidden")
+    anonymous = env.client.post(f"/v1/tasks/{task_id}/run")
+    assert anonymous.status_code == 401, anonymous.text
+    assert env.sql("SELECT COUNT(*) FROM task_results WHERE task_id = ?", (task_id,)) == [(0,)]
+    assert env.sql("SELECT status FROM tasks WHERE id = ?", (task_id,)) == [("pending",)]
+
+
+def test_fr02_runs_history_requires_a_valid_key(env):
+    task_id = env.seed_task("echo ok")
+    anonymous = env.client.get(f"/v1/tasks/{task_id}/runs")
+    assert anonymous.status_code == 401, anonymous.text
+    bogus = env.client.get(f"/v1/tasks/{task_id}/runs", headers={"X-API-Key": "sk-not-a-key"})
+    assert bogus.status_code == 401, bogus.text
+    allowed = env.client.get(f"/v1/tasks/{task_id}/runs", headers=_headers("read"))
+    assert allowed.status_code == 200, allowed.text

@@ -447,3 +447,35 @@ def test_fr01_validate_name_accepts_max_length():
     from taskq_api.service.tasks import MAX_NAME_LENGTH, validate_name
 
     assert validate_name("n" * MAX_NAME_LENGTH) is None
+
+
+# --- AC-1.x scope binding (SPEC 79-92: POST=write, GET=read, DELETE=admin) ---
+
+@pytest.mark.parametrize(
+    ("method", "scope"),
+    [("post", "read"), ("delete", "read"), ("delete", "write")],
+)
+def test_fr01_insufficient_scope_returns_403_and_changes_nothing(env, method, scope):
+    task_id = env.seed_tasks(1)[0]
+    if method == "post":
+        resp = env.client.post(
+            "/v1/tasks", json={"name": "denied", "command": "echo hi"}, headers=_headers(scope)
+        )
+    else:
+        resp = env.client.delete(f"/v1/tasks/{task_id}", headers=_headers(scope))
+    _assert_problem(resp, 403, "forbidden")
+    assert env.sql("SELECT COUNT(*) FROM tasks") == [(1,)]
+    assert env.sql("SELECT COUNT(*) FROM tasks WHERE id = ?", (task_id,)) == [(1,)]
+
+
+def test_fr01_missing_key_is_rejected_on_every_task_route(env):
+    task_id = env.seed_tasks(1)[0]
+    body = {"name": "anon", "command": "echo hi"}
+    responses = [
+        env.client.post("/v1/tasks", json=body),
+        env.client.get("/v1/tasks"),
+        env.client.get(f"/v1/tasks/{task_id}"),
+        env.client.delete(f"/v1/tasks/{task_id}"),
+    ]
+    assert [r.status_code for r in responses] == [401, 401, 401, 401]
+    assert env.sql("SELECT COUNT(*) FROM tasks") == [(1,)]
