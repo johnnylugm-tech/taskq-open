@@ -230,7 +230,20 @@ def test_fr02_run_uses_exec_without_shell_and_times_out(monkeypatch, spawn_spy):
     result_shlex_split_command = shlex.split(task_command)
     assert result_spawn_argv == result_shlex_split_command
     # The 30 s process was killed at the 0.5 s timeout, not awaited to completion.
-    assert elapsed < 10, elapsed
+    assert elapsed < 3, elapsed
+
+
+# NFR-03
+def test_fr02_task_timeout_env_value_is_honoured(monkeypatch):
+    """[FR-02] The same 1.5 s command times out under 0.4 s and finishes under 10 s."""
+    task_command = "sleep 1.5"
+    monkeypatch.setenv("TASKQ_TASK_TIMEOUT", "0.4")
+    _machine, short_outcome = _run_in_process(task_command)
+    monkeypatch.setenv("TASKQ_TASK_TIMEOUT", "10")
+    _machine, long_outcome = _run_in_process(task_command)
+    assert short_outcome.status == "timeout"
+    assert long_outcome.status == "done"
+    assert long_outcome.exit_code == 0
 
 
 # --- AC-2.3 -----------------------------------------------------------------
