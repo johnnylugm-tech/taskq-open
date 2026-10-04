@@ -49,7 +49,9 @@ async def execute(uow_factory: UowFactory, task_id: str, run_id: str, command: s
     set_status(uow_factory, task_id, runner.RUNNING)
     outcome = await runner.run_command(command, machine=runner.TaskStateMachine())
     with uow_factory() as uow:
-        record_outcome(uow.results.get(run_id), outcome)
+        result = uow.results.get(run_id)
+        assert result is not None, f"run {run_id} was not created by submit()"
+        record_outcome(result, outcome)
         get_task(uow, task_id).status = outcome.status
 
 
