@@ -1,8 +1,8 @@
 # Harness-executed: pytest-cov
-# returncode: 1
-# agent_score: 100.0 | threshold: 80.0
+# returncode: 0
+# agent_score: 98.1 | threshold: 80.0
 
-..........................................................F............. [ 69%]
+........................................................................ [ 69%]
 ................................                                         [100%]
 =============================== warnings summary ===============================
 .venv/lib/python3.11/site-packages/fastapi/testclient.py:1
@@ -45,7 +45,7 @@ Name                                                         Stmts   Miss  Cover
 03-development/src/taskq_api/models/task.py                     15      0   100%
 03-development/src/taskq_api/repository/__init__.py              0      0   100%
 03-development/src/taskq_api/repository/api_keys.py             13      0   100%
-03-development/src/taskq_api/repository/migration_state.py      46      0   100%
+03-development/src/taskq_api/repository/migration_state.py      53      0   100%
 03-development/src/taskq_api/repository/rate_buckets.py         17      0   100%
 03-development/src/taskq_api/repository/results.py              16      0   100%
 03-development/src/taskq_api/repository/session.py              56      1    98%   51
@@ -63,7 +63,5 @@ Name                                                         Stmts   Miss  Cover
 03-development/src/taskq_api/service/tasks.py                   38      0   100%
 03-development/src/taskq_api/service/uow.py                      2      0   100%
 ------------------------------------------------------------------------------------------
-TOTAL                                                         1003     10    99%
-=========================== short test summary info ============================
-FAILED 03-development/tests/test_fr05.py::test_fr05_health_endpoints_not_rate_limited
-1 failed, 103 passed, 1 warning in 8.97s
+TOTAL                                                         1010     10    99%
+104 passed, 1 warning in 9.06s
