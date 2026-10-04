@@ -1,0 +1,57 @@
+{
+  "review_status": "REJECT",
+  "reason": "Most FR-06 requirements map to a failing assertion. No-Session-in-service maps to test_fr06.py:187. Commit and rollback map to :208-210, :228-230 and :251-255. No string-built SQL maps to :319. N+1 maps to :382 and :388. pool_size and pool_pre_ping map to :403 and :405. The requirement 每個 API 請求一個 Session (one Session per API request) has no assertion. Every commit and rollback test calls make_uow() directly, with no HTTP request. The endpoint test at :339-346 only counts SQL statements and never counts Sessions per request. An implementation that opened two Sessions per request, or shared one across requests, would pass every test. The scan at :171-183 also checks only the service layer for the name Session, so it does not show that all data access goes through repository/. SQL_KEYWORD at :54-56 matches only uppercase keywords, so lowercase string-built SQL would not be caught.",
+  "citations": [
+    "SPEC.md:122",
+    "SPEC.md:125",
+    "03-development/tests/test_fr06.py:187",
+    "03-development/tests/test_fr06.py:208",
+    "03-development/tests/test_fr06.py:319",
+    "03-development/tests/test_fr06.py:339",
+    "03-development/tests/test_fr06.py:382",
+    "03-development/tests/test_fr06.py:403"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "medium",
+      "evidence_type": "real_invention",
+      "canonical_ref": "SPEC.md:125",
+      "message": "No assertion pins 'one Session per API request'. The commit and rollback tests drive the UnitOfWork directly and never go through the HTTP layer. A request that opens several Sessions, or a shared one, would still pass.",
+      "fr_id": "FR-06"
+    },
+    {
+      "severity": "low",
+      "evidence_type": "real_invention",
+      "canonical_ref": "SPEC.md:126",
+      "message": "The SQL_KEYWORD regex is uppercase-only, so concatenated lowercase SQL would evade test_fr06_no_string_built_sql.",
+      "fr_id": "FR-06"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr06_engine_pool_size_and_pre_ping",
+      "test_fr06_list_query_count_constant",
+      "test_fr06_no_string_built_sql",
+      "test_fr06_service_layer_holds_no_session",
+      "test_fr06_session_commit_on_success_rollback_on_error",
+      "test_fr06_session_rollback_on_cancelled_error",
+      "test_fr06_session_rollback_on_exception"
+    ],
+    "assertion_digests": {
+      "test_fr06_engine_pool_size_and_pre_ping": "edf1cbe6cb2f0754dff3ab89fc5918217cd463be27f323c3e879d4547c050b94",
+      "test_fr06_list_query_count_constant": "84fe58cee18ce73cadc4668ed4a78224e901565925c707f998036346aef188c4",
+      "test_fr06_no_string_built_sql": "915970a20c203a543b647f8628221eb5e47fc7904bd98c415257309b6ff01934",
+      "test_fr06_service_layer_holds_no_session": "bb53b32a76229fa38637d9cb3f6dfe8548706900604234606fc429d97cd0df71",
+      "test_fr06_session_commit_on_success_rollback_on_error": "fd64f6becd37adfcd1e685bd8f662ab8434f2b03dc07b2c25356956d6293e97f",
+      "test_fr06_session_rollback_on_cancelled_error": "3da64e36cf5c0c97b95619553476c73c4f01d427745b288b84c398fd349019ad",
+      "test_fr06_session_rollback_on_exception": "32641274bcff9bf4041566f8ed5f421be2dc2e32539491c784e3467226c2c4e1"
+    },
+    "test_files": [
+      "03-development/tests/test_fr06.py"
+    ]
+  }
+}
