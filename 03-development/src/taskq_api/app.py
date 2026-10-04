@@ -17,6 +17,8 @@ SPEC.md L287-302 (5.1 settings);
 
 from __future__ import annotations
 
+import json
+import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
@@ -24,11 +26,54 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from taskq_api.api import error_handlers, middleware, routes_health, routes_metrics, routes_runs, routes_tasks
-from taskq_api.config import load_settings
+from taskq_api.config import Settings, load_settings
 from taskq_api.repository.session import build_engine, uow_factory
 from taskq_api.service.executor import Executor
 from taskq_api.service.health import RejectionCounter
 from taskq_api.service.ratelimit import SystemClock
+
+
+_LOG_HANDLER_NAME = "taskq_api"
+
+
+class JsonFormatter(logging.Formatter):
+    """[FR-10] One JSON object per record; carries ``correlation_id`` when present.
+
+    Citations: SPEC.md L167, L300.
+    """
+
+    def format(self, record: logging.LogRecord) -> str:
+        """[FR-10] Render ``record`` as a single JSON line.
+
+        Citations: SPEC.md L167.
+        """
+        payload = {
+            "level": record.levelname,
+            "logger": record.name,
+            "message": record.getMessage(),
+        }
+        correlation_id = getattr(record, "correlation_id", None)
+        if correlation_id is not None:
+            payload["correlation_id"] = correlation_id
+        if record.exc_info:
+            payload["exc_info"] = self.formatException(record.exc_info)
+        return json.dumps(payload)
+
+
+def configure_logging(settings: Settings) -> None:
+    """[FR-10] Apply ``TASKQ_LOG_LEVEL`` / ``TASKQ_LOG_FORMAT`` to the root logger.
+
+    Citations: SPEC.md L299-300.
+    """
+    handler = logging.StreamHandler()
+    handler.set_name(_LOG_HANDLER_NAME)
+    if settings.log_format == "json":
+        handler.setFormatter(JsonFormatter())
+    else:
+        handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(name)s %(message)s"))
+    root = logging.getLogger()
+    root.handlers[:] = [h for h in root.handlers if h.get_name() != _LOG_HANDLER_NAME] + [handler]
+    root.setLevel(settings.log_level)
 
 
 def create_app() -> FastAPI:
@@ -45,6 +90,7 @@ def create_app() -> FastAPI:
     Citations: SPEC.md L79-91, L93-99, L117, L147-148, L158, L164-168, L193, L287-302.
     """
     settings = load_settings()
+    configure_logging(settings)
     engine = build_engine(settings)
 
     @asynccontextmanager

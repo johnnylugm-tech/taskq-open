@@ -10,6 +10,8 @@ from __future__ import annotations
 
 import argparse
 
+import uvicorn
+
 from taskq_api.config import load_settings
 from taskq_api.repository.session import build_engine, uow_factory
 from taskq_api.service import auth
@@ -30,6 +32,22 @@ def key_create(args: argparse.Namespace) -> int:
     return 0
 
 
+def serve(args: argparse.Namespace) -> int:
+    """[FR-03] Run the ASGI app on ``TASKQ_HOST`` / ``TASKQ_PORT``.
+
+    Citations: SPEC.md L301-302.
+    """
+    settings = load_settings()
+    uvicorn.run(
+        "taskq_api.app:create_app",
+        factory=True,
+        host=settings.host,
+        port=settings.port,
+        log_config=None,
+    )
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     """[FR-03] Build the ``taskq_api`` argument parser.
 
@@ -42,6 +60,7 @@ def build_parser() -> argparse.ArgumentParser:
     create = key_commands.add_parser("create", help="issue a new API key")
     create.add_argument("--scope", required=True, choices=auth.SCOPES)
     create.set_defaults(handler=key_create)
+    commands.add_parser("serve", help="run the API server").set_defaults(handler=serve)
     return parser
 
 

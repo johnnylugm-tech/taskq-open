@@ -5,6 +5,7 @@
 [FR-05] Supplies the token-bucket burst and refill rate.
 [FR-08] Supplies the executor concurrency cap and drain timeout.
 [FR-10] Supplies the CORS allow-list (empty by default -> deny all).
+Supplies the log level/format and the listen host/port (SPEC.md 5.1).
 
 Citations: SPEC.md L287-302 (5.1 environment variables); SPEC.md L122-128 (FR-06 pool);
 SPEC.md L145-150 (FR-08); SPEC.md L193 (NFR-02 CORS).
@@ -31,6 +32,10 @@ class Settings:
     max_concurrent: int
     drain_timeout: float
     cors_origins: tuple[str, ...] = ()
+    log_level: str = "INFO"
+    log_format: str = "json"
+    host: str = "127.0.0.1"
+    port: int = 8000
 
 
 def load_settings() -> Settings:
@@ -56,4 +61,8 @@ def load_settings() -> Settings:
             for origin in os.environ.get("TASKQ_CORS_ORIGINS", "").split(",")
             if origin.strip()
         ),
+        log_level=os.environ.get("TASKQ_LOG_LEVEL", "INFO").upper(),
+        log_format=os.environ.get("TASKQ_LOG_FORMAT", "json").lower(),
+        host=os.environ.get("TASKQ_HOST", "127.0.0.1"),
+        port=int(os.environ.get("TASKQ_PORT", "8000")),
     )
