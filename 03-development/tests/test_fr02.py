@@ -269,6 +269,20 @@ def test_fr02_run_lifecycle_timeout(monkeypatch):
     assert outcome.status == "timeout"
 
 
+@pytest.mark.parametrize(
+    "task_command",
+    ["   ", "echo 'unterminated", "taskq-no-such-binary-xyz --flag"],
+    ids=["empty", "unparsable", "not_found"],
+)
+def test_fr02_run_unspawnable_command_ends_failed(task_command):
+    machine, outcome = _run_in_process(task_command)
+    assert list(machine.history) == ["pending", "running", "failed"]
+    assert outcome.status == "failed"
+    assert outcome.exit_code is None
+    assert outcome.stdout_tail == ""
+    assert outcome.stderr_tail != ""
+
+
 def test_fr02_state_machine_rejects_backward_transition():
     from_state = "done"
     to_state = "running"
