@@ -1,8 +1,8 @@
 # Harness Methodology — Session Handover
 
-**Checkpoint**: `P3-mid-20261004`  
+**Checkpoint**: `P3-pre-gate2-20261004`  
 **Phase**: P3 — Implementation  
-**Generated**: 2026-10-04T15:10:50Z
+**Generated**: 2026-10-04T18:21:35Z
 
 > ⚠️  **開始下一個工作階段前，請先執行 `/compact` 壓縮上下文**，再從「接下來的工作」繼續。
 
@@ -31,7 +31,7 @@ git clone --recurse-submodules https://github.com/johnnylugm-tech/taskq-open /tm
 git log --oneline -3
 
 # Confirm FSM state
-cat .methodology/state.json   # expected: phase=3 state=RUNNING last_gate=1 last_fr=FR-06
+cat .methodology/state.json   # expected: phase=3 state=RUNNING last_gate=1 last_fr=FR-03
 
 # Read active plan
 cat .methodology/phase3_plan.md
@@ -41,18 +41,18 @@ cat .methodology/phase3_plan.md
 |------|----|
 | Remote | `https://github.com/johnnylugm-tech/taskq-open` |
 | Branch | `main` |
-| State | `phase=3 state=RUNNING last_gate=1 last_fr=FR-06` |
+| State | `phase=3 state=RUNNING last_gate=1 last_fr=FR-03` |
 | Plan | `.methodology/phase3_plan.md` |
 
 ---
 
 ## 任務背景
 
-P3 Implementation in progress (≥50% milestone). 5/10 FRs done.
+P3 Implementation complete. Gate 2 not yet executed.
 
 ## 目前執行狀況
 
-5/10 FRs Gate 1 PASS [FR-01,FR-02,FR-04,FR-05,FR-06]. TDD cycles complete for passing FRs.
+All 10 FR(s) Gate 1 PASS [FR-01,FR-02,FR-03,FR-04,FR-05,…+5]. Gate 2 evaluation not yet started.
 
 **A/B Session Results:**
   - ? / resolve-repo: **complete**
@@ -172,34 +172,44 @@ P3 Implementation in progress (≥50% milestone). 5/10 FRs done.
   - ? / gate1-verify-FR-05: **complete**
   - FR-06 / CRITERIA_REVIEWER: **complete**
   - ? / gate1-verify-FR-06: **complete**
+  - ? / milestone-p3-mid: **complete**
+  - FR-07 / CRITERIA_REVIEWER: **complete**
+  - ? / gate1-verify-FR-07: **complete**
+  - FR-08 / CRITERIA_REVIEWER: **complete**
+  - ? / gate1-verify-FR-08: **complete**
+  - FR-09 / CRITERIA_REVIEWER: **complete**
+  - ? / gate1-verify-FR-09: **complete**
+  - FR-10 / CRITERIA_REVIEWER: **complete**
+  - ? / gate1-verify-FR-10: **complete**
+  - FR-03 / CRITERIA_REVIEWER: **complete**
 
 **Recently Committed Files:**
-  - `03-development/tests/test_fr06.py`
+  - `03-development/tests/test_fr03.py`
   - `.methodology/.gate1_scores.json`
-  - `.methodology/agent_b_approvals/FR-05.json`
-  - `.methodology/decision_logs/2026-10-04/GATE_3_156ecc48.yaml`
-  - `.methodology/decision_logs/2026-10-04/GATE_3_a498bd88.yaml`
-  - `.methodology/decision_logs/2026-10-04/GATE_3_bcb8dfad.yaml`
+  - `.methodology/agent_b_approvals/FR-10.json`
+  - `.methodology/decision_logs/2026-10-04/GATE_3_63119f25.yaml`
+  - `.methodology/decision_logs/2026-10-04/GATE_3_9fd528e7.yaml`
   - `.methodology/degradations.jsonl`
   - `.methodology/effort_metrics.db`
+  - `.methodology/env_contract.json`
   - `.methodology/fr_progress.json`
   - `.methodology/gate1_result.json`
   - `.methodology/gate_evidence/harness_verification/test_coverage_harness.txt`
-  - `.methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-06.txt`
+  - `.methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-03.txt`
   - `.methodology/gate_evidence/harness_verification/type_safety_harness.txt`
-  - `.methodology/gate_results/gate1/FR-06.json`
+  - `.methodology/gate_results/gate1/FR-03.json`
   - `.methodology/gate_timestamps.jsonl`
-  - `.methodology/lessons/85e118412287.md`
   - `.methodology/quality_manifest.json`
   - `.methodology/state.json`
+  - `.methodology/workflow_blocks.jsonl`
   - `00-summary/Phase3_STAGE_PASS.md`
   - `CLAUDE.md`
 
 ## 接下來的工作
 
-1. Complete remaining 5 FR(s): FR-03, FR-07, FR-08, FR-09, FR-10
-2. Ensure each FR has passing unit tests (TDD)
-3. When all FRs done → `push-milestone --type p3-pre-gate2`
+1. Run Gate 2 evaluation (target score ≥ 75)
+2. Fix any failures during evaluation
+3. On Gate 2 PASS → `finalize-gate --gate 2` handles push + HANDOVER
 
 ## 注意事項
 
@@ -209,9 +219,7 @@ P3 Implementation in progress (≥50% milestone). 5/10 FRs done.
 
 ## 附加資訊
 
-- **fr_done**: 5
-- **fr_total**: 10
-- **remaining_frs**: FR-03, FR-07, FR-08, FR-09, FR-10
+- **fr_count**: 10
 
 ---
 *由 `HandoverGenerator` 自動生成。下次 push 時此檔案將被覆寫。*

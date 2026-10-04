@@ -1,0 +1,53 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each normative SPEC.md FR-03 bullet maps to an assertion that fails if the requirement is violated. (1) /v1/* needs a key and a missing or invalid key gives 401 problem+json: test_fr03.py:138-141 (missing key), :152-155 plus :157 (invalid key, with a valid key still accepted so deny-all fails), and :174-175 (every registered /v1 route returns 401). (2) SHA-256 hash only, no plaintext: :198-202 compare the stored key_hash with sha256 of the printed key, and :204 fails if the plaintext is in the DB dump or file bytes. compare_digest is required by :219-220, where a spy fails if it is never called or is not given the hash. (3) Plaintext printed once by the real `python -m taskq_api key create --scope`: :230 (exit code), :236 (exactly one occurrence across stdout and stderr), :239 (the issued key authenticates). An unknown scope is rejected with no row at :247-249. (4) A key with revoked_at set is invalid: :269-270 use the seeded revoked key, which hashes correctly, so only the revoked_at check can produce the 401. :300-302 repeat this for POST. (5) /healthz and /readyz need no key: :282-283 and :285-286.",
+  "citations": [
+    "SPEC.md:103",
+    "SPEC.md:104",
+    "SPEC.md:105",
+    "SPEC.md:106",
+    "SPEC.md:107",
+    "03-development/tests/test_fr03.py:138",
+    "03-development/tests/test_fr03.py:140",
+    "03-development/tests/test_fr03.py:157",
+    "03-development/tests/test_fr03.py:174",
+    "03-development/tests/test_fr03.py:201",
+    "03-development/tests/test_fr03.py:204",
+    "03-development/tests/test_fr03.py:219",
+    "03-development/tests/test_fr03.py:220",
+    "03-development/tests/test_fr03.py:236",
+    "03-development/tests/test_fr03.py:269",
+    "03-development/tests/test_fr03.py:282",
+    "03-development/tests/test_fr03.py:285"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr03_health_endpoints_need_no_key",
+      "test_fr03_invalid_key_returns_401",
+      "test_fr03_key_create_cli_prints_plaintext_once",
+      "test_fr03_key_create_rejects_unknown_scope",
+      "test_fr03_key_stored_as_sha256_hash_only",
+      "test_fr03_missing_or_invalid_key_returns_401",
+      "test_fr03_revoked_key_returns_401",
+      "test_sec_t01_invalid_or_revoked_key_rejected"
+    ],
+    "assertion_digests": {
+      "test_fr03_health_endpoints_need_no_key": "788f06d3ec01203d8f5732c4df691841eee229e39589930d2fe9d341a92f2035",
+      "test_fr03_invalid_key_returns_401": "c721ac9174ac308c32c517412c912aeae848fbb4b86ef6446ea2a02a45526c15",
+      "test_fr03_key_create_cli_prints_plaintext_once": "6bcf8336ced393eb6d70fe3d8d152f4f0aed48b86dd0e41d64a7e07be41bdba8",
+      "test_fr03_key_create_rejects_unknown_scope": "712c54de9e226c6e18ceff7ba974a80836fe1c4baa50e29702ab5fcb70918919",
+      "test_fr03_key_stored_as_sha256_hash_only": "27144838bcdeaa792ec2c9900bfe19e9939db43daf75f492d0f6cc3315e5e4e9",
+      "test_fr03_missing_or_invalid_key_returns_401": "1e1cb2c73641cd46f2d95b9b8bfd434e62b50606bee310381451cab5052bb125",
+      "test_fr03_revoked_key_returns_401": "7a41f4d28dd1d3e6e1faf56c515a687011e1f6f55e23832ebeb0dedb4474a564",
+      "test_sec_t01_invalid_or_revoked_key_rejected": "dce9133a0d2841c8dd57e4be4683ddc8d61385d2ed30173b81bc8370c73c2e96"
+    },
+    "test_files": [
+      "03-development/tests/test_fr03.py"
+    ]
+  }
+}
