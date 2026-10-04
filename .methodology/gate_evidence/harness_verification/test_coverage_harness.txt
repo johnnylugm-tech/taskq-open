@@ -66,4 +66,4 @@ Name                                                         Stmts   Miss  Cover
 TOTAL                                                         1003     10    99%
 =========================== short test summary info ============================
 FAILED 03-development/tests/test_fr05.py::test_fr05_health_endpoints_not_rate_limited
-1 failed, 103 passed, 1 warning in 8.89s
+1 failed, 103 passed, 1 warning in 8.97s

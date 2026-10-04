@@ -16,7 +16,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791125734882\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.207\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791125845612\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.23\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
@@ -26,7 +26,7 @@
       "tests_passed": 19,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "19 passed, 1 warning; coverage deps.py+auth.py 64/64 statements = 100%; spec coverage 7/7",
+      "tool_evidence": "19 passed, 1 warning; deps.py+auth.py coverage 64/64 statements = 100%; 7/7 required tests present",
       "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-04.txt",
       "coverage_scope": "per_fr",
       "coverage_scope_fr": "FR-04",
@@ -35,7 +35,7 @@
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 72 files, 204 dependencies. Contracts: 3 kept, 0 broken. (run with PYTHONPATH=03-development/src; PYTHONPATH=src failed: Could not find package 'taskq_api')",
+      "tool_evidence": "Analyzed 72 files, 204 dependencies. layers KEPT, independence KEPT, no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -78,23 +78,23 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "4676a64edee945720b8492616f0d50cf38fd698090f0943469517c051c492262",
-      "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791125734882\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.207\n    }\n}"
+      "sha256": "142d96ccab5b4715f1c02022c1babb162997f5d7fc412a585df3bfaf8c5d9d16",
+      "bytes": 249,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791125845612\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.23\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "5ec4923de67259ddea451f3ec311c613e67e20cb917502fee2650938c7cd4bf4",
-      "bytes": 89,
-      "head": "19 passed, 1 warning; coverage deps.py+auth.py 64/64 statements = 100%; spec coverage 7/7"
+      "sha256": "fc3131eedfc5aae7f4d921881da492648e7e9683dc224a85d56ce9e8a972fec2",
+      "bytes": 98,
+      "head": "19 passed, 1 warning; deps.py+auth.py coverage 64/64 statements = 100%; 7/7 required tests present"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "a5c7ef5d93ebfd045737d6a7bc61f59ba889f31e952f1cc7c66b9206297c3ac4",
-      "bytes": 165,
-      "head": "Analyzed 72 files, 204 dependencies. Contracts: 3 kept, 0 broken. (run with PYTHONPATH=03-development/src; PYTHONPATH=src failed: Could not find package 'taskq_api')"
+      "sha256": "4630c8f3c1d28b7b05a27f600f6e639e9c9379fd7cbf1d3033841700e212c191",
+      "bytes": 135,
+      "head": "Analyzed 72 files, 204 dependencies. layers KEPT, independence KEPT, no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken"
     }
   },
   "composite_score": 100.0,
