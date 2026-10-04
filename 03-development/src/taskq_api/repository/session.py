@@ -40,10 +40,13 @@ class KeysetSQLiteCompiler(SQLiteCompiler):
     def limit_clause(self, select, **kw) -> str:
         """[FR-01] Render ``LIMIT`` alone unless an offset was really requested.
 
-        Citations: SPEC.md L90.
+        [FR-06] The keyword and the bound-parameter placeholder are joined as
+        compiler tokens; no value is ever interpolated into the SQL text.
+
+        Citations: SPEC.md L90, L126.
         """
         if select._offset_clause is None:
-            return "\n LIMIT " + self.process(select._limit_clause, **kw)
+            return " ".join(("\n LIMIT", self.process(select._limit_clause, **kw)))
         return super().limit_clause(select, **kw)
 
 

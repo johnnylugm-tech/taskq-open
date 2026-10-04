@@ -4,7 +4,8 @@
 keyset-based on ``(created_at, id)``; no OFFSET is ever emitted.
 
 Citations: SPEC.md L79-91 (FR-01); SPEC.md L90 (cursor-based, no offset);
-SPEC.md L126 (no string-built SQL); 02-architecture/SAD.md L97.
+SPEC.md L126 (no string-built SQL); SPEC.md L127 (explicit eager loading);
+02-architecture/SAD.md L97.
 """
 
 from __future__ import annotations
@@ -16,7 +17,7 @@ from datetime import datetime
 
 from sqlalchemy import ColumnElement, and_, delete, or_, select
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from taskq_api.errors import Conflict, ValidationFailed
 from taskq_api.models.result import TaskResult
@@ -92,14 +93,23 @@ class TaskRepository:
         Fetches ``limit + 1`` rows to learn whether another page exists, so the
         statement count is constant (NFR-01).
 
-        Citations: SPEC.md L85, L90-91.
+        [FR-06] ``Task.tags`` is ``joinedload``-ed into the page statement
+        (SQLAlchemy limits the parent rows in a subquery), so touching tags
+        issues no further SQL.
+
+        Citations: SPEC.md L85, L90-91, L127.
         """
-        stmt = select(Task).order_by(Task.created_at, Task.id).limit(limit + 1)
+        stmt = (
+            select(Task)
+            .options(joinedload(Task.tags))
+            .order_by(Task.created_at, Task.id)
+            .limit(limit + 1)
+        )
         if status is not None:
             stmt = stmt.where(Task.status == status)
         if cursor is not None:
             stmt = stmt.where(after_cursor(cursor))
-        rows = list(self._session.scalars(stmt))
+        rows = list(self._session.scalars(stmt).unique())
         if len(rows) <= limit:
             return rows, None
         page = rows[:limit]
