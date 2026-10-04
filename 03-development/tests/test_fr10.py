@@ -150,6 +150,7 @@ def _assert_mapping(resp, expected_status: str, expected_type: str) -> None:
 
 # --- AC-10.1 ----------------------------------------------------------------
 
+# NFR-10
 def test_fr10_non_2xx_content_type_problem_json(client):
     expected_status = "404"
     expected_content_type = "application/problem+json"
@@ -165,6 +166,7 @@ def test_fr10_non_2xx_content_type_problem_json(client):
 
 # --- AC-10.2 ----------------------------------------------------------------
 
+# NFR-10
 def test_fr10_problem_body_required_fields(client):
     expected_fields = "type,title,status,detail,instance,correlation_id"
     missing_id = str(uuid.uuid4())
@@ -183,6 +185,7 @@ def test_fr10_problem_body_required_fields(client):
 
 # --- AC-10.3 ----------------------------------------------------------------
 
+# NFR-02
 def test_fr10_500_body_leaks_no_internals(db_file):
     forbidden_tokens = "SELECT,Traceback,.py,/Users"
     expected_status = "500"
@@ -199,6 +202,7 @@ def test_fr10_500_body_leaks_no_internals(db_file):
 
 # --- AC-10.4 ----------------------------------------------------------------
 
+# NFR-10
 def test_fr10_correlation_id_header_matches_log(client, caplog):
     expected_header = "X-Correlation-Id"
     caplog.set_level(logging.DEBUG)
@@ -217,11 +221,18 @@ def test_fr10_correlation_id_header_matches_log(client, caplog):
 
 # --- AC-10.5 (8 sub-rows) ---------------------------------------------------
 
+# NFR-10
 def test_fr10_status_to_problem_type_mapping(client):
     expected_status = "422"
     expected_type = "/errors/validation"
     resp = client.post("/v1/tasks", json={}, headers=_headers("write"))  # trigger="invalid body"
     _assert_mapping(resp, expected_status, expected_type)
+    result_problem_type, _ = _problem(resp)
+    result_content_type = resp.headers.get("content-type", "")
+    # AC10.5-type
+    assert result_problem_type == expected_type
+    # AC10.5-ctype
+    assert result_content_type.startswith("application/problem+json")
     assert errors.ValidationFailed("x").type_uri == expected_type
 
 
@@ -230,6 +241,12 @@ def test_fr10_mapping_401_unauthenticated(client):
     expected_type = "/errors/unauthenticated"
     resp = client.get("/v1/tasks")  # trigger="missing X-API-Key"
     _assert_mapping(resp, expected_status, expected_type)
+    result_problem_type, _ = _problem(resp)
+    result_content_type = resp.headers.get("content-type", "")
+    # AC10.5-type
+    assert result_problem_type == expected_type
+    # AC10.5-ctype
+    assert result_content_type.startswith("application/problem+json")
 
 
 def test_fr10_mapping_403_forbidden(client):
@@ -239,6 +256,12 @@ def test_fr10_mapping_403_forbidden(client):
         "/v1/tasks", json={"name": "t-403", "command": "echo hi"}, headers=_headers("read")
     )  # trigger="read key on POST /v1/tasks"
     _assert_mapping(resp, expected_status, expected_type)
+    result_problem_type, _ = _problem(resp)
+    result_content_type = resp.headers.get("content-type", "")
+    # AC10.5-type
+    assert result_problem_type == expected_type
+    # AC10.5-ctype
+    assert result_content_type.startswith("application/problem+json")
 
 
 def test_fr10_mapping_404_not_found(client):
@@ -246,6 +269,12 @@ def test_fr10_mapping_404_not_found(client):
     expected_type = "/errors/not-found"
     resp = client.get(f"/v1/tasks/{uuid.uuid4()}", headers=_headers("read"))  # trigger="unknown task id"
     _assert_mapping(resp, expected_status, expected_type)
+    result_problem_type, _ = _problem(resp)
+    result_content_type = resp.headers.get("content-type", "")
+    # AC10.5-type
+    assert result_problem_type == expected_type
+    # AC10.5-ctype
+    assert result_content_type.startswith("application/problem+json")
 
 
 def test_fr10_mapping_409_conflict(client):
@@ -256,6 +285,12 @@ def test_fr10_mapping_409_conflict(client):
     assert first.status_code == 201, first.text
     resp = client.post("/v1/tasks", json=payload, headers=_headers("write"))  # trigger="duplicate task name"
     _assert_mapping(resp, expected_status, expected_type)
+    result_problem_type, _ = _problem(resp)
+    result_content_type = resp.headers.get("content-type", "")
+    # AC10.5-type
+    assert result_problem_type == expected_type
+    # AC10.5-ctype
+    assert result_content_type.startswith("application/problem+json")
 
 
 def test_fr10_mapping_429_rate_limited(tmp_path, monkeypatch):
@@ -267,6 +302,12 @@ def test_fr10_mapping_429_rate_limited(tmp_path, monkeypatch):
         assert first.status_code == 200, first.text
         resp = test_client.get("/v1/tasks", headers=_headers("read"))  # trigger="burst exceeded"
     _assert_mapping(resp, expected_status, expected_type)
+    result_problem_type, _ = _problem(resp)
+    result_content_type = resp.headers.get("content-type", "")
+    # AC10.5-type
+    assert result_problem_type == expected_type
+    # AC10.5-ctype
+    assert result_content_type.startswith("application/problem+json")
     assert resp.headers.get("Retry-After")
 
 
@@ -278,6 +319,12 @@ def test_fr10_mapping_503_not_ready(tmp_path, monkeypatch):
     with TestClient(create_app()) as test_client:
         resp = test_client.get("/readyz")
     _assert_mapping(resp, expected_status, expected_type)
+    result_problem_type, _ = _problem(resp)
+    result_content_type = resp.headers.get("content-type", "")
+    # AC10.5-type
+    assert result_problem_type == expected_type
+    # AC10.5-ctype
+    assert result_content_type.startswith("application/problem+json")
 
 
 def test_fr10_mapping_500_internal(db_file):
@@ -287,10 +334,17 @@ def test_fr10_mapping_500_internal(db_file):
     with TestClient(app, raise_server_exceptions=False) as test_client:
         resp = test_client.get("/__fault")
     _assert_mapping(resp, expected_status, expected_type)
+    result_problem_type, _ = _problem(resp)
+    result_content_type = resp.headers.get("content-type", "")
+    # AC10.5-type
+    assert result_problem_type == expected_type
+    # AC10.5-ctype
+    assert result_content_type.startswith("application/problem+json")
 
 
 # --- AC-10.6 ----------------------------------------------------------------
 
+# NFR-03
 def test_fr10_timeout_is_200_and_cancel_not_500(tmp_path, monkeypatch):
     expected_http_status = "200"
     expected_task_status = "timeout"
@@ -320,6 +374,7 @@ def test_fr10_timeout_is_200_and_cancel_not_500(tmp_path, monkeypatch):
     assert not resp.headers.get("content-type", "").startswith(PROBLEM_JSON)
 
 
+# NFR-03
 def test_fr10_cancelled_error_not_converted_to_500(db_file):
     expected_converted_to_500 = "False"
     app = _app_raising(asyncio.CancelledError)  # trigger="CancelledError raised inside handler"
@@ -359,6 +414,7 @@ def test_sec_t10_correlation_id_in_header_body_and_log(client, caplog):
     assert second.headers.get(expected_header) not in (None, result_header_value)
 
 
+# NFR-02
 def test_sec_t12_500_body_has_no_internal_details(db_file, caplog):
     forbidden_tokens = "SELECT,Traceback,.py,/Users"
     expected_status = "500"
