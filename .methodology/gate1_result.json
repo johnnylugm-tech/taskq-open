@@ -1,7 +1,7 @@
 {
   "gate": 1,
-  "phase": 3,
-  "fr_id": "FR-03",
+  "phase": 4,
+  "fr_id": "FR-01",
   "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
@@ -9,33 +9,33 @@
     "linting": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "All checks passed!",
+      "tool_evidence": "All checks passed!\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt"
     },
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791137933071\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.252\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791153869734\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.269\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 19,
+      "tests_passed": 29,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "19 passed, 1 warning; FR-03 files coverage 100.0%; spec coverage 8/8",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-03.txt",
+      "tool_evidence": "29 passed, 1 warning; FR-01 files coverage 100.0%; spec coverage 16/16",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-01.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-03",
+      "coverage_scope_fr": "FR-01",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 72 files, 204 dependencies. Contracts: 3 kept, 0 broken.",
+      "tool_evidence": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -50,8 +50,8 @@
     "secrets_scanning::.gitleaks.toml": {
       "source": ".gitleaks.toml (score-altering exclusions)",
       "kind": "file",
-      "sha256": "4ee792a8dd8ca8022e0d9f658a30140cb275f083395cff0c5e0d745432f04614",
-      "bytes": 2157,
+      "sha256": "aaf76d53514eafabbbda6f381969949f276096ce96d91f4218b45a7a79a9be19",
+      "bytes": 2494,
       "head": "# Delivered by `init-project` — templates/.gitleaks.toml is the single\n# source; a project's copy is written once and not re-synced (same shape as\n# harness_quality_gate.yml, see core/ci_template.py). SKIP, never overwrite:\n# unlike the CI workflow this file is one projects already hand-author\n# (three corpus projects shipped their own before this template existed),\n# so init-project never touches an existing copy, with or without\n# --overwrite.\n#\n# Round 92. secrets_scanning (tier-1, threshold 100) treats a clean gitleaks\n# run as proof of no secrets. The framework itself writes free-text agent\n# excerpts (test names, coverage summaries) into `.methodology/*.json` and\n# commits them (Round 90: the record has to reach git). generic-api-key's\n# entropy rule fires on names like `test_invalid_api_key_returns_401` —\n# measured on a real project's committed Gate 1 evidence, which blocked P5.\n# Scoped to that ONE rule so a real credential under .methodology/ is still\n# caught by private-key / aws-access-token / github-pat / etc. — verified:\n# a private key planted under .methodology/ is still flagged under this\n# config; a real secret outside .methodology/ is unaffected.\n#\n# The path is `(^|/)\\.methodology...`, not `^\\.methodology...`: two of the"
     },
     "mutation_testing::setup.cfg": {
@@ -78,23 +78,23 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "9f379ab33dac579d9011bb82183804c92f87f9975574eb446526160549a3d124",
+      "sha256": "21e6e0b67554494a58f0d10fc5b025029de2fe94abaa539ffe94118419d7bcab",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791137933071\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.252\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791153869734\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.269\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "325e93bf4e42f9a9cab5dc4e047f157e1dbba50a1fd5306350a8613154de0220",
-      "bytes": 68,
-      "head": "19 passed, 1 warning; FR-03 files coverage 100.0%; spec coverage 8/8"
+      "sha256": "78b6ce920564b1a7cd87dd7ea332d7af538d400db9a7cad5221a2a9a58803b9f",
+      "bytes": 70,
+      "head": "29 passed, 1 warning; FR-01 files coverage 100.0%; spec coverage 16/16"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "aff6ac8be04949eef9d8d9e4e7b8e65a024ad44136a1163d54d365562e224bd5",
+      "sha256": "6f2d7060a41682c338a5c47fb3a43a5a9c2e00c0716c93b3422b98147e1c630f",
       "bytes": 65,
-      "head": "Analyzed 72 files, 204 dependencies. Contracts: 3 kept, 0 broken."
+      "head": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken."
     }
   },
   "composite_score": 100.0,
