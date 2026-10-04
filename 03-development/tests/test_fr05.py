@@ -172,6 +172,37 @@ def test_fr05_over_limit_returns_429_retry_after(tmp_path, monkeypatch):
     assert result_problem_type == "/errors/rate-limited"
 
 
+# --- AC-5.1 / AC-5.2 (per-token isolation, refill rate) ----------------------
+
+def test_fr05_bucket_is_per_token(tmp_path, monkeypatch):
+    other_key_id = "22222222-2222-2222-2222-222222222222"
+    other_key = "sk-test-ratelimit-other-0123456789"
+    db_file = _make_db(tmp_path, monkeypatch, "3", "1.0")
+    _seed_key(db_file, other_key_id, other_key, "admin")
+    with _client(FakeClock()) as client:
+        drained = [_send(client).status_code for _ in range(3)]
+        exhausted = _send(client).status_code
+        other = client.get(LIMITED_ENDPOINT, headers={"X-API-Key": other_key}).status_code
+    assert drained == [200, 200, 200]
+    assert exhausted == 429
+    # A bucket shared by all tokens would answer 429 here.
+    assert other == 200
+
+
+def test_fr05_refill_rate_and_retry_after_follow_rate_per_sec(tmp_path, monkeypatch):
+    _make_db(tmp_path, monkeypatch, "4", "2.0")
+    clock = FakeClock()
+    with _client(clock) as client:
+        assert [_send(client).status_code for _ in range(4)] == [200] * 4
+        empty = _send(client)
+        clock.advance(1.0)  # 1s * 2.0/s = exactly 2 tokens
+        after = [_send(client).status_code for _ in range(3)]
+    # one token needs 1 / 2.0s = 0.5s, rounded up to whole seconds
+    assert empty.status_code == 429
+    assert int(empty.headers["Retry-After"]) == 1
+    assert after == [200, 200, 429]
+
+
 # NFR-02
 def test_sec_t04_burst_exceeded_returns_429(tmp_path, monkeypatch):
     TASKQ_RATE_BURST = "20"
