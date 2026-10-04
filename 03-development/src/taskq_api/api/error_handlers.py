@@ -30,7 +30,10 @@ def problem_response(request: Request, error: TaskqError) -> JSONResponse:
     [FR-10] Includes the request's ``correlation_id`` (set by
     ``api.middleware``) and logs the problem tagged with it.
 
-    Citations: SPEC.md L118, L165-167.
+    [FR-04] A 403 omits ``instance`` so the body cannot reveal whether the
+    requested resource exists.
+
+    Citations: SPEC.md L112, L118, L165-167.
     """
     correlation_id = request.state.correlation_id
     logger.info(
@@ -41,7 +44,7 @@ def problem_response(request: Request, error: TaskqError) -> JSONResponse:
         "title": error.title,
         "status": error.status,
         "detail": error.detail,
-        "instance": request.url.path,
+        "instance": None if error.status == 403 else request.url.path,
         "correlation_id": correlation_id,
     }
     return JSONResponse(

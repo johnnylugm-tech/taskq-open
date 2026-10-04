@@ -2,9 +2,10 @@
 
 [FR-01] POST / GET one / GET list / DELETE; each request runs in one
 :class:`UnitOfWork` transaction.
+[FR-04] ``GET`` needs ``read`` and ``DELETE`` needs ``admin``.
 [FR-10] ``POST`` requires the ``write`` scope (403 ``/errors/forbidden``).
 
-Citations: SPEC.md L79-91 (FR-01); SPEC.md L168, L339 (FR-10 403); SPEC.md L125 (per-request transaction).
+Citations: SPEC.md L79-91 (FR-01); SPEC.md L168, L339 (FR-10 403); SPEC.md L125 (per-request transaction); SPEC.md L111-113 (FR-04).
 """
 
 from __future__ import annotations
@@ -14,20 +15,20 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query, Response
 
-from taskq_api.api.deps import authenticate, get_uow_factory, rate_limit, require_scope
+from taskq_api.api.deps import get_uow_factory, guard
 from taskq_api.api.schemas import TaskCreate, TaskOut, TaskPage, TaskStatus
 from taskq_api.service import tasks as task_service
 from taskq_api.service.uow import UnitOfWork
 
 router = APIRouter(
-    prefix="/v1/tasks", tags=["tasks"], dependencies=[Depends(authenticate), Depends(rate_limit)]
+    prefix="/v1/tasks", tags=["tasks"]
 )
 
 UowFactory = Annotated[Callable[[], UnitOfWork], Depends(get_uow_factory)]
 
 
 @router.post(
-    "", status_code=201, response_model=TaskOut, dependencies=[Depends(require_scope("write"))]
+    "", status_code=201, response_model=TaskOut, dependencies=guard("write")
 )
 def create_task(body: TaskCreate, uow_factory: UowFactory) -> TaskOut:
     """[FR-01] Create a task -> 201 with the stored task.
@@ -41,7 +42,7 @@ def create_task(body: TaskCreate, uow_factory: UowFactory) -> TaskOut:
         return TaskOut.model_validate(task)
 
 
-@router.get("/{task_id}", response_model=TaskOut)
+@router.get("/{task_id}", response_model=TaskOut, dependencies=guard("read"))
 def get_task(task_id: str, uow_factory: UowFactory) -> TaskOut:
     """[FR-01] Return one task with all fields, or 404.
 
@@ -51,7 +52,7 @@ def get_task(task_id: str, uow_factory: UowFactory) -> TaskOut:
         return TaskOut.model_validate(task_service.get_task(uow, task_id))
 
 
-@router.get("", response_model=TaskPage)
+@router.get("", response_model=TaskPage, dependencies=guard("read"))
 def list_tasks(
     uow_factory: UowFactory,
     status: TaskStatus | None = None,
@@ -68,7 +69,7 @@ def list_tasks(
     return TaskPage(items=items, next_cursor=next_cursor)
 
 
-@router.delete("/{task_id}", status_code=204)
+@router.delete("/{task_id}", status_code=204, dependencies=guard("admin"))
 def delete_task(task_id: str, uow_factory: UowFactory) -> Response:
     """[FR-01] Delete a task and its results in one transaction -> 204.
 

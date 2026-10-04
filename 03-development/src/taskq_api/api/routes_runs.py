@@ -3,7 +3,9 @@
 [FR-02] Submits a background run (202 + ``run_id``) and returns a task's run
 history newest first.
 
-Citations: SPEC.md L93-99 (FR-02).
+[FR-04] ``run`` needs ``write``; ``runs`` needs ``read``.
+
+Citations: SPEC.md L93-99 (FR-02); SPEC.md L111-113 (FR-04).
 """
 
 from __future__ import annotations
@@ -13,21 +15,26 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
-from taskq_api.api.deps import authenticate, rate_limit, get_executor, get_uow_factory
+from taskq_api.api.deps import get_executor, get_uow_factory, guard
 from taskq_api.api.schemas import RunAccepted, RunOut, RunPage
 from taskq_api.service import runs as run_service
 from taskq_api.service.executor import Executor
 from taskq_api.service.uow import UnitOfWork
 
 router = APIRouter(
-    prefix="/v1/tasks", tags=["runs"], dependencies=[Depends(authenticate), Depends(rate_limit)]
+    prefix="/v1/tasks", tags=["runs"]
 )
 
 UowFactory = Annotated[Callable[[], UnitOfWork], Depends(get_uow_factory)]
 BackgroundExecutor = Annotated[Executor, Depends(get_executor)]
 
 
-@router.post("/{task_id}/run", status_code=202, response_model=RunAccepted)
+@router.post(
+    "/{task_id}/run",
+    status_code=202,
+    response_model=RunAccepted,
+    dependencies=guard("write"),
+)
 async def run_task(task_id: str, uow_factory: UowFactory, executor: BackgroundExecutor) -> RunAccepted:
     """[FR-02] Queue a run of the task on the app's event loop -> 202, or 404.
 
@@ -39,7 +46,7 @@ async def run_task(task_id: str, uow_factory: UowFactory, executor: BackgroundEx
     return RunAccepted(run_id=run_id)
 
 
-@router.get("/{task_id}/runs", response_model=RunPage)
+@router.get("/{task_id}/runs", response_model=RunPage, dependencies=guard("read"))
 def list_runs(task_id: str, uow_factory: UowFactory) -> RunPage:
     """[FR-02] The task's run history, newest first, or 404.
 

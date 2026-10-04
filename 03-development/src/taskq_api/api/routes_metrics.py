@@ -10,19 +10,15 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Request
 
-from taskq_api.api.deps import authenticate, get_uow_factory, rate_limit, require_scope
+from taskq_api.api.deps import get_uow_factory, guard
 from taskq_api.service import health
 
-router = APIRouter(
-    prefix="/v1/metrics",
-    tags=["metrics"],
-    dependencies=[Depends(authenticate), Depends(require_scope("admin")), Depends(rate_limit)],
-)
+router = APIRouter(prefix="/v1/metrics", tags=["metrics"])
 
 
-@router.get("")
+@router.get("", dependencies=guard("admin"))
 def get_metrics(request: Request) -> dict[str, Any]:
     """[FR-09] Aggregated service metrics; never includes the DB URL.
 

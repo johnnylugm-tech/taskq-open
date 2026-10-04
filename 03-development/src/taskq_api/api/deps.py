@@ -14,7 +14,7 @@ SPEC.md L115-120 (FR-05); SPEC.md L111-113 (FR-04); SPEC.md L158 (FR-09);
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import Depends, Header, Request
 
@@ -89,3 +89,11 @@ def require_scope(minimum: str) -> Callable[[ApiKey], None]:
             raise Forbidden("insufficient scope")
 
     return check
+
+
+def guard(minimum: str) -> list[Any]:
+    """[FR-04] The one dependency list every ``/v1`` route declares: auth, rate limit, scope.
+
+    Citations: SPEC.md L113.
+    """
+    return [Depends(authenticate), Depends(rate_limit), Depends(require_scope(minimum))]

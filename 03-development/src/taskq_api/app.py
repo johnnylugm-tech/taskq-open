@@ -6,9 +6,10 @@
 [FR-05] Holds the rate-limit settings and clock; health routes stay unlimited.
 [FR-08] Runs go through the bounded executor, drained on shutdown.
 [FR-09] Adds ``/v1/metrics`` and the process-wide rate-limit rejection counter.
+[FR-04] Attaches routes flat so each /v1 route exposes its scope dependency.
 [FR-10] Adds the correlation-id / 500 middleware and the CORS allow-list.
 
-Citations: SPEC.md L162-168 (FR-10); SPEC.md L193 (NFR-02 CORS); SPEC.md L145-150 (FR-08); SPEC.md L152-160 (FR-09); SPEC.md L79-91 (FR-01); SPEC.md L93-99 (FR-02); SPEC.md L107 (FR-03);
+Citations: SPEC.md L162-168 (FR-10); SPEC.md L193 (NFR-02 CORS); SPEC.md L145-150 (FR-08); SPEC.md L152-160 (FR-09); SPEC.md L111-113 (FR-04); SPEC.md L79-91 (FR-01); SPEC.md L93-99 (FR-02); SPEC.md L107 (FR-03);
 SPEC.md L115-120 (FR-05);
 SPEC.md L287-302 (5.1 settings);
 02-architecture/SAD.md L46.
@@ -62,8 +63,7 @@ def create_app() -> FastAPI:
     error_handlers.register(app)
     app.add_middleware(CORSMiddleware, allow_origins=list(settings.cors_origins))
     app.add_middleware(middleware.CorrelationMiddleware)
-    app.include_router(routes_tasks.router)
-    app.include_router(routes_runs.router)
-    app.include_router(routes_health.router)
-    app.include_router(routes_metrics.router)
+    # [FR-04] Routes are attached flat so every /v1 APIRoute (and its dependency tree) is inspectable.
+    for router in (routes_tasks.router, routes_runs.router, routes_health.router, routes_metrics.router):
+        app.router.routes.extend(router.routes)
     return app
