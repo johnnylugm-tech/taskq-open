@@ -131,6 +131,7 @@ def _is_trivial(func: ast.FunctionDef) -> bool:
 # --- 1 ---------------------------------------------------------------------
 
 
+# NFR-09
 def test_fr07_three_revisions_each_with_downgrade(db_url):
     expected_revisions = "v1,v2,v3"
     expected_without_downgrade = "0"
@@ -189,6 +190,7 @@ def test_fr07_upgrade_head_and_downgrade_base_clean(db_url):
 # --- 3 ---------------------------------------------------------------------
 
 
+# NFR-03
 def test_fr07_roundtrip_sample_data_identical_per_column(db_url):
     db_backend = "sqlite-file"
     sample_rows = "3"
@@ -237,6 +239,7 @@ def test_fr07_roundtrip_sample_data_identical_per_column(db_url):
 # --- 4 ---------------------------------------------------------------------
 
 
+# NFR-03
 def test_fr07_downgrade_is_real_not_drop_shortcut(db_url):
     db_backend = "sqlite-file"
     sample_rows = "3"
