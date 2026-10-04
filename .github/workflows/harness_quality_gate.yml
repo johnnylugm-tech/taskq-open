@@ -255,6 +255,12 @@ jobs:
       - name: Install harness dependencies
         run: pip install -r harness/requirements.txt
 
+      - name: Install project dependencies
+        # spec-coverage delivery = "ran and passed": the project's own tests
+        # must be importable (fastapi/sqlalchemy/httpx), else every test is
+        # reported not_collected.
+        run: pip install -r requirements.txt -r requirements-dev.txt
+
       - name: Detect phase
         id: phase
         run: |
