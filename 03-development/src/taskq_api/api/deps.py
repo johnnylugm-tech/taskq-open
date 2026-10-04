@@ -1,12 +1,14 @@
 """FastAPI dependencies.
 
 [FR-01] Provides the per-request :class:`UnitOfWork` factory.
+[FR-02] Provides the app-wide set of background run jobs.
 
 Citations: SPEC.md L125 (one Session per request); 02-architecture/SAD.md L52.
 """
 
 from __future__ import annotations
 
+import asyncio
 from collections.abc import Callable
 
 from fastapi import Request
@@ -20,3 +22,11 @@ def get_uow_factory(request: Request) -> Callable[[], UnitOfWork]:
     Citations: SPEC.md L125.
     """
     return request.app.state.uow_factory
+
+
+def get_background_runs(request: Request) -> set[asyncio.Task[None]]:
+    """[FR-02] Return the app-wide set of in-flight background run jobs.
+
+    Citations: SPEC.md L95.
+    """
+    return request.app.state.background_runs

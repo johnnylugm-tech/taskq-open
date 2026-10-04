@@ -1,8 +1,9 @@
 """Pydantic v2 request/response models.
 
 [FR-01] ``TaskCreate`` request body and task response shapes.
+[FR-02] Run submission and run history shapes.
 
-Citations: SPEC.md L83-85 (FR-01 endpoints); SPEC.md L309 (task fields).
+Citations: SPEC.md L83-85 (FR-01 endpoints); SPEC.md L95-99 (FR-02 endpoints); SPEC.md L309 (task fields).
 """
 
 from __future__ import annotations
@@ -10,7 +11,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 TaskStatus = Literal["pending", "running", "done", "failed", "timeout", "interrupted"]
 
@@ -50,3 +51,37 @@ class TaskPage(BaseModel):
 
     items: list[TaskOut]
     next_cursor: str | None
+
+
+class RunAccepted(BaseModel):
+    """[FR-02] Body of the 202 returned by ``POST /v1/tasks/{id}/run``.
+
+    Citations: SPEC.md L95.
+    """
+
+    run_id: str
+
+
+class RunOut(BaseModel):
+    """[FR-02] One ``task_results`` row; ``run_id`` is the row id.
+
+    Citations: SPEC.md L98-99, L312.
+    """
+
+    model_config = ConfigDict(from_attributes=True)
+
+    run_id: str = Field(validation_alias="id")
+    exit_code: int | None
+    stdout_tail: str | None
+    stderr_tail: str | None
+    duration_ms: int | None
+    finished_at: datetime | None
+
+
+class RunPage(BaseModel):
+    """[FR-02] Run history of one task, newest first.
+
+    Citations: SPEC.md L99.
+    """
+
+    items: list[RunOut]
