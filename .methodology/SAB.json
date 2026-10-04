@@ -297,6 +297,7 @@
       "contract_type": "layers",
       "contract_name": "taskq_api layers",
       "source_modules": [
+        "taskq_api.app",
         "taskq_api.api",
         "taskq_api.service",
         "taskq_api.repository",
@@ -319,6 +320,7 @@
       "contract_type": "forbidden",
       "contract_name": "no sqlalchemy outside repository",
       "source_modules": [
+        "taskq_api.app",
         "taskq_api.api",
         "taskq_api.service",
         "taskq_api.config",
