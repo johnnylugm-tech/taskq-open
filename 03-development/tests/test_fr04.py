@@ -18,6 +18,7 @@ import sys
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlparse
 
 import pytest
 from fastapi.routing import APIRoute
@@ -84,11 +85,20 @@ def _delete_probe(client: TestClient, task_id: str):
     return client.delete(f"/v1/tasks/{task_id}", headers=_h("write"))
 
 
+def _problem_type(response) -> str:
+    return urlparse(response.json()["type"]).path
+
+
 def test_fr04_scope_hierarchy_matrix(client):
-    # AC4.1-allowed: admin >= write, so POST /v1/tasks -> 201.
-    # Full matrix: (scope, method) -> allowed iff scope rank >= required rank.
-    assert client.post("/v1/tasks", json=NEW_TASK, headers=_h("admin")).status_code == 201
-    assert client.post("/v1/tasks", json=NEW_TASK, headers=_h("write")).status_code == 201
+    # admin >= write, so POST /v1/tasks -> 201.
+    expected_status = "201"
+    resp = client.post("/v1/tasks", json=NEW_TASK, headers=_h("admin"))
+    result_status = resp.status_code
+    # AC4.1-allowed
+    assert result_status == int(expected_status), resp.text
+    # Full matrix: allowed iff scope rank >= required rank.
+    write_task = {**NEW_TASK, "name": "fr04-write-task"}
+    assert client.post("/v1/tasks", json=write_task, headers=_h("write")).status_code == 201
     assert client.post("/v1/tasks", json=NEW_TASK, headers=_h("read")).status_code == 403
     task_id = _create_task(client)
     assert client.delete(f"/v1/tasks/{task_id}", headers=_h("read")).status_code == 403
@@ -97,32 +107,53 @@ def test_fr04_scope_hierarchy_matrix(client):
 
 
 def test_fr04_write_key_can_read(client):
+    expected_status = "200"
+    resp = client.get("/v1/tasks", headers=_h("write"))
+    result_status = resp.status_code
     # AC4.1-allowed: write includes read.
-    response = client.get("/v1/tasks", headers=_h("write"))
-    assert response.status_code == 200
+    assert result_status == int(expected_status), resp.text
 
 
 def test_fr04_insufficient_scope_returns_403(client):
-    response = client.post("/v1/tasks", json=NEW_TASK, headers=_h("read"))
-    assert response.status_code == 403  # AC4.2-denied
-    assert response.headers["content-type"].startswith("application/problem+json")
-    assert response.json()["type"].endswith("/errors/forbidden")  # AC4.2-problem
+    expected_status = "403"
+    resp = client.post("/v1/tasks", json=NEW_TASK, headers=_h("read"))
+    result_status = resp.status_code
+    result_problem_type = _problem_type(resp)
+    # AC4.2-denied
+    assert result_status == int(expected_status), resp.text
+    assert resp.headers["content-type"].startswith("application/problem+json")
+    # AC4.2-problem
+    assert result_problem_type == "/errors/forbidden"
 
 
+# NFR-02
 def test_fr04_403_does_not_leak_existence(client):
+    expected_status = "403"
     existing_id = _create_task(client)
     unknown_id = str(uuid.uuid4())
     existing = _delete_probe(client, existing_id)
     unknown = _delete_probe(client, unknown_id)
-    assert existing.status_code == 403  # AC4.2-denied
-    assert existing.status_code == unknown.status_code  # AC4.3-same-status
-    assert existing.json()["type"] == unknown.json()["type"]  # AC4.3-same-type
-    assert existing.json()["detail"] == unknown.json()["detail"]  # AC4.3-same-detail
+    result_status = existing.status_code
+    result_status_existing = existing.status_code
+    result_status_unknown = unknown.status_code
+    result_problem_type_existing = _problem_type(existing)
+    result_problem_type_unknown = _problem_type(unknown)
+    result_detail_existing = existing.json()["detail"]
+    result_detail_unknown = unknown.json()["detail"]
+    # AC4.2-denied
+    assert result_status == int(expected_status)
+    # AC4.3-same-status
+    assert result_status_existing == result_status_unknown
+    # AC4.3-same-type
+    assert result_problem_type_existing == result_problem_type_unknown
+    # AC4.3-same-detail
+    assert result_detail_existing == result_detail_unknown
     assert existing_id not in existing.text
     assert unknown_id not in unknown.text
 
 
 def test_fr04_every_v1_route_uses_scope_dependency(client):
+    expected_unguarded_routes = "0"
     app = client.app
 
     def calls(dependant) -> list:
@@ -133,8 +164,8 @@ def test_fr04_every_v1_route_uses_scope_dependency(client):
         return found
 
     v1_routes = [r for r in app.routes if isinstance(r, APIRoute) and r.path.startswith("/v1")]
-    assert v1_routes
-    unguarded = [
+    result_checked_route_count = len(v1_routes)
+    result_unguarded_routes = [
         f"{sorted(r.methods)} {r.path}"
         for r in v1_routes
         if not any(
@@ -143,20 +174,38 @@ def test_fr04_every_v1_route_uses_scope_dependency(client):
             for c in calls(r.dependant)
         )
     ]
-    assert len(unguarded) == 0, unguarded  # AC4.4-all-guarded
+    # AC4.4-routes-seen
+    assert result_checked_route_count > 0
+    # AC4.4-all-guarded
+    assert len(result_unguarded_routes) == int(expected_unguarded_routes), result_unguarded_routes
 
 
 def test_sec_t02_insufficient_scope_returns_403(client):
-    response = client.post("/v1/tasks", json=NEW_TASK, headers=_h("read"))
-    assert response.status_code == 403  # AC4.2-denied
-    assert response.json()["type"].endswith("/errors/forbidden")  # AC4.2-problem
+    expected_status = "403"
+    resp = client.post("/v1/tasks", json=NEW_TASK, headers=_h("read"))
+    result_status = resp.status_code
+    result_problem_type = _problem_type(resp)
+    # AC4.2-denied
+    assert result_status == int(expected_status), resp.text
+    # AC4.2-problem
+    assert result_problem_type == "/errors/forbidden"
 
 
+# NFR-02
 def test_sec_t03_forbidden_body_does_not_reveal_existence(client):
     existing_id = _create_task(client)
     unknown_id = str(uuid.uuid4())
     existing = _delete_probe(client, existing_id)
     unknown = _delete_probe(client, unknown_id)
-    assert existing.status_code == unknown.status_code == 403  # AC4.3-same-status
-    assert existing.json()["type"] == unknown.json()["type"]  # AC4.3-same-type
-    assert existing.json()["detail"] == unknown.json()["detail"]  # AC4.3-same-detail
+    result_status_existing = existing.status_code
+    result_status_unknown = unknown.status_code
+    result_problem_type_existing = _problem_type(existing)
+    result_problem_type_unknown = _problem_type(unknown)
+    result_detail_existing = existing.json()["detail"]
+    result_detail_unknown = unknown.json()["detail"]
+    # AC4.3-same-status
+    assert result_status_existing == result_status_unknown == 403
+    # AC4.3-same-type
+    assert result_problem_type_existing == result_problem_type_unknown
+    # AC4.3-same-detail
+    assert result_detail_existing == result_detail_unknown
