@@ -24,6 +24,7 @@ from taskq_api.config import Settings
 from taskq_api.repository.api_keys import ApiKeyRepository
 from taskq_api.repository.rate_buckets import RateBucketRepository
 from taskq_api.repository.results import ResultRepository
+from taskq_api.repository.stats import StatsRepository
 from taskq_api.repository.tags import TagRepository
 from taskq_api.repository.tasks import TaskRepository
 
@@ -95,8 +96,9 @@ class UnitOfWork:
     [FR-02] Also exposes the ``task_results`` repository.
     [FR-03] Also exposes the ``api_keys`` repository.
     [FR-05] Also exposes the ``rate_buckets`` repository.
+    [FR-09] Also exposes the ``stats`` (metrics) repository.
 
-    Citations: SPEC.md L98, L104, L119, L125; 02-architecture/SAD.md L134, L166.
+    Citations: SPEC.md L98, L104, L119, L125, L158; 02-architecture/SAD.md L134, L166.
     """
 
     def __init__(self, session_factory: sessionmaker[Session]) -> None:
@@ -117,6 +119,7 @@ class UnitOfWork:
         self.results = ResultRepository(session)
         self.api_keys = ApiKeyRepository(session)
         self.rate_buckets = RateBucketRepository(session)
+        self.stats = StatsRepository(session)
 
     def __exit__(self, exc_type, exc, tb) -> None:
         """[FR-06] Commit on clean exit, otherwise roll back; always close.

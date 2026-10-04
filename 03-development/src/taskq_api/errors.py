@@ -84,6 +84,28 @@ class Unauthenticated(TaskqError):
     title = "Unauthenticated"
 
 
+class Forbidden(TaskqError):
+    """[FR-09] Key scope below the endpoint's required scope -> 403.
+
+    Citations: SPEC.md L112, L339.
+    """
+
+    status = 403
+    slug = "forbidden"
+    title = "Forbidden"
+
+
+class NotReady(TaskqError):
+    """[FR-09] DB unavailable or migration not at head -> 503.
+
+    Citations: SPEC.md L157, L343.
+    """
+
+    status = 503
+    slug = "not-ready"
+    title = "Service Unavailable"
+
+
 class RateLimited(TaskqError):
     """[FR-05] Caller's token bucket is empty -> 429 with ``Retry-After``.
 
