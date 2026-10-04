@@ -458,3 +458,25 @@ def test_sec_t13_cors_default_denies_all_origins(tmp_path, monkeypatch):
         denied = test_client.get(endpoint, headers={"Origin": request_origin})
     assert allowed.headers.get("access-control-allow-origin", "") == allowed_origin
     assert denied.headers.get("access-control-allow-origin", "") == ""
+
+
+def test_fr10_middleware_reraises_after_response_started():
+    """Once the response has started, an error cannot become a 500: it re-raises."""
+    from taskq_api.api.middleware import CorrelationMiddleware
+
+    async def app(scope, receive, send):
+        await send({"type": "http.response.start", "status": 200, "headers": []})
+        raise RuntimeError("boom after start")
+
+    sent = []
+
+    async def send(message):
+        sent.append(message)
+
+    async def receive():
+        return {"type": "http.request"}
+
+    scope = {"type": "http", "method": "GET", "path": "/", "headers": []}
+    with pytest.raises(RuntimeError):
+        asyncio.run(CorrelationMiddleware(app)(scope, receive, send))
+    assert sent[0]["status"] == 200
