@@ -13,6 +13,7 @@ Test harness contract:
 
 from __future__ import annotations
 
+import dataclasses
 import sqlite3
 import sys
 import uuid
@@ -209,3 +210,26 @@ def test_sec_t03_forbidden_body_does_not_reveal_existence(client):
     assert result_problem_type_existing == result_problem_type_unknown
     # AC4.3-same-detail
     assert result_detail_existing == result_detail_unknown
+
+
+def test_fr04_require_scope_rejects_unknown_scope():
+    """[FR-04] Misconfigured route scope fails at import time, not per request."""
+    with pytest.raises(ValueError):
+        deps.require_scope("superuser")
+
+
+def test_fr04_over_limit_key_is_rejected_before_scope_check(client):
+    """[FR-04] Rate-limit rejection (FR-05) applies ahead of scope authorization."""
+    client.app.state.settings = dataclasses.replace(
+        client.app.state.settings, rate_burst=1, rate_per_sec=0.001
+    )
+    first = client.get("/v1/tasks", headers=_h("read"))
+    second = client.get("/v1/tasks", headers=_h("read"))
+    assert first.status_code == 200
+    assert second.status_code == 429
+
+
+def test_fr04_get_executor_returns_app_executor(client):
+    """[FR-04] The executor dependency resolves the app-lifespan executor."""
+    request = type("R", (), {"app": client.app})()
+    assert deps.get_executor(request) is client.app.state.executor  # type: ignore[arg-type]
