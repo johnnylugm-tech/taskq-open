@@ -1,7 +1,7 @@
 {
   "gate": 1,
   "phase": 4,
-  "fr_id": "FR-09",
+  "fr_id": "FR-10",
   "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
@@ -9,33 +9,33 @@
     "linting": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "All checks passed! (ruff exit 0)",
+      "tool_evidence": "All checks passed!",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt"
     },
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154782996\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.258\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154885446\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.251\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 7,
+      "tests_passed": 18,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "collected 7 items; 7 passed, 1 warning in 0.52s; FR-09 files coverage 100% (83/83 statements)",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-09.txt",
+      "tool_evidence": "test_fr10.py 18 passed, 1 warning; coverage of error_handlers/middleware/errors = 100.0%",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-10.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-09",
+      "coverage_scope_fr": "FR-10",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken.",
+      "tool_evidence": "Analyzed 73 files, 206 dependencies. layers KEPT, independence KEPT, no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -71,30 +71,30 @@
     "linting": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "dd91b03e9a8e3ee29f312c3add719ddad2b268046675753a49265f709c11774f",
-      "bytes": 32,
-      "head": "All checks passed! (ruff exit 0)"
+      "sha256": "f0d0b1081d9d3ebb26c4c93543053ecdc0a58998f22c071dc4ddb26021b57645",
+      "bytes": 18,
+      "head": "All checks passed!"
     },
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6c763f71668e90732523bbbf04baca8ae980f971d8c77683b10b422c37fccaf8",
+      "sha256": "f69cad9ef1b28607f223002e6c112fd5e250439bd9ea293f609d6eee99b0a91e",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154782996\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.258\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791154885446\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.251\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "0ccfd3ee5463c16f1d3a3db3442d37eff5e7444d60f8e8aa80a1468f1cf8c42c",
-      "bytes": 93,
-      "head": "collected 7 items; 7 passed, 1 warning in 0.52s; FR-09 files coverage 100% (83/83 statements)"
+      "sha256": "7867241a5591951253ed5f0d21d4e06f371f88880f309225f756be3da093b57e",
+      "bytes": 88,
+      "head": "test_fr10.py 18 passed, 1 warning; coverage of error_handlers/middleware/errors = 100.0%"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "6f2d7060a41682c338a5c47fb3a43a5a9c2e00c0716c93b3422b98147e1c630f",
-      "bytes": 65,
-      "head": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken."
+      "sha256": "991c5e68f34dd040f074e8f208cf65da408153d61d285da70c24af4b0a134f20",
+      "bytes": 136,
+      "head": "Analyzed 73 files, 206 dependencies. layers KEPT, independence KEPT, no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken."
     }
   },
   "composite_score": 100.0,
