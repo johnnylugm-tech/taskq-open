@@ -208,6 +208,7 @@ def test_fr02_run_unknown_task_returns_404(env):
 # GREEN TODO: taskq_api.service.runner must spawn via
 # asyncio.create_subprocess_exec(*shlex.split(command)) (never the shell
 # variant, never shell=True) and honour TASKQ_TASK_TIMEOUT from the env.
+# NFR-02
 def test_fr02_run_uses_exec_without_shell_and_times_out(monkeypatch, spawn_spy):
     task_command = "sleep 30"
     expected_final_status = "timeout"
@@ -256,6 +257,7 @@ def test_fr02_run_lifecycle_failed_on_nonzero_exit():
     assert outcome.exit_code != 0
 
 
+# NFR-03
 def test_fr02_run_lifecycle_timeout(monkeypatch):
     task_command = "sleep 30"
     expected_transitions = "pending,running,timeout"
@@ -375,6 +377,7 @@ def test_sec_t06_shell_metacharacters_not_interpreted(env):
 
 # --- SEC T-11 ---------------------------------------------------------------
 
+# NFR-04
 def test_sec_t11_secrets_redacted_in_output_and_logs(env, caplog):
     task_command = "echo sk-abcdefgh12345678"
     secret_literal = "sk-abcdefgh12345678"
