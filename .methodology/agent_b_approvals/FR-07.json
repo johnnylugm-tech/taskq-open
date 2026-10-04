@@ -1,0 +1,46 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each normative SPEC.md FR-07 requirement maps to an assertion that fails when it is violated. v1 upgrade and downgrade: test_fr07.py:176 checks the tables exist at head, and :186 checks no tables remain after `downgrade base`. v2: :294-296 checks the offline SQL for `tags`, `task_tags` and the unique `tasks(name)` index, and :323 checks a duplicate name is rejected. v2 downgrade: :359-372 checks v1 rows, api_keys and result_json survive, the new tables are gone, and the unique name index is gone. v3 data migration and reverse migration: :216-220 checks task_results is dropped and result_json is back with all 3 rows populated, :223 checks result_json is removed after re-upgrade, and :231-233 and :403-405 compare every column's value and type for all rows, including adversarial NULL, unicode and large values. Round trip: :214 and :222 run `downgrade -1` then `upgrade head`, and :236 checks the tasks columns are unchanged. Upgrade and downgrade both succeed: :182-187. No DROP shortcut: :272 AST-scans the migration string constants for DROP TABLE. Offline SQL generation: :289-293. Revision chain and real downgrades: :155-162. One minor gap: the no-shortcut scan only looks at string constants. The data-loss assertions would still catch a destructive downgrade.",
+  "citations": [
+    "SPEC.md:130",
+    "03-development/tests/test_fr07.py:176",
+    "03-development/tests/test_fr07.py:186",
+    "03-development/tests/test_fr07.py:216",
+    "03-development/tests/test_fr07.py:231",
+    "03-development/tests/test_fr07.py:272",
+    "03-development/tests/test_fr07.py:296",
+    "03-development/tests/test_fr07.py:323",
+    "03-development/tests/test_fr07.py:372",
+    "03-development/tests/test_fr07.py:403"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr07_downgrade_is_real_not_drop_shortcut",
+      "test_fr07_offline_sql_generation",
+      "test_fr07_roundtrip_sample_data_identical_per_column",
+      "test_fr07_three_revisions_each_with_downgrade",
+      "test_fr07_upgrade_head_and_downgrade_base_clean",
+      "test_fr07_v2_downgrade_preserves_v1_data",
+      "test_fr07_v2_unique_name_index_rejects_duplicate",
+      "test_sec_t09_v3_roundtrip_preserves_data"
+    ],
+    "assertion_digests": {
+      "test_fr07_downgrade_is_real_not_drop_shortcut": "f3524a11bd55d8b580e063d1958f9b51437d712ca758860a1906a3e13768154d",
+      "test_fr07_offline_sql_generation": "55b38c70b089638aff934ed27ee68f5221043b192d0d6b29db49f1681f70da4e",
+      "test_fr07_roundtrip_sample_data_identical_per_column": "011eb0fc76f7671f3f2e4b326a107b38c14ea2f238e8fcfb480e4aa0ce2db1ca",
+      "test_fr07_three_revisions_each_with_downgrade": "12ca680c8737c506bbd7aa00b82e9045ffee8bb55ce2033da0d2ae2c76977a8e",
+      "test_fr07_upgrade_head_and_downgrade_base_clean": "316f9b761775410940a5e0969ae1ef6faeafa730ebdc70a6e50d0d123b7ce727",
+      "test_fr07_v2_downgrade_preserves_v1_data": "754c4ee7e4c799757d935403690a22b07ebcd36c404da479009cb61c8b8117db",
+      "test_fr07_v2_unique_name_index_rejects_duplicate": "b94239880a1095896aad2da86895fdd9354f913e6cdec1046fdf69eb2eba064c",
+      "test_sec_t09_v3_roundtrip_preserves_data": "4990b1bfc6e4a0a4e5699c7741efc37a7e487ac2f165e1ec69e0203ebf9fcd50"
+    },
+    "test_files": [
+      "03-development/tests/test_fr07.py"
+    ]
+  }
+}
