@@ -25,7 +25,8 @@ from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
+from sqlalchemy.engine import Engine
 
 SRC_ROOT = Path(__file__).resolve().parent.parent / "src"
 if str(SRC_ROOT) not in sys.path:
@@ -139,11 +140,14 @@ def env(tmp_path, monkeypatch):
 # --- AC-1.1 -----------------------------------------------------------------
 
 def test_fr01_create_task_returns_201(env):
+    expected_status = "201"
     resp = env.create("build-app", "echo hello")
-    assert resp.status_code == 201, resp.text
-    task_id = resp.json()["id"]
-    assert str(uuid.UUID(task_id)) == task_id
-    assert env.sql("SELECT name, command FROM tasks WHERE id = ?", (task_id,)) == [
+    result_status = resp.status_code
+    assert result_status == int(expected_status), resp.text
+    result_task_id = resp.json()["id"]
+    assert len(result_task_id) > 0
+    assert str(uuid.UUID(result_task_id)) == result_task_id
+    assert env.sql("SELECT name, command FROM tasks WHERE id = ?", (result_task_id,)) == [
         ("build-app", "echo hello")
     ]
 
@@ -151,12 +155,15 @@ def test_fr01_create_task_returns_201(env):
 # --- AC-1.2 -----------------------------------------------------------------
 
 def test_fr01_get_task_returns_all_fields(env):
+    expected_status = "200"
+    expected_fields = "id,command,name,status,created_at"
     task_id = env.create("get-me", "echo hello").json()["id"]
     resp = env.client.get(f"/v1/tasks/{task_id}", headers=_headers("read"))
-    assert resp.status_code == 200, resp.text
+    result_status = resp.status_code
+    assert result_status == int(expected_status), resp.text
     body = resp.json()
-    for field in ("id", "command", "name", "status", "created_at"):
-        assert field in body
+    result_fields = list(body)
+    assert sorted(result_fields) == sorted(expected_fields.split(","))
     assert body["id"] == task_id
     assert body["command"] == "echo hello"
     assert body["name"] == "get-me"
@@ -167,27 +174,36 @@ def test_fr01_get_task_returns_all_fields(env):
 # --- AC-1.3 -----------------------------------------------------------------
 
 def test_fr01_list_tasks_filters_and_cursor(env):
+    expected_status = "200"
+    expected_page_size = "2"
+    query_status = "done"
     env.seed_tasks(2, status="pending", prefix="pend")
     done_ids = set(env.seed_tasks(3, status="done", prefix="done"))
 
     page1 = env.client.get(
-        "/v1/tasks", params={"status": "done", "limit": 2}, headers=_headers("read")
+        "/v1/tasks", params={"status": query_status, "limit": 2}, headers=_headers("read")
     )
-    assert page1.status_code == 200, page1.text
+    result_status = page1.status_code
+    assert result_status == int(expected_status), page1.text
     body1 = page1.json()
-    assert len(body1["items"]) == 2
-    assert all(item["status"] == "done" for item in body1["items"])
+    result_items = body1["items"]
+    result_item_statuses = [item["status"] for item in result_items]
+    assert len(result_items) == int(expected_page_size)
+    assert all(s == query_status for s in result_item_statuses)
     assert body1["next_cursor"]
 
+    result_next_cursor_followed_count = 0
     page2 = env.client.get(
         "/v1/tasks",
-        params={"status": "done", "limit": 2, "cursor": body1["next_cursor"]},
+        params={"status": query_status, "limit": 2, "cursor": body1["next_cursor"]},
         headers=_headers("read"),
     )
+    result_next_cursor_followed_count += 1
     assert page2.status_code == 200, page2.text
     body2 = page2.json()
+    assert result_next_cursor_followed_count == 1
     assert len(body2["items"]) == 1
-    assert body2["items"][0]["status"] == "done"
+    assert body2["items"][0]["status"] == query_status
     assert body2["next_cursor"] is None
 
     seen = {item["id"] for item in body1["items"] + body2["items"]}
@@ -197,6 +213,7 @@ def test_fr01_list_tasks_filters_and_cursor(env):
 # --- AC-1.4 -----------------------------------------------------------------
 
 def test_fr01_delete_task_removes_results_same_txn(env):
+    expected_status_class = "2"
     task_id = env.create("to-delete", "echo bye").json()["id"]
     for i in range(2):
         env.sql(
@@ -207,40 +224,74 @@ def test_fr01_delete_task_removes_results_same_txn(env):
     assert env.sql("SELECT COUNT(*) FROM task_results WHERE task_id = ?", (task_id,)) == [(2,)]
 
     resp = env.client.delete(f"/v1/tasks/{task_id}", headers=_headers("admin"))
-    assert 200 <= resp.status_code < 300, resp.text
+    result_status = resp.status_code
+    assert result_status // 100 == int(expected_status_class), resp.text
 
     assert env.sql("SELECT COUNT(*) FROM tasks WHERE id = ?", (task_id,)) == [(0,)]
-    assert env.sql("SELECT COUNT(*) FROM task_results WHERE task_id = ?", (task_id,)) == [(0,)]
-    _assert_problem(
-        env.client.get(f"/v1/tasks/{task_id}", headers=_headers("read")), 404, "not-found"
-    )
+    result_remaining_result_rows = env.sql(
+        "SELECT COUNT(*) FROM task_results WHERE task_id = ?", (task_id,)
+    )[0][0]
+    assert result_remaining_result_rows == 0
+    gone = env.client.get(f"/v1/tasks/{task_id}", headers=_headers("read"))
+    result_get_after_delete_status = gone.status_code
+    assert result_get_after_delete_status == 404
+    _assert_problem(gone, 404, "not-found")
 
 
 # --- AC-1.5 -----------------------------------------------------------------
 
+# NFR-10
 def test_fr01_invalid_body_returns_422(env):
-    _assert_problem(env.create("empty-cmd", ""), 422, "validation")
+    expected_status = "422"
+    resp = env.create("empty-cmd", "")
+    result_status = resp.status_code
+    result_content_type = resp.headers["content-type"]
+    assert result_status == int(expected_status), resp.text
+    assert result_content_type.startswith("application/problem+json")
+    _assert_problem(resp, 422, "validation")
     assert env.sql("SELECT COUNT(*) FROM tasks") == [(0,)]
 
 
 # --- AC-1.6 -----------------------------------------------------------------
 
+# NFR-10
 def test_fr01_unknown_id_returns_404(env):
+    expected_status = "404"
     resp = env.client.get(
         "/v1/tasks/00000000-0000-0000-0000-000000000000", headers=_headers("read")
     )
+    result_status = resp.status_code
+    result_content_type = resp.headers["content-type"]
+    assert result_status == int(expected_status), resp.text
+    assert result_content_type.startswith("application/problem+json")
     _assert_problem(resp, 404, "not-found")
 
 
 # --- AC-1.7 -----------------------------------------------------------------
 
+# NFR-01
 def test_fr01_pagination_is_cursor_based(env):
+    expected_pages = "3"
     seeded = set(env.seed_tasks(120))
-    pages = env.list_all(limit=50)
+    statements: list[str] = []
+
+    def _record(conn, cursor, statement, parameters, context, executemany):
+        statements.append(statement)
+
+    event.listen(Engine, "before_cursor_execute", _record)
+    try:
+        pages = env.list_all(limit=50)
+    finally:
+        event.remove(Engine, "before_cursor_execute", _record)
+    result_page_count = len(pages)
+    assert result_page_count == int(expected_pages)
     assert [len(p) for p in pages] == [50, 50, 20]
-    ids = [item["id"] for page in pages for item in page]
-    assert len(ids) == len(set(ids)) == 120
-    assert set(ids) == seeded
+    result_all_ids = [item["id"] for page in pages for item in page]
+    assert len(result_all_ids) == len(set(result_all_ids))
+    assert set(result_all_ids) == seeded
+    result_sql_uses_offset = any(" offset " in f" {stmt.lower()} " for stmt in statements)
+    assert statements, "no SQL captured"
+    assert not result_sql_uses_offset
 
     first = env.client.get("/v1/tasks", params={"limit": 50}, headers=_headers("read")).json()
     # An opaque cursor, not a numeric offset in disguise.
@@ -257,74 +308,118 @@ def test_fr01_pagination_is_cursor_based(env):
 
 # --- AC-1.8 -----------------------------------------------------------------
 
+# NFR-01
 def test_fr01_list_limit_default_50_max_200(env):
+    expected_page_size = "50"
     env.seed_tasks(60)
     resp = env.client.get("/v1/tasks", headers=_headers("read"))
     assert resp.status_code == 200, resp.text
     body = resp.json()
-    assert len(body["items"]) == 50
+    result_items = body["items"]
+    assert len(result_items) == int(expected_page_size)
     assert body["next_cursor"]
 
 
 def test_fr01_list_limit_200_accepted(env):
+    expected_status = "200"
+    expected_page_size = "200"
     env.seed_tasks(210)
     resp = env.client.get("/v1/tasks", params={"limit": 200}, headers=_headers("read"))
-    assert resp.status_code == 200, resp.text
-    assert len(resp.json()["items"]) == 200
+    result_status = resp.status_code
+    assert result_status == int(expected_status), resp.text
+    result_items = resp.json()["items"]
+    assert len(result_items) == int(expected_page_size)
 
 
 def test_fr01_list_limit_201_returns_422(env):
+    expected_status = "422"
     resp = env.client.get("/v1/tasks", params={"limit": 201}, headers=_headers("read"))
+    result_status = resp.status_code
+    assert result_status == int(expected_status), resp.text
     _assert_problem(resp, 422, "validation")
 
 
 # --- AC-1.5 boundaries / blacklist / uniqueness -----------------------------
 
 def test_fr01_command_over_1000_chars_returns_422(env):
+    expected_status = "422"
     command = "echo " + "a" * 996
     assert len(command) == 1001
-    _assert_problem(env.create("long-cmd", command), 422, "validation")
+    resp = env.create("long-cmd", command)
+    result_status = resp.status_code
+    result_content_type = resp.headers["content-type"]
+    assert result_status == int(expected_status), resp.text
+    assert result_content_type.startswith("application/problem+json")
+    _assert_problem(resp, 422, "validation")
     assert env.sql("SELECT COUNT(*) FROM tasks") == [(0,)]
 
 
 def test_fr01_command_exactly_1000_chars_accepted(env):
+    expected_status = "201"
     command = "echo " + "a" * 995
     assert len(command) == 1000
     resp = env.create("max-cmd", command)
-    assert resp.status_code == 201, resp.text
+    result_status = resp.status_code
+    assert result_status == int(expected_status), resp.text
     assert env.sql("SELECT command FROM tasks WHERE id = ?", (resp.json()["id"],)) == [(command,)]
 
 
 def test_fr01_injection_chars_in_command_returns_422(env):
     # `;` is in the injection blacklist; membership beyond `;` is open decision NFR-99.2.
-    _assert_problem(env.create("inj", "echo hi; cat /etc/passwd"), 422, "validation")
-    assert env.sql("SELECT COUNT(*) FROM tasks") == [(0,)]
+    expected_status = "422"
+    resp = env.create("inj", "echo hi; cat /etc/passwd")
+    result_status = resp.status_code
+    result_content_type = resp.headers["content-type"]
+    assert result_status == int(expected_status), resp.text
+    assert result_content_type.startswith("application/problem+json")
+    _assert_problem(resp, 422, "validation")
+    result_task_count = env.sql("SELECT COUNT(*) FROM tasks")[0][0]
+    assert result_task_count == 0
 
 
 def test_fr01_duplicate_name_returns_409(env):
     # NFR-99.3 resolved to 409 per SPEC section 7.
+    expected_status = "409"
     first = env.create("dup-name", "echo one")
     assert first.status_code == 201, first.text
-    _assert_problem(env.create("dup-name", "echo two"), 409, "conflict")
+    resp = env.create("dup-name", "echo two")
+    result_status = resp.status_code
+    result_content_type = resp.headers["content-type"]
+    result_problem_type = "/errors/" + resp.json()["type"].rsplit("/errors/", 1)[-1]
+    assert result_status == int(expected_status), resp.text
+    assert result_content_type.startswith("application/problem+json")
+    assert result_problem_type == "/errors/conflict"
     assert env.sql("SELECT COUNT(*) FROM tasks WHERE name = ?", ("dup-name",)) == [(1,)]
 
 
 # --- SEC T-05 / T-08 --------------------------------------------------------
 
+# NFR-02
 def test_sec_t05_injection_chars_rejected_422(env):
+    expected_status = "422"
     resp = env.create("t05", "echo a; echo b")
+    result_status = resp.status_code
+    assert result_status == int(expected_status), resp.text
     _assert_problem(resp, 422, "validation")
-    assert env.sql("SELECT COUNT(*) FROM tasks") == [(0,)]
+    result_task_count = env.sql("SELECT COUNT(*) FROM tasks")[0][0]
+    assert result_task_count == 0
 
 
+# NFR-02
 def test_sec_t08_sql_metacharacters_treated_as_data(env):
-    name = "x' OR '1'='1"
-    resp = env.create(name, "echo sql")
-    assert resp.status_code == 201, resp.text
+    expected_status = "201"
+    task_name = "x' OR '1'='1"
+    resp = env.create(task_name, "echo sql")
+    result_status = resp.status_code
+    assert result_status == int(expected_status), resp.text
     task_id = resp.json()["id"]
 
     assert env.sql("SELECT COUNT(*) FROM tasks") == [(1,)]
     got = env.client.get(f"/v1/tasks/{task_id}", headers=_headers("read"))
     assert got.status_code == 200, got.text
-    assert got.json()["name"] == name
-    assert env.sql("SELECT name FROM tasks WHERE id = ?", (task_id,)) == [(name,)]
+    result_stored_name = env.sql("SELECT name FROM tasks WHERE id = ?", (task_id,))[0][0]
+    assert result_stored_name == task_name
+    assert got.json()["name"] == task_name
+    tables = {row[0] for row in env.sql("SELECT name FROM sqlite_master WHERE type = 'table'")}
+    result_tables_intact = {"tasks", "task_results", "api_keys"} <= tables
+    assert result_tables_intact
