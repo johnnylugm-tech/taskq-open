@@ -244,6 +244,7 @@ def test_fr02_task_timeout_env_value_is_honoured(monkeypatch):
     assert short_outcome.status == "timeout"
     assert long_outcome.status == "done"
     assert long_outcome.exit_code == 0
+    assert long_outcome.duration_ms >= 1400
 
 
 # --- AC-2.3 -----------------------------------------------------------------
@@ -282,18 +283,14 @@ def test_fr02_run_lifecycle_timeout(monkeypatch):
     assert outcome.status == "timeout"
 
 
-@pytest.mark.parametrize(
-    "task_command",
-    ["   ", "echo 'unterminated", "taskq-no-such-binary-xyz --flag"],
-    ids=["empty", "unparsable", "not_found"],
-)
-def test_fr02_run_unspawnable_command_ends_failed(task_command):
-    machine, outcome = _run_in_process(task_command)
-    assert list(machine.history) == ["pending", "running", "failed"]
-    assert outcome.status == "failed"
-    assert outcome.exit_code is None
-    assert outcome.stdout_tail == ""
-    assert outcome.stderr_tail != ""
+def test_fr02_run_unspawnable_command_ends_failed():
+    for unspawnable in ("   ", "echo 'unterminated", "taskq-no-such-binary-xyz --flag"):
+        machine, outcome = _run_in_process(unspawnable)
+        assert list(machine.history) == ["pending", "running", "failed"], unspawnable
+        assert outcome.status == "failed", unspawnable
+        assert outcome.exit_code is None, unspawnable
+        assert outcome.stdout_tail == "", unspawnable
+        assert outcome.stderr_tail != "", unspawnable
 
 
 def test_fr02_state_machine_rejects_backward_transition():
