@@ -158,9 +158,9 @@ def test_fr03_invalid_key_returns_401(client):
 
 # --- AC-3.2 -----------------------------------------------------------------
 
+# NFR-02
 def test_fr03_key_stored_as_sha256_hash_only(db_file):
     key_scope = "read"
-    expected_hash_len = "64"
     # In-process CLI call so the key-creation path is measured by coverage.
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
@@ -176,7 +176,7 @@ def test_fr03_key_stored_as_sha256_hash_only(db_file):
     dump = "\n".join(sqlite3.connect(db_file).iterdump())
     result_plaintext_in_db = issued_key in dump or issued_key.encode() in db_file.read_bytes()
     # AC3.2-hash-len
-    assert len(result_key_hash) == int(expected_hash_len)
+    assert len(result_key_hash) == 64
     assert re.fullmatch(r"[0-9a-f]{64}", result_key_hash)
     # AC3.2-digest-matches
     assert result_key_hash == result_sha256_of_issued_key
