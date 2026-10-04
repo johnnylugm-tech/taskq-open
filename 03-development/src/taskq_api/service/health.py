@@ -20,6 +20,9 @@ from taskq_api.service.uow import UnitOfWork
 
 _PERCENTILES = (50, 95, 99)
 
+DETAIL_DB_UNAVAILABLE = "database unavailable"
+DETAIL_MIGRATION_BEHIND = "migration not at head"
+
 
 @dataclass(frozen=True)
 class Readiness:
@@ -39,9 +42,9 @@ def readiness(db_url: str) -> Readiness:
     """
     state = migration_state.probe(db_url)
     if not state.reachable:
-        return Readiness(False, "database unavailable")
+        return Readiness(False, DETAIL_DB_UNAVAILABLE)
     if state.current != state.head:
-        return Readiness(False, "migration not at head")
+        return Readiness(False, DETAIL_MIGRATION_BEHIND)
     return Readiness(True, "ready")
 
 
@@ -63,7 +66,8 @@ class RejectionCounter:
     @property
     def value(self) -> int:
         """[FR-09] Rejections so far. Citations: SPEC.md L158."""
-        return self._count
+        with self._lock:
+            return self._count
 
 
 def metrics(uow: UnitOfWork, rejections: RejectionCounter) -> dict[str, Any]:
