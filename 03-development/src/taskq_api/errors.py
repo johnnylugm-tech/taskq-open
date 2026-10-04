@@ -24,6 +24,14 @@ class TaskqError(Exception):
         self.detail = detail
 
     @property
+    def headers(self) -> dict[str, str]:
+        """[FR-05] Extra response headers for the problem response (none by default).
+
+        Citations: SPEC.md L118.
+        """
+        return {}
+
+    @property
     def type_uri(self) -> str:
         """[FR-01] Problem ``type`` URI, e.g. ``/errors/not-found``.
 
@@ -74,3 +82,26 @@ class Unauthenticated(TaskqError):
     status = 401
     slug = "unauthenticated"
     title = "Unauthenticated"
+
+
+class RateLimited(TaskqError):
+    """[FR-05] Caller's token bucket is empty -> 429 with ``Retry-After``.
+
+    Citations: SPEC.md L118, L342.
+    """
+
+    status = 429
+    slug = "rate-limited"
+    title = "Too Many Requests"
+
+    def __init__(self, detail: str, retry_after_s: int) -> None:
+        super().__init__(detail)
+        self.retry_after_s = retry_after_s
+
+    @property
+    def headers(self) -> dict[str, str]:
+        """[FR-05] ``Retry-After`` in whole seconds.
+
+        Citations: SPEC.md L118.
+        """
+        return {"Retry-After": str(self.retry_after_s)}

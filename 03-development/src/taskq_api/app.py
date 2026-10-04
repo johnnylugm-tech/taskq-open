@@ -3,8 +3,10 @@
 [FR-01] Wires settings, the database engine and the ``/v1/tasks`` routes.
 [FR-02] Adds the run routes; in-flight runs finish before the engine closes.
 [FR-03] Adds the unauthenticated health routes.
+[FR-05] Holds the rate-limit settings and clock; health routes stay unlimited.
 
 Citations: SPEC.md L79-91 (FR-01); SPEC.md L93-99 (FR-02); SPEC.md L107 (FR-03);
+SPEC.md L115-120 (FR-05);
 SPEC.md L287-302 (5.1 settings);
 02-architecture/SAD.md L46.
 """
@@ -20,16 +22,19 @@ from fastapi import FastAPI
 from taskq_api.api import error_handlers, routes_health, routes_runs, routes_tasks
 from taskq_api.config import load_settings
 from taskq_api.repository.session import build_engine, uow_factory
+from taskq_api.service.ratelimit import SystemClock
 
 
 def create_app() -> FastAPI:
     """[FR-01] Build the app from ``TASKQ_*`` settings; the engine lives for the app's lifespan.
 
     [FR-02] Background runs are awaited on shutdown, before ``engine.dispose()``.
+    [FR-05] ``app.state.clock`` drives bucket refill (replaceable in tests).
 
-    Citations: SPEC.md L79-91, L93-99, L287-302.
+    Citations: SPEC.md L79-91, L93-99, L117, L287-302.
     """
-    engine = build_engine(load_settings())
+    settings = load_settings()
+    engine = build_engine(settings)
     background_runs: set[asyncio.Task[None]] = set()
 
     @asynccontextmanager
@@ -39,6 +44,8 @@ def create_app() -> FastAPI:
         engine.dispose()
 
     app = FastAPI(title="taskq-api", lifespan=lifespan)
+    app.state.settings = settings
+    app.state.clock = SystemClock()
     app.state.uow_factory = uow_factory(engine)
     app.state.background_runs = background_runs
     error_handlers.register(app)

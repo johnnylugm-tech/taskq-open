@@ -5,4 +5,4 @@
 Citations: SPEC.md L304-316 (5.2 database schema).
 """
 
-from taskq_api.models import api_key, result, tag, task  # noqa: F401
+from taskq_api.models import api_key, rate_bucket, result, tag, task  # noqa: F401

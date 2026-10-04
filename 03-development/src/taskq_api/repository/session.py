@@ -3,7 +3,10 @@
 [FR-01] Gives each task CRUD request one transaction: commit on success,
 rollback on any exception.
 
-Citations: SPEC.md L86 (delete in one transaction); SPEC.md L122-128 (FR-06);
+[FR-05] SQLite transactions take the write lock at BEGIN (bucket row lock).
+
+Citations: SPEC.md L86 (delete in one transaction); SPEC.md L119 (FR-05 lock);
+SPEC.md L122-128 (FR-06);
 02-architecture/SAD.md L20, L166.
 """
 
@@ -11,7 +14,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.dialects.sqlite.base import SQLiteCompiler
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -19,6 +22,7 @@ from sqlalchemy.orm import Session, sessionmaker
 import taskq_api.models  # noqa: F401  (registers every table on Base.metadata)
 from taskq_api.config import Settings
 from taskq_api.repository.api_keys import ApiKeyRepository
+from taskq_api.repository.rate_buckets import RateBucketRepository
 from taskq_api.repository.results import ResultRepository
 from taskq_api.repository.tags import TagRepository
 from taskq_api.repository.tasks import TaskRepository
@@ -57,7 +61,26 @@ def build_engine(settings: Settings) -> Engine:
     )
     if is_sqlite:
         engine.dialect.statement_compiler = KeysetSQLiteCompiler
+        _serialize_sqlite_transactions(engine)
     return engine
+
+
+def _serialize_sqlite_transactions(engine: Engine) -> None:
+    """[FR-05] Open every SQLite transaction with ``BEGIN IMMEDIATE``.
+
+    SQLite ignores ``FOR UPDATE``; taking the database write lock at BEGIN
+    makes a bucket read-modify-write atomic across concurrent requests.
+
+    Citations: SPEC.md L119; 02-architecture/SAD.md L165.
+    """
+
+    @event.listens_for(engine, "connect")
+    def _disable_driver_begin(dbapi_connection, connection_record) -> None:
+        dbapi_connection.isolation_level = None
+
+    @event.listens_for(engine, "begin")
+    def _begin_immediate(conn) -> None:
+        conn.exec_driver_sql("BEGIN IMMEDIATE")
 
 
 class UnitOfWork:
@@ -65,8 +88,9 @@ class UnitOfWork:
 
     [FR-02] Also exposes the ``task_results`` repository.
     [FR-03] Also exposes the ``api_keys`` repository.
+    [FR-05] Also exposes the ``rate_buckets`` repository.
 
-    Citations: SPEC.md L98, L104, L125; 02-architecture/SAD.md L134, L166.
+    Citations: SPEC.md L98, L104, L119, L125; 02-architecture/SAD.md L134, L166.
     """
 
     def __init__(self, session_factory: sessionmaker[Session]) -> None:
@@ -78,6 +102,7 @@ class UnitOfWork:
         self.tags = TagRepository(self._session)
         self.results = ResultRepository(self._session)
         self.api_keys = ApiKeyRepository(self._session)
+        self.rate_buckets = RateBucketRepository(self._session)
         return self
 
     def __exit__(self, exc_type, exc, tb) -> None:

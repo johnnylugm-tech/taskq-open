@@ -20,7 +20,9 @@ PROBLEM_JSON = "application/problem+json"
 def problem_response(request: Request, error: TaskqError) -> JSONResponse:
     """[FR-01] Render ``error`` as an RFC 7807 body.
 
-    Citations: SPEC.md L165-166.
+    [FR-05] Carries the error's headers (``Retry-After``).
+
+    Citations: SPEC.md L118, L165-166.
     """
     body = {
         "type": error.type_uri,
@@ -29,7 +31,9 @@ def problem_response(request: Request, error: TaskqError) -> JSONResponse:
         "detail": error.detail,
         "instance": request.url.path,
     }
-    return JSONResponse(body, status_code=error.status, media_type=PROBLEM_JSON)
+    return JSONResponse(
+        body, status_code=error.status, headers=error.headers, media_type=PROBLEM_JSON
+    )
 
 
 async def handle_domain_error(request: Request, exc: Exception) -> JSONResponse:
