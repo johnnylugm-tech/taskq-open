@@ -20,9 +20,16 @@ from taskq_api.config import load_settings
 from taskq_api.service.redact import redact
 
 TAIL_CHARS = 4096
+
+PENDING = "pending"
+RUNNING = "running"
+DONE = "done"
+FAILED = "failed"
+TIMEOUT = "timeout"
+
 TRANSITIONS = {
-    "pending": frozenset({"running"}),
-    "running": frozenset({"done", "failed", "timeout"}),
+    PENDING: frozenset({RUNNING}),
+    RUNNING: frozenset({DONE, FAILED, TIMEOUT}),
 }
 
 
@@ -40,8 +47,8 @@ class TaskStateMachine:
     """
 
     def __init__(self) -> None:
-        self.state = "pending"
-        self.history = ["pending"]
+        self.state = PENDING
+        self.history = [PENDING]
 
     def transition(self, to: str) -> None:
         """[FR-02] Enter ``to`` or raise :class:`InvalidTransition`.
@@ -82,29 +89,41 @@ def tail(raw: bytes) -> str:
 async def run_command(command: str, machine: TaskStateMachine) -> RunOutcome:
     """[FR-02] Execute ``command`` without a shell under ``TASKQ_TASK_TIMEOUT``.
 
-    On timeout the process is killed and reaped so no orphan is left.
+    On timeout the process is killed and reaped so no orphan is left. A
+    command that cannot be spawned (empty, unparsable or not found) ends
+    ``failed`` with no exit code and the reason in ``stderr_tail``, rather
+    than leaving the run stuck in ``running``.
 
     Citations: SPEC.md L96-98, L149, L293.
     """
     timeout = load_settings().task_timeout
     started = time.monotonic()
-    machine.transition("running")
-    process = await asyncio.create_subprocess_exec(
-        *shlex.split(command),
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
+    machine.transition(RUNNING)
+    exit_code: int | None = None
     try:
-        stdout, stderr = await asyncio.wait_for(process.communicate(), timeout)
-        status = "done" if process.returncode == 0 else "failed"
-    except TimeoutError:
-        process.kill()
-        await process.wait()
-        stdout, stderr, status = b"", b"", "timeout"
+        argv = shlex.split(command)
+        if not argv:
+            raise ValueError("empty command")
+        process = await asyncio.create_subprocess_exec(
+            *argv,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+    except (OSError, ValueError) as exc:
+        stdout, stderr, status = b"", str(exc).encode(), FAILED
+    else:
+        try:
+            stdout, stderr = await asyncio.wait_for(process.communicate(), timeout)
+            status = DONE if process.returncode == 0 else FAILED
+        except TimeoutError:
+            process.kill()
+            await process.wait()
+            stdout, stderr, status = b"", b"", TIMEOUT
+        exit_code = process.returncode
     machine.transition(status)
     return RunOutcome(
         status=status,
-        exit_code=process.returncode,
+        exit_code=exit_code,
         stdout_tail=tail(stdout),
         stderr_tail=tail(stderr),
         duration_ms=int((time.monotonic() - started) * 1000),

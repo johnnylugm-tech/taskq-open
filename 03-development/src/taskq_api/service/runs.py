@@ -27,7 +27,7 @@ def submit(uow: UnitOfWork, task_id: str) -> tuple[str, str]:
     Citations: SPEC.md L95, L97-98.
     """
     task = get_task(uow, task_id)
-    task.status = "pending"
+    task.status = runner.PENDING
     result = uow.results.add(TaskResult(id=str(uuid.uuid4()), task_id=task.id))
     return result.id, task.command
 
@@ -46,16 +46,23 @@ async def execute(uow_factory: UowFactory, task_id: str, run_id: str, command: s
 
     Citations: SPEC.md L96-98.
     """
-    set_status(uow_factory, task_id, "running")
+    set_status(uow_factory, task_id, runner.RUNNING)
     outcome = await runner.run_command(command, machine=runner.TaskStateMachine())
     with uow_factory() as uow:
-        result = uow.results.get(run_id)
-        result.exit_code = outcome.exit_code
-        result.stdout_tail = outcome.stdout_tail
-        result.stderr_tail = outcome.stderr_tail
-        result.duration_ms = outcome.duration_ms
-        result.finished_at = outcome.finished_at
+        record_outcome(uow.results.get(run_id), outcome)
         get_task(uow, task_id).status = outcome.status
+
+
+def record_outcome(result: TaskResult, outcome: runner.RunOutcome) -> None:
+    """[FR-02] Copy the outcome's ``task_results`` column values onto ``result``.
+
+    Citations: SPEC.md L98.
+    """
+    result.exit_code = outcome.exit_code
+    result.stdout_tail = outcome.stdout_tail
+    result.stderr_tail = outcome.stderr_tail
+    result.duration_ms = outcome.duration_ms
+    result.finished_at = outcome.finished_at
 
 
 def start(background: set[asyncio.Task[None]], uow_factory: UowFactory, task_id: str, run_id: str, command: str) -> None:
