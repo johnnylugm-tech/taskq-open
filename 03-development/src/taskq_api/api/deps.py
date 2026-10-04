@@ -19,7 +19,6 @@ from typing import Annotated, Any
 from fastapi import Depends, Header, Request
 
 from taskq_api.errors import Forbidden, RateLimited
-from taskq_api.models.api_key import ApiKey
 from taskq_api.service import auth, ratelimit
 from taskq_api.service.executor import Executor
 from taskq_api.service.uow import UnitOfWork
@@ -43,7 +42,7 @@ def get_executor(request: Request) -> Executor:
     return request.app.state.executor
 
 
-def authenticate(request: Request, x_api_key: Annotated[str | None, Header()] = None) -> ApiKey:
+def authenticate(request: Request, x_api_key: Annotated[str | None, Header()] = None) -> auth.ApiKey:
     """[FR-03] Reject the request with 401 unless ``X-API-Key`` is an active key.
 
     [FR-05] Returns the key so the rate limiter can find its bucket.
@@ -54,7 +53,7 @@ def authenticate(request: Request, x_api_key: Annotated[str | None, Header()] = 
         return auth.verify(uow, x_api_key)
 
 
-def rate_limit(request: Request, api_key: Annotated[ApiKey, Depends(authenticate)]) -> None:
+def rate_limit(request: Request, api_key: Annotated[auth.ApiKey, Depends(authenticate)]) -> None:
     """[FR-05] Take one token from the caller's bucket, else raise 429.
 
     [FR-09] Each 429 is counted for ``/v1/metrics``.
@@ -75,7 +74,7 @@ def rate_limit(request: Request, api_key: Annotated[ApiKey, Depends(authenticate
         raise RateLimited("rate limit exceeded", decision.retry_after_s)
 
 
-def require_scope(minimum: str) -> Callable[[ApiKey], None]:
+def require_scope(minimum: str) -> Callable[[auth.ApiKey], None]:
     """[FR-09] Dependency raising 403 unless the caller's scope includes ``minimum``.
 
     Scopes are hierarchical: ``read`` < ``write`` < ``admin``.
@@ -85,7 +84,7 @@ def require_scope(minimum: str) -> Callable[[ApiKey], None]:
     if minimum not in auth.SCOPES:
         raise ValueError(f"unknown scope: {minimum}")
 
-    def check(api_key: Annotated[ApiKey, Depends(authenticate)]) -> None:
+    def check(api_key: Annotated[auth.ApiKey, Depends(authenticate)]) -> None:
         if not auth.scope_includes(api_key.scope, minimum):
             raise Forbidden("insufficient scope")
 
