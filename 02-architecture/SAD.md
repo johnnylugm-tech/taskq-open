@@ -454,7 +454,7 @@ sab:
       executor: import-linter
       contract_type: layers
       contract_name: "taskq_api layers"
-      source_modules: ["taskq_api.app", "taskq_api.api", "taskq_api.service", "taskq_api.repository", "taskq_api.models"]
+      source_modules: ["taskq_api.__main__", "taskq_api.cli", "taskq_api.app", "taskq_api.api", "taskq_api.service", "taskq_api.repository", "taskq_api.models"]
     - id: "NFR-06-independence"
       executor: import-linter
       contract_type: independence
@@ -464,7 +464,7 @@ sab:
       executor: import-linter
       contract_type: forbidden
       contract_name: "no sqlalchemy outside repository"
-      source_modules: ["taskq_api.app", "taskq_api.api", "taskq_api.service", "taskq_api.config", "taskq_api.errors"]
+      source_modules: ["taskq_api.__main__", "taskq_api.cli", "taskq_api.app", "taskq_api.api", "taskq_api.service", "taskq_api.config", "taskq_api.errors"]
       forbidden_modules: ["sqlalchemy"]
   decision_issues:
     - {id: "NFR-99.1", status: resolved, blocks_phase: 3, resolution_ref: "02-architecture/SAD.md:492"}
