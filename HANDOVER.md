@@ -2,7 +2,7 @@
 
 **Checkpoint**: `P4-pre-gate3-20261005`  
 **Phase**: P4 — Testing  
-**Generated**: 2026-10-05T00:03:26Z
+**Generated**: 2026-10-05T00:10:54Z
 
 > ⚠️  **開始下一個工作階段前，請先執行 `/compact` 壓縮上下文**，再從「接下來的工作」繼續。
 
@@ -205,6 +205,11 @@ All 10 FR(s) Gate 1 re-eval PASS [FR-01,FR-02,FR-03,FR-04,FR-05,…+5]. Gate 3 (
   - ? / gate3-verify-r2: **complete**
 
 **Recently Committed Files:**
+  - `04-testing/TEST_PLAN.md`
+  - `01-requirements/TRACEABILITY_MATRIX.md`
+  - `.methodology/gate_verify.jsonl`
+  - `.methodology/state.json`
+  - `HANDOVER.md`
   - `.methodology/crg_baseline_p4.json`
   - `.methodology/decision_logs/2026-10-04/GATE_4_0e68233b.yaml`
   - `.methodology/decision_logs/2026-10-04/GATE_4_9e31e742.yaml`
@@ -220,11 +225,6 @@ All 10 FR(s) Gate 1 re-eval PASS [FR-01,FR-02,FR-03,FR-04,FR-05,…+5]. Gate 3 (
   - `.methodology/gate_evidence/gate3/license_compliance.txt`
   - `.methodology/gate_evidence/gate3/linting.txt`
   - `.methodology/gate_evidence/gate3/mutation_testing.txt`
-  - `.methodology/gate_evidence/gate3/performance.txt`
-  - `.methodology/gate_evidence/gate3/readability.txt`
-  - `.methodology/gate_evidence/gate3/secrets_scanning.txt`
-  - `.methodology/gate_evidence/gate3/security.txt`
-  - `.methodology/gate_evidence/gate3/test_assertion_quality.txt`
 
 ## 接下來的工作
 
