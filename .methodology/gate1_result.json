@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 7,
-  "fr_id": "FR-03",
-  "overall_score": 99.01,
+  "fr_id": "FR-04",
+  "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -10,15 +10,13 @@
       "score": 100.0,
       "threshold": 100,
       "tool_evidence": "All checks passed!",
-      "evidence_file": ".sessi-work/round_1/tools/linting.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt"
     },
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791223505362\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.261\n    }\n}\n\n",
-      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791223624430\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.258\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
@@ -28,18 +26,16 @@
       "tests_passed": 22,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "22 passed, 1 warning; FR-03 files coverage 96.05% (73/76 statements, 3 missing); spec coverage 8/8",
-      "evidence_file": ".sessi-work/round_1/tools/test_coverage.txt",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-03.txt",
+      "tool_evidence": "22 passed, 1 warning; coverage of deps.py+auth.py = 100.0%; 7/7 required tests present",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-04.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-03",
+      "coverage_scope_fr": "FR-04",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Contracts: 3 kept, 0 broken.",
-      "evidence_file": ".sessi-work/round_1/tools/architecture_constraints.txt",
+      "tool_evidence": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -82,26 +78,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "362cbc287bb2919ad8c7a9067166cfbb78e8165a722f4da00a7ab76d23db0dee",
+      "sha256": "65022e644b874bc08b4c5a14df8bda016a238c7808b7fa79f783d3419002fe8a",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791223505362\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.261\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791223624430\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.258\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "4324fe179766e1f7cbb983cd416ee1a867cea7c5b9458133877a3a5bb7158fce",
-      "bytes": 98,
-      "head": "22 passed, 1 warning; FR-03 files coverage 96.05% (73/76 statements, 3 missing); spec coverage 8/8"
+      "sha256": "b3718c8155c471ee8f162d672005860c8010d7ddc76aeaba07a468e44aae2dd5",
+      "bytes": 86,
+      "head": "22 passed, 1 warning; coverage of deps.py+auth.py = 100.0%; 7/7 required tests present"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "7aa947691432dba918485ec10900b61a04db79503214e12490e7f803a17b962b",
-      "bytes": 28,
-      "head": "Contracts: 3 kept, 0 broken."
+      "sha256": "6f2d7060a41682c338a5c47fb3a43a5a9c2e00c0716c93b3422b98147e1c630f",
+      "bytes": 65,
+      "head": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken."
     }
   },
-  "composite_score": 99.01,
+  "composite_score": 100.0,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
