@@ -39,8 +39,6 @@
 | FR-08 | verified | 03-development/src/taskq_api/api/deps.py, 03-development/src/taskq_api/app.py, 03-development/src/taskq_api/config.py (+3) | 03-development/tests/test_fr08.py | — |
 | FR-09 | verified | 03-development/src/taskq_api/api/deps.py, 03-development/src/taskq_api/api/routes_health.py, 03-development/src/taskq_api/api/routes_metrics.py (+6) | 03-development/tests/test_fr09.py | — |
 | FR-10 | verified | 03-development/src/taskq_api/api/error_handlers.py, 03-development/src/taskq_api/api/middleware.py, 03-development/src/taskq_api/api/routes_tasks.py (+4) | 03-development/tests/test_fr10.py | — |
-<!-- AUTO-GEN:END -->
-
 
 ## Non-Functional Requirements
 
@@ -59,3 +57,4 @@
 | NFR-11 | test_nfr_static.py | VERIFIED |
 | NFR-12 | test_nfr_static.py | VERIFIED |
 | NFR-99 | test_fr01.py | VERIFIED |
+<!-- AUTO-GEN:END -->
