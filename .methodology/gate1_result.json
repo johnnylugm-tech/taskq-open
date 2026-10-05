@@ -1,7 +1,7 @@
 {
   "gate": 1,
   "phase": 7,
-  "fr_id": "FR-09",
+  "fr_id": "FR-10",
   "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
@@ -16,26 +16,26 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791224208680\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.256\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791224317526\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.246\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 7,
+      "tests_passed": 18,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "03-development/tests/test_fr09.py 7 passed; FR-09 files coverage 100.0%; 6/6 required tests present",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-09.txt",
+      "tool_evidence": "test_fr10.py 18 passed; coverage of error_handlers.py, middleware.py, errors.py: 107/107 statements, 100%",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-10.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-09",
+      "coverage_scope_fr": "FR-10",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 73 files, 206 dependencies. layers KEPT, independence KEPT, no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken",
+      "tool_evidence": "Analyzed 73 files, 206 dependencies. taskq_api layers KEPT; independence KEPT; no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -78,23 +78,23 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "bd559cf241a5dba46d410ee0fa295cca576a03f044c46ac85a19b77aaf1d74c0",
+      "sha256": "da7f855c5efa6052e59734da786b77ab865da6a0a2b3f90f7db233967ee7cfc0",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791224208680\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.256\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791224317526\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.246\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "f2bbb7c37c8491d1f064e09c83cce37168eae7b65af6f41e96a11e509ea785ab",
-      "bytes": 99,
-      "head": "03-development/tests/test_fr09.py 7 passed; FR-09 files coverage 100.0%; 6/6 required tests present"
+      "sha256": "97b4171c4037e4a8d3f1a2c74cbe5fe128530e8ef54d90e201e34fbb7600999d",
+      "bytes": 105,
+      "head": "test_fr10.py 18 passed; coverage of error_handlers.py, middleware.py, errors.py: 107/107 statements, 100%"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "759f5ef381f905c389d8a940185b4eda9ce5c823f91f47d19b00e8d81c23e891",
-      "bytes": 135,
-      "head": "Analyzed 73 files, 206 dependencies. layers KEPT, independence KEPT, no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken"
+      "sha256": "81547f00466fe5ca04eccda041f622a3205e8404625b929d822e01efef78ce2c",
+      "bytes": 146,
+      "head": "Analyzed 73 files, 206 dependencies. taskq_api layers KEPT; independence KEPT; no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken."
     }
   },
   "composite_score": 100.0,
