@@ -366,12 +366,18 @@ def test_nfr09_no_test_exclusion_mechanisms():
 
 def test_nfr09_verified_only_when_tests_pass():
     matrix = (PROJECT / "01-requirements" / "TRACEABILITY_MATRIX.md").read_text(encoding="utf-8")
-    defined = {func.name for _, func in _test_functions(TESTS)}
+    by_file = {}
+    for path, func in _test_functions(TESTS):
+        by_file.setdefault(path.name, set()).add(func.name)
     verified_without_pass = []
     for line in matrix.splitlines():
         if line.startswith("|") and re.search(r"\|\s*VERIFIED\s*\|", line):
+            files = re.findall(r"\b(test_\w+\.py)\b", line)
             names = re.findall(r"`(test_\w+)`", line)
-            verified_without_pass += [n for n in names if n not in defined] or ([] if names else [line])
+            backed = bool(files) and all(by_file.get(f) for f in files) and all(
+                any(n in by_file[f] for f in files) for n in names)
+            if not backed:
+                verified_without_pass.append(line)
     assert verified_without_pass == []  # NFR-09 AC-N9.6
 
 
