@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 5,
-  "fr_id": "FR-08",
-  "overall_score": 99.725,
+  "fr_id": "FR-09",
+  "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -16,20 +16,21 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791160222928\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.251\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791160338733\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.256\n    }\n}\n\n",
+      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 25,
+      "tests_passed": 7,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "25 passed, 1 warning; coverage executor/runner/app 98.86% (173/175 statements, 2 missing)",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-08.txt",
+      "tool_evidence": "03-development/tests/test_fr09.py 7 passed; FR-09 source coverage 100.0%; 6/6 required tests present",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-09.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-08",
+      "coverage_scope_fr": "FR-09",
       "score_source": "framework"
     },
     "architecture_constraints": {
@@ -78,16 +79,16 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "605e3c8cc1c610d628b46622179ac9469cab9c7717123cfc07d1c963ec9822c2",
+      "sha256": "7c322665970b7c956508971dedf2f9ecbf77d416b2285cc37d22a63e3bb21e07",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791160222928\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.251\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791160338733\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.256\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "e0fad6203784b825580bf00b3ce11ba840fa98baca4111d72259c4c8d9520f1d",
-      "bytes": 89,
-      "head": "25 passed, 1 warning; coverage executor/runner/app 98.86% (173/175 statements, 2 missing)"
+      "sha256": "1843ef6c6b989b54a08aedd09f2f48a6f9d942f0f62193e767fde3af60838177",
+      "bytes": 100,
+      "head": "03-development/tests/test_fr09.py 7 passed; FR-09 source coverage 100.0%; 6/6 required tests present"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
@@ -97,7 +98,7 @@
       "head": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken."
     }
   },
-  "composite_score": 99.725,
+  "composite_score": 100.0,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
