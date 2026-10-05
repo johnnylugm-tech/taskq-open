@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 5,
-  "fr_id": "FR-07",
-  "overall_score": 97.09,
+  "fr_id": "FR-08",
+  "overall_score": 99.725,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -10,36 +10,32 @@
       "score": 100.0,
       "threshold": 100,
       "tool_evidence": "All checks passed!",
-      "evidence_file": ".sessi-work/round_1/tools/linting.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt"
     },
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791160106752\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.254\n    }\n}\n\n",
-      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791160222928\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.251\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 8,
+      "tests_passed": 25,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "8 passed in 0.23s; FR-07 files coverage 88.35% (coverage_FR-07.json); spec coverage 8/8",
-      "evidence_file": ".sessi-work/round_1/tools/test_coverage.txt",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-07.txt",
+      "tool_evidence": "25 passed, 1 warning; coverage executor/runner/app 98.86% (173/175 statements, 2 missing)",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-08.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-07",
+      "coverage_scope_fr": "FR-08",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Contracts: 3 kept, 0 broken. (PYTHONPATH=03-development/src lint-imports; the PYTHONPATH=src form failed to find taskq_api)",
-      "evidence_file": ".sessi-work/round_1/tools/architecture_constraints.txt",
+      "tool_evidence": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -82,26 +78,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "4053edb75d5f24d3d4956e767af1e6c00a0dcc18a20e820f7655bb9bd1571026",
+      "sha256": "605e3c8cc1c610d628b46622179ac9469cab9c7717123cfc07d1c963ec9822c2",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791160106752\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.254\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791160222928\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.251\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "50be90422f6c45c600b0a4b06a90ff37dac88c00d0982b6706286067ed380ef4",
-      "bytes": 87,
-      "head": "8 passed in 0.23s; FR-07 files coverage 88.35% (coverage_FR-07.json); spec coverage 8/8"
+      "sha256": "e0fad6203784b825580bf00b3ce11ba840fa98baca4111d72259c4c8d9520f1d",
+      "bytes": 89,
+      "head": "25 passed, 1 warning; coverage executor/runner/app 98.86% (173/175 statements, 2 missing)"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "5b7abbd038431fea85ce953c684b4cd355439d421fdba85a65b3efab5357f6df",
-      "bytes": 123,
-      "head": "Contracts: 3 kept, 0 broken. (PYTHONPATH=03-development/src lint-imports; the PYTHONPATH=src form failed to find taskq_api)"
+      "sha256": "6f2d7060a41682c338a5c47fb3a43a5a9c2e00c0716c93b3422b98147e1c630f",
+      "bytes": 65,
+      "head": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken."
     }
   },
-  "composite_score": 97.09,
+  "composite_score": 99.725,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
