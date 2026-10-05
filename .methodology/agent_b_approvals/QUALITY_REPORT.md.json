@@ -1,0 +1,20 @@
+{
+  "fr": "QUALITY_REPORT.md",
+  "review_status": "APPROVE",
+  "reason": "The report lists 16 dimensions, all PASS, and the Overall Score of 98.0222 matches the Gate 4 score of 98.02 in quality_manifest.json. The per-FR table agrees with the manifest and the release notes. Defect counts are 0 and the CRG dead-code list is marked advisory. It links to VERIFICATION_REPORT.md and BASELINE.md. An unweighted mean of the 16 scores is 98.14, so the harness weighting differs slightly. The difference is immaterial and not a defect.",
+  "citations": [
+    "06-quality/QUALITY_REPORT.md:5",
+    "06-quality/QUALITY_REPORT.md:20",
+    "06-quality/QUALITY_REPORT.md:51",
+    "06-quality/QUALITY_REPORT.md:108"
+  ],
+  "docs_embedded": [
+    "QUALITY_REPORT.md",
+    "RELEASE_NOTES.md",
+    "FINAL_SIGN_OFF.md",
+    "VERIFICATION_REPORT.md"
+  ],
+  "confidence": 0.9,
+  "gaps": [],
+  "reviewed_sha256": "240070fac0be54bb735efdae8f00745274b2369c466148061cacfb67cec851f7"
+}
