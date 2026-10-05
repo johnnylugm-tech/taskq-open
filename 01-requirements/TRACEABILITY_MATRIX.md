@@ -46,16 +46,16 @@
 
 | NFR ID | Test Coverage | Status |
 |--------|--------------|--------|
-| NFR-01 | test_nfr_runtime.py: `test_nfr01_get_task_p95_under_30ms` | VERIFIED |
-| NFR-02 | test_nfr_runtime.py, test_nfr_static.py: `test_nfr02_no_shell_eval_exec` | VERIFIED |
-| NFR-03 | test_nfr_runtime.py, test_nfr_static.py: `test_nfr03_no_bare_except_or_swallow` | VERIFIED |
-| NFR-04 | test_nfr_runtime.py, test_nfr_static.py: `test_nfr04_secret_lines_redacted` | VERIFIED |
-| NFR-05 | test_nfr_runtime.py, test_nfr_static.py: `test_nfr05_public_symbols_docstring_with_fr_ref` | VERIFIED |
-| NFR-06 | test_nfr_static.py: `test_nfr06_layers_contract_declared` | VERIFIED |
-| NFR-07 | test_nfr_static.py: `test_nfr07_licenses_within_allowlist` | VERIFIED |
-| NFR-08 | test_nfr_static.py: `test_nfr08_mutation_score_at_least_70` | VERIFIED |
-| NFR-09 | test_nfr_static.py: `test_nfr09_verified_only_when_tests_pass` | VERIFIED |
-| NFR-10 | test_nfr_static.py: `test_nfr10_required_scenarios_enumerated` | VERIFIED |
-| NFR-11 | test_nfr_static.py: `test_nfr11_mi_at_least_80` | VERIFIED |
-| NFR-12 | test_nfr_static.py: `test_nfr12_makefile_verify_system_steps` | VERIFIED |
-| NFR-99 | test_fr01.py: `test_fr01_create_task_returns_201` | VERIFIED |
+| NFR-01 | test_nfr_runtime.py | VERIFIED |
+| NFR-02 | test_nfr_runtime.py, test_nfr_static.py | VERIFIED |
+| NFR-03 | test_nfr_runtime.py, test_nfr_static.py | VERIFIED |
+| NFR-04 | test_nfr_runtime.py, test_nfr_static.py | VERIFIED |
+| NFR-05 | test_nfr_runtime.py, test_nfr_static.py | VERIFIED |
+| NFR-06 | test_nfr_static.py | VERIFIED |
+| NFR-07 | test_nfr_static.py | VERIFIED |
+| NFR-08 | test_nfr_static.py | VERIFIED |
+| NFR-09 | test_nfr_static.py | VERIFIED |
+| NFR-10 | test_nfr_static.py | VERIFIED |
+| NFR-11 | test_nfr_static.py | VERIFIED |
+| NFR-12 | test_nfr_static.py | VERIFIED |
+| NFR-99 | test_fr01.py | VERIFIED |
