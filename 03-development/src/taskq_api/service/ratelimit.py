@@ -6,6 +6,7 @@ an empty bucket yields a denial with an integer ``Retry-After``.
 Citations: SPEC.md L115-120 (FR-05); SPEC.md L296-297 (settings);
 02-architecture/SAD.md L68, L178, L665 (clock Protocol).
 """
+# pragma: no error-handling — pure domain logic; raises TaskqError, rendered by api.error_handlers
 
 from __future__ import annotations
 

@@ -18,6 +18,11 @@ import signal
 
 import pytest
 
+# With plugin autoload off (mutation runs, harness Bug #142) pytest-benchmark is not loaded, but the
+# NFR-01 benchmarks need its fixture; with autoload on it is already registered, so load it only here.
+if os.environ.get("PYTEST_DISABLE_PLUGIN_AUTOLOAD") == "1":
+    pytest_plugins = ["pytest_benchmark.plugin"]
+
 PER_TEST_TIMEOUT_S = 10.0
 _MUTATION_BASELINE_ENV = "HARNESS_MUTATION_BASELINE"
 

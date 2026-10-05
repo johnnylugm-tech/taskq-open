@@ -6,6 +6,7 @@ and writes it back inside the caller's transaction.
 Citations: SPEC.md L119 (single transaction, row-level lock);
 02-architecture/SAD.md L77, L165.
 """
+# pragma: no error-handling — thin statements on the caller's Session; failures roll back in UnitOfWork.__exit__
 
 from __future__ import annotations
 

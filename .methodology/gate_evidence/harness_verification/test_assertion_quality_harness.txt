@@ -2,4 +2,4 @@
 # returncode: 0
 # agent_score: 100.0 | threshold: 60.0
 
-{"total": 204, "asserted": 204, "zero_assert": [], "neutralised": []}
+{"total": 219, "asserted": 219, "zero_assert": [], "neutralised": []}

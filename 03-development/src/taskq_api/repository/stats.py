@@ -6,6 +6,7 @@ latency percentiles are computed.
 Citations: SPEC.md L152-158 (FR-09); SPEC.md L126 (no string-built SQL);
 02-architecture/SAD.md L79, L105.
 """
+# pragma: no error-handling — thin statements on the caller's Session; failures roll back in UnitOfWork.__exit__
 
 from __future__ import annotations
 

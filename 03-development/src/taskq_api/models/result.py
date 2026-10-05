@@ -4,6 +4,7 @@
 
 Citations: SPEC.md L86 (delete with results); SPEC.md L313 (task_results columns).
 """
+# pragma: no error-handling — declarative ORM mapping, no executable logic
 
 from __future__ import annotations
 

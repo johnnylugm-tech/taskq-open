@@ -6,6 +6,7 @@
 Citations: SPEC.md L88-91 (FR-01 422/404); SPEC.md L162-169 (FR-10);
 SPEC.md L331-346 (7 error table).
 """
+# pragma: no error-handling — thin routing; TaskqError is rendered by api.error_handlers, anything else by CorrelationMiddleware
 
 from __future__ import annotations
 

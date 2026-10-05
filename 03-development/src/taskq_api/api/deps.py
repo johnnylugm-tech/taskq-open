@@ -10,6 +10,7 @@ Citations: SPEC.md L125 (one Session per request); SPEC.md L103 (X-API-Key);
 SPEC.md L115-120 (FR-05); SPEC.md L111-113 (FR-04); SPEC.md L158 (FR-09);
 02-architecture/SAD.md L52, L176.
 """
+# pragma: no error-handling — thin routing; TaskqError is rendered by api.error_handlers, anything else by CorrelationMiddleware
 
 from __future__ import annotations
 

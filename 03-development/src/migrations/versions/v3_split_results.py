@@ -9,6 +9,7 @@ value and its type. Both directions are plain SQL so offline mode renders them.
 Citations: SPEC.md L138 (v3 row); SPEC.md L141-142 (round trip, no shortcut);
 SPEC.md L312, L315 (task_results, result_json).
 """
+# pragma: no error-handling — runs inside one alembic transaction; a failing revision rolls back (NFR-03 AC-N3.6)
 
 from typing import Any, cast
 

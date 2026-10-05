@@ -4,16 +4,30 @@
 
 verify-system: 1/4 alembic upgrade head
 verify-system: 2/4 full test suite
-........................................................................ [ 35%]
-........................................................................ [ 70%]
-.............................................................            [100%]
+........................................................................ [ 32%]
+........................................................................ [ 64%]
+........................................................................ [ 96%]
+........                                                                 [100%]
 =============================== warnings summary ===============================
 .venv/lib/python3.11/site-packages/fastapi/testclient.py:1
   /Users/johnny/projects/taskq-open/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
     from starlette.testclient import TestClient as TestClient  # noqa
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-205 passed, 1 warning in 15.92s
+
+----------------------------------------------------------------------------------------- benchmark: 2 tests -----------------------------------------------------------------------------------------
+Name (time in ms)                           Min                Max              Mean            StdDev            Median               IQR            Outliers       OPS            Rounds  Iterations
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_nfr01_benchmark_get_task_mean       2.2394 (1.0)       2.5752 (1.0)      2.4124 (1.0)      0.0901 (1.0)      2.3932 (1.0)      0.1543 (1.0)           7;0  414.5285 (1.0)          20           1
+test_nfr01_benchmark_list_tasks_mean     3.6276 (1.62)     28.3655 (11.01)    5.1759 (2.15)     5.4637 (60.61)    3.8664 (1.62)     0.3600 (2.33)          1;1  193.2044 (0.47)         20           1
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Legend:
+  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+  OPS: Operations Per Second, computed as 1 / Mean
+224 passed, 1 warning in 16.41s
 verify-system: 3/4 service smoke (/healthz, /readyz, key create, task run)
 verify-system: 4/4 alembic downgrade base, upgrade head
 verify-system: PASS
+{"level": "INFO", "logger": "alembic.runtime.migration", "message": "Context impl SQLiteImpl."}
+{"level": "INFO", "logger": "alembic.runtime.migration", "message": "Will assume non-transactional DDL."}

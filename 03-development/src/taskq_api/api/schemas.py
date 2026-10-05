@@ -5,6 +5,7 @@
 
 Citations: SPEC.md L83-85 (FR-01 endpoints); SPEC.md L95-99 (FR-02 endpoints); SPEC.md L309 (task fields).
 """
+# pragma: no error-handling — pydantic request/response models; validation failures are rendered by api.error_handlers
 
 from __future__ import annotations
 

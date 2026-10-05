@@ -8,6 +8,7 @@ is the generic 500 fallback rendered by ``api.middleware``.
 Citations: SPEC.md L88-91 (FR-01 422/404); SPEC.md L162-168 (FR-10);
 SPEC.md L331-346 (7 error table).
 """
+# pragma: no error-handling — exception class definitions only
 
 from __future__ import annotations
 

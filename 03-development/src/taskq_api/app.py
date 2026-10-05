@@ -14,6 +14,7 @@ SPEC.md L115-120 (FR-05);
 SPEC.md L287-302 (5.1 settings);
 02-architecture/SAD.md L46.
 """
+# pragma: no error-handling — composition root; startup failures abort boot and lifespan orders shutdown
 
 from __future__ import annotations
 

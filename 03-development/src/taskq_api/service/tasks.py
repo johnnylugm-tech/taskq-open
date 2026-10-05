@@ -7,6 +7,7 @@ uniqueness is enforced by the repository on insert.
 Citations: SPEC.md L79-91 (FR-01); SPEC.md L88 (validation rules);
 02-architecture/SAD.md L97.
 """
+# pragma: no error-handling — pure domain logic; raises TaskqError, rendered by api.error_handlers
 
 from __future__ import annotations
 

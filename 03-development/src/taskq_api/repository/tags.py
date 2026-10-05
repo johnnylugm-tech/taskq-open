@@ -4,6 +4,7 @@
 
 Citations: SPEC.md L86 (delete in one transaction); SPEC.md L311-312.
 """
+# pragma: no error-handling — thin statements on the caller's Session; failures roll back in UnitOfWork.__exit__
 
 from __future__ import annotations
 

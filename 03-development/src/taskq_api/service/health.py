@@ -7,6 +7,7 @@ run latency percentiles and rate-limit rejections, never the DB URL (NFR-04).
 Citations: SPEC.md L152-160 (FR-09); SPEC.md L343 (503 not-ready);
 02-architecture/SAD.md L70, L105, L206, L244.
 """
+# pragma: no error-handling — pure domain logic; raises TaskqError, rendered by api.error_handlers
 
 from __future__ import annotations
 

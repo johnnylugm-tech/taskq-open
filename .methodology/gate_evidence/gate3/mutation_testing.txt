@@ -1,0 +1,2 @@
+  [mutation] resuming from 139264 bytes of prior results
+{"success": true, "score": 96.6, "message": "killed=285 survived=10 score=96.6 [scope: 03-development/src/taskq_api/repository, 03-development/src/taskq_api/service]", "cache_path": "/Users/johnny/projects/taskq-open/.mutmut-cache"}

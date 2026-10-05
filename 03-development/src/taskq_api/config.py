@@ -10,6 +10,7 @@ Supplies the log level/format and the listen host/port (SPEC.md 5.1).
 Citations: SPEC.md L287-302 (5.1 environment variables); SPEC.md L122-128 (FR-06 pool);
 SPEC.md L145-150 (FR-08); SPEC.md L193 (NFR-02 CORS).
 """
+# pragma: no error-handling — env parsing fails fast at startup by design: an invalid value aborts boot
 
 from __future__ import annotations
 

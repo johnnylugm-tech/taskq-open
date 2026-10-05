@@ -136,6 +136,29 @@ def test_nfr01_list_p95_under_80ms(big_db):
     assert result_p95_ms < p95_budget_ms, result_p95_ms  # ACN1.1-p95 (NFR-01)
 
 
+def _benchmark_get(benchmark, big_db, path_for, params, budget_ms):
+    """Time one GET per round at 10k rows; the mean must stay inside the NFR-01 p95 budget."""
+    _, ids = big_db
+    with TestClient(create_app()) as test_client:
+        resp = benchmark.pedantic(
+            test_client.get, args=(path_for(ids),), kwargs={"params": params, "headers": _headers("read")},
+            rounds=20, iterations=1, warmup_rounds=1,
+        )
+    return resp, benchmark.stats.stats.mean * 1000, budget_ms
+
+
+def test_nfr01_benchmark_get_task_mean(benchmark, big_db):
+    resp, mean_ms, budget_ms = _benchmark_get(benchmark, big_db, lambda ids: f"/v1/tasks/{ids[5000]}", None, 30)
+    assert resp.status_code == 200  # ACN1.1-p95 (NFR-01)
+    assert mean_ms < budget_ms, mean_ms  # ACN1.1-p95 (NFR-01)
+
+
+def test_nfr01_benchmark_list_tasks_mean(benchmark, big_db):
+    resp, mean_ms, budget_ms = _benchmark_get(benchmark, big_db, lambda ids: "/v1/tasks", {"limit": 50}, 80)
+    assert len(resp.json()["items"]) == 50  # ACN1.1-p95 (NFR-01)
+    assert mean_ms < budget_ms, mean_ms  # ACN1.1-p95 (NFR-01)
+
+
 def _count_statements(db_file: Path) -> int:
     counted: list[str] = []
 

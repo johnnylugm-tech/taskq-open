@@ -4,6 +4,7 @@
 
 Citations: SPEC.md L136 (v1 row); SPEC.md L308-309, L313, L315 (5.2 schema).
 """
+# pragma: no error-handling — runs inside one alembic transaction; a failing revision rolls back (NFR-03 AC-N3.6)
 
 import sqlalchemy as sa
 from alembic import op

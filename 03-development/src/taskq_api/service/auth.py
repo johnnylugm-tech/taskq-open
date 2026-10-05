@@ -6,6 +6,7 @@ looked up, compared with ``hmac.compare_digest`` and rejected when revoked.
 Citations: SPEC.md L101-107 (FR-03); SPEC.md L337 (401 problem type);
 02-architecture/SAD.md L67, L99, L176.
 """
+# pragma: no error-handling — pure domain logic; raises TaskqError, rendered by api.error_handlers
 
 from __future__ import annotations
 

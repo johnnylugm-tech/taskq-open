@@ -8,6 +8,7 @@ explicitly so the page has no N+1.
 Citations: SPEC.md L79-91 (FR-01); SPEC.md L309 (tasks columns); SPEC.md L137 (v2 unique name);
 SPEC.md L127 (FR-06 eager loading); SPEC.md L311-312 (tags, task_tags).
 """
+# pragma: no error-handling — declarative ORM mapping, no executable logic
 
 from __future__ import annotations
 

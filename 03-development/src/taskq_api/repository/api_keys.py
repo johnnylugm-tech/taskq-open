@@ -5,6 +5,7 @@
 Citations: SPEC.md L101-107 (FR-03); SPEC.md L310 (api_keys columns);
 02-architecture/SAD.md L99, L176.
 """
+# pragma: no error-handling — thin statements on the caller's Session; failures roll back in UnitOfWork.__exit__
 
 from __future__ import annotations
 

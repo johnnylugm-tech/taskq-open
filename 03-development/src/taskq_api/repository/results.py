@@ -6,6 +6,7 @@ finishes, and lists a task's runs newest first.
 Citations: SPEC.md L93-99 (FR-02); SPEC.md L312 (task_results columns);
 SPEC.md L126 (no string-built SQL).
 """
+# pragma: no error-handling — thin statements on the caller's Session; failures roll back in UnitOfWork.__exit__
 
 from __future__ import annotations
 

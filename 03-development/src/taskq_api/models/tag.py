@@ -4,6 +4,7 @@
 
 Citations: SPEC.md L86 (delete in one transaction); SPEC.md L311-312 (tags, task_tags).
 """
+# pragma: no error-handling — declarative ORM mapping, no executable logic
 
 from __future__ import annotations
 

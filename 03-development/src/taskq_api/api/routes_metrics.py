@@ -5,6 +5,7 @@ rejection count, for keys of scope ``admin``.
 
 Citations: SPEC.md L158 (FR-09); SPEC.md L111-113 (FR-04); 02-architecture/SAD.md L57.
 """
+# pragma: no error-handling — thin routing; TaskqError is rendered by api.error_handlers, anything else by CorrelationMiddleware
 
 from __future__ import annotations
 

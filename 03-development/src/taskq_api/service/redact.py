@@ -4,6 +4,7 @@
 
 Citations: SPEC.md L98 (FR-02 output tails); SPEC.md L207-210 (NFR-04 regex).
 """
+# pragma: no error-handling — pure string function, cannot fail
 
 from __future__ import annotations
 

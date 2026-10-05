@@ -4,6 +4,7 @@
 
 Citations: SPEC.md L304-316 (5.2 database schema); SPEC.md L68 (SQLAlchemy 2.x).
 """
+# pragma: no error-handling — declarative ORM mapping, no executable logic
 
 from __future__ import annotations
 

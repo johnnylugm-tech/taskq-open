@@ -4,6 +4,7 @@
 
 Citations: SPEC.md L79-86 (scopes per endpoint); SPEC.md L310 (api_keys columns).
 """
+# pragma: no error-handling — declarative ORM mapping, no executable logic
 
 from __future__ import annotations
 

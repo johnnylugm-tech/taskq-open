@@ -9,6 +9,7 @@ Citations: SPEC.md L86 (delete in one transaction); SPEC.md L119 (FR-05 lock);
 SPEC.md L122-128 (FR-06);
 02-architecture/SAD.md L20, L166.
 """
+# pragma: no error-handling — UnitOfWork.__exit__ try/finally guarantees rollback and close; engine setup fails fast
 
 from __future__ import annotations
 

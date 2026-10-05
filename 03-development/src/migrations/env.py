@@ -6,6 +6,7 @@ online mode runs against ``sqlalchemy.url`` in one transaction.
 Citations: SPEC.md L140 (upgrade head / downgrade base); SPEC.md L143
 (offline SQL); 02-architecture/SAD.md L103.
 """
+# pragma: no error-handling — runs inside one alembic transaction; a failing revision rolls back (NFR-03 AC-N3.6)
 
 from __future__ import annotations
 

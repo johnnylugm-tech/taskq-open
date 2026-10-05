@@ -4,7 +4,7 @@
 
 {
   "errors": [],
-  "generated_at": "2026-10-04T22:13:32Z",
+  "generated_at": "2026-10-05T00:00:05Z",
   "metrics": {
     "/Users/johnny/projects/taskq-open/03-development/src/migrations/__init__.py": {
       "CONFIDENCE.HIGH": 0,
@@ -132,7 +132,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 70,
+      "loc": 69,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -236,7 +236,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 56,
+      "loc": 92,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -249,7 +249,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 40,
+      "loc": 55,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -262,7 +262,7 @@
       "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 47,
+      "loc": 56,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -522,7 +522,7 @@
       "SEVERITY.LOW": 1,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 87,
+      "loc": 88,
       "nosec": 0,
       "skipped_tests": 0
     },
@@ -626,14 +626,14 @@
       "SEVERITY.LOW": 2,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 1972,
+      "loc": 2032,
       "nosec": 0,
       "skipped_tests": 0
     }
   },
   "results": [
     {
-      "code": "76             task = asyncio.current_task()\n77             assert task is not None\n78             self._in_flight.discard(task)\n",
+      "code": "77             task = asyncio.current_task()\n78             assert task is not None\n79             self._in_flight.discard(task)\n",
       "col_offset": 12,
       "end_col_offset": 35,
       "filename": "/Users/johnny/projects/taskq-open/03-development/src/taskq_api/service/executor.py",
@@ -644,9 +644,9 @@
       },
       "issue_severity": "LOW",
       "issue_text": "Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.",
-      "line_number": 77,
+      "line_number": 78,
       "line_range": [
-        77
+        78
       ],
       "more_info": "https://bandit.readthedocs.io/en/1.8.6/plugins/b101_assert_used.html",
       "test_id": "B101",
