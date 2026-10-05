@@ -4,6 +4,7 @@ Source: `01-requirements/SRS.md` (10 FR / 12 NFR), `.methodology/quality_manifes
 Categories: **POS** positive, **NEG** negative, **BND** boundary, **EDG** edge. Priority: P0 (gate-blocking), P1 (required), P2 (nice-to-have).
 Conventions: integration tests use `httpx.AsyncClient(transport=ASGITransport(app))` (AC-N10.2); migration tests use a real SQLite file (AC-N9.5); zero skip/xfail (AC-N9.2). Open Issues NFR-99.1..99.6 are flagged where a case depends on them.
 Keys: R=read, W=write, A=admin.
+Case ID shorthand: full IDs are `TC-FRnn-mm`; the ordinal alone (TC-01, TC-02, TC-03, ...) denotes the mm-th case of each FR table below.
 
 ## 1. Functional Requirements
 
