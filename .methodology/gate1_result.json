@@ -1,22 +1,22 @@
 {
   "gate": 1,
   "phase": 5,
-  "fr_id": "FR-05",
-  "overall_score": 99.52,
+  "fr_id": "FR-06",
+  "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
     "linting": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "All checks passed!\n",
+      "tool_evidence": "All checks passed!",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt"
     },
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791159871830\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.262\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791159998846\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.243\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
@@ -26,16 +26,16 @@
       "tests_passed": 9,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "Name                                                      Stmts   Miss  Cover\n-----------------------------------------------------------------------------\n03-development/src/taskq_api/repository/rate_buckets.py      17      0   100%\n03-development/src/taskq_api/service/ratelimit.py            35      0   100%\n-----------------------------------------------------------------------------\nTOTAL                                                        52      0   100%\n\n9 passed, 1 warning",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-05.txt",
+      "tool_evidence": "9 passed, 1 warning; coverage of session.py+uow.py 100.0%; 7/7 required tests present",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-06.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-05",
+      "coverage_scope_fr": "FR-06",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "=============\nImport Linter\n=============\n\n---------\nContracts\n---------\n\nAnalyzed 73 files, 206 dependencies.\n------------------------------------\n\ntaskq_api layers KEPT\ntaskq_api independence KEPT\nno sqlalchemy outside repository KEPT\n\nContracts: 3 kept, 0 broken.\nexit=0\n",
+      "tool_evidence": "Analyzed 73 files, 206 dependencies. taskq_api layers KEPT; independence KEPT; no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -78,26 +78,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "3db8bbe1871014f7173f5153b942dbea800277ca27574732c5a5a4442c44d6c5",
+      "sha256": "8b0fa7256a3ca02a703ea29dd41ea614408e86e27db3c691f972e9e4534a4182",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791159871830\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.262\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791159998846\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.243\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "3227597fe4138dfc243f444407c2a1f398dfe21fc0de61d4b426cf827dbb8c82",
-      "bytes": 488,
-      "head": "Name                                                      Stmts   Miss  Cover\n-----------------------------------------------------------------------------\n03-development/src/taskq_api/repository/rate_buckets.py      17      0   100%\n03-development/src/taskq_api/service/ratelimit.py            35      0   100%\n-----------------------------------------------------------------------------\nTOTAL                                                        52      0   100%\n\n9 passed, 1 warning"
+      "sha256": "9466bc1b67ec83d7aa8925ed53735a07f3fe203ff241ccf7f60d00a59a5286cc",
+      "bytes": 85,
+      "head": "9 passed, 1 warning; coverage of session.py+uow.py 100.0%; 7/7 required tests present"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "873b746f36861179eabd0635536d1ab0b5b0953258a7fb6c267861c5af13b250",
-      "bytes": 273,
-      "head": "=============\nImport Linter\n=============\n\n---------\nContracts\n---------\n\nAnalyzed 73 files, 206 dependencies.\n------------------------------------\n\ntaskq_api layers KEPT\ntaskq_api independence KEPT\nno sqlalchemy outside repository KEPT\n\nContracts: 3 kept, 0 broken.\nexit=0"
+      "sha256": "81547f00466fe5ca04eccda041f622a3205e8404625b929d822e01efef78ce2c",
+      "bytes": 146,
+      "head": "Analyzed 73 files, 206 dependencies. taskq_api layers KEPT; independence KEPT; no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken."
     }
   },
-  "composite_score": 99.52,
+  "composite_score": 100.0,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
