@@ -1,7 +1,7 @@
 {
   "gate": 1,
   "phase": 7,
-  "fr_id": "FR-01",
+  "fr_id": "FR-02",
   "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
@@ -9,33 +9,35 @@
     "linting": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "All checks passed!",
+      "tool_evidence": "All checks passed!\n",
+      "evidence_file": ".sessi-work/round_1/tools/linting.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt"
     },
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791223250192\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.244\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791223374213\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.235\n    }\n}\n\n",
+      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 29,
+      "tests_passed": 25,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "29 passed, 1 warning in 0.82s; FR-01 files coverage 157/157 statements = 100.0%; spec coverage 16/16",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-01.txt",
+      "tool_evidence": "25 passed, 1 warning; FR-02 files coverage 142/142 statements = 100%; 11/11 required tests present",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-02.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-01",
+      "coverage_scope_fr": "FR-02",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 73 files, 206 dependencies. taskq_api layers KEPT; independence KEPT; no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken.",
+      "tool_evidence": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -78,23 +80,23 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "ef6994fc78a9daaa939af79d28b65b4ecb6a9d0d763b2a33d2574f0fb47e4cd3",
+      "sha256": "1ba111db957e538471df869acbfe47c867d83614bf25902c8547b6cecf5c6f0c",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791223250192\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.244\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791223374213\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.235\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "dcb48abbdf24ae2e6797c7aae37d77786d9508adb6de1738a04f46d4f89bff9c",
-      "bytes": 100,
-      "head": "29 passed, 1 warning in 0.82s; FR-01 files coverage 157/157 statements = 100.0%; spec coverage 16/16"
+      "sha256": "89576ccb544e03ce4671ff4adade1462860c3e4cf8d12d314b72608a9d1328ef",
+      "bytes": 98,
+      "head": "25 passed, 1 warning; FR-02 files coverage 142/142 statements = 100%; 11/11 required tests present"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "81547f00466fe5ca04eccda041f622a3205e8404625b929d822e01efef78ce2c",
-      "bytes": 146,
-      "head": "Analyzed 73 files, 206 dependencies. taskq_api layers KEPT; independence KEPT; no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken."
+      "sha256": "6f2d7060a41682c338a5c47fb3a43a5a9c2e00c0716c93b3422b98147e1c630f",
+      "bytes": 65,
+      "head": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken."
     }
   },
   "composite_score": 100.0,
