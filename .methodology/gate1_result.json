@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 8,
-  "fr_id": "FR-08",
-  "overall_score": 99.71424999999999,
+  "fr_id": "FR-09",
+  "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -16,26 +16,26 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791288176682\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.239\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791288287586\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.259\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 25,
+      "tests_passed": 7,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "25 passed, 1 warning; FR-08 files coverage 98.857%",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-08.txt",
+      "tool_evidence": "test_fr09.py 7 passed, 1 warning; FR-09 coverage 83/83 statements = 100%",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-09.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-08",
+      "coverage_scope_fr": "FR-09",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Contracts: 3 kept, 0 broken.",
+      "tool_evidence": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -78,26 +78,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "98055b090a4d1aaf9529ae982f2deea7fc9f8de3e29dd58577e970eb8edc9c3a",
+      "sha256": "1fd2862a9343413b731f0cb36f7585fbdc6a1ebf961a638600d9c10b4c5b6aa6",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791288176682\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.239\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791288287586\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.259\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "19adb2f482dc58aaa7c292e57f28a18b42d2f80cd4eeae8823ea5e93bf08237f",
-      "bytes": 50,
-      "head": "25 passed, 1 warning; FR-08 files coverage 98.857%"
+      "sha256": "4ff94f7bfa148ec727da166cd767e157ee58725c7772675fbd727fa59fa3ae29",
+      "bytes": 72,
+      "head": "test_fr09.py 7 passed, 1 warning; FR-09 coverage 83/83 statements = 100%"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "7aa947691432dba918485ec10900b61a04db79503214e12490e7f803a17b962b",
-      "bytes": 28,
-      "head": "Contracts: 3 kept, 0 broken."
+      "sha256": "6f2d7060a41682c338a5c47fb3a43a5a9c2e00c0716c93b3422b98147e1c630f",
+      "bytes": 65,
+      "head": "Analyzed 73 files, 206 dependencies. Contracts: 3 kept, 0 broken."
     }
   },
-  "composite_score": 99.7142,
+  "composite_score": 100.0,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
