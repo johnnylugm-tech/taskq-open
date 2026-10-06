@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 8,
-  "fr_id": "FR-05",
-  "overall_score": 99.52,
+  "fr_id": "FR-06",
+  "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -16,7 +16,7 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287819790\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.245\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287947362\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.244\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
@@ -26,16 +26,16 @@
       "tests_passed": 9,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "9 passed, 1 warning; coverage ratelimit.py+rate_buckets.py 51/52 statements = 98.08%; spec coverage 7/7",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-05.txt",
+      "tool_evidence": "9 passed, 1 warning in 0.53s; coverage session.py+uow.py 58/58 statements = 100%",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-06.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-05",
+      "coverage_scope_fr": "FR-06",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "PYTHONPATH=03-development/src lint-imports: Analyzed 73 files, 206 dependencies. layers KEPT, independence KEPT, no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken. (PYTHONPATH=src failed: Could not find package 'taskq_api' in your Python path.)",
+      "tool_evidence": "Analyzed 73 files, 206 dependencies. taskq_api layers KEPT; taskq_api independence KEPT; no sqlalchemy outside repository KEPT; Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -78,26 +78,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "ce980c94511e3874e06f2efe779daef24bb1d61b250e6231b39399ba9cd571b5",
+      "sha256": "99e9291f3f271dae98258180fe2a6947141042015019f25b62c8d14ffa6230cf",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287819790\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.245\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287947362\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.244\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "791b6b65a116dd8765e107ff0007e86ffd2ad3d003ad3b55a6d732bad30177ec",
-      "bytes": 103,
-      "head": "9 passed, 1 warning; coverage ratelimit.py+rate_buckets.py 51/52 statements = 98.08%; spec coverage 7/7"
+      "sha256": "1737ceaea8888903e53e89f467113d8276e72d10e9828cc51931116428ce6b33",
+      "bytes": 80,
+      "head": "9 passed, 1 warning in 0.53s; coverage session.py+uow.py 58/58 statements = 100%"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "56e994470dbb5477b0290d68cb43839dfb7d79d3f0583e04fd5e7e7f6d18c101",
-      "bytes": 261,
-      "head": "PYTHONPATH=03-development/src lint-imports: Analyzed 73 files, 206 dependencies. layers KEPT, independence KEPT, no sqlalchemy outside repository KEPT. Contracts: 3 kept, 0 broken. (PYTHONPATH=src failed: Could not find package 'taskq_api' in your Python path.)"
+      "sha256": "fc3e6e4b69264091370985fe43311c7ac30e781b16ff1ccd9db0770f5ce35935",
+      "bytes": 156,
+      "head": "Analyzed 73 files, 206 dependencies. taskq_api layers KEPT; taskq_api independence KEPT; no sqlalchemy outside repository KEPT; Contracts: 3 kept, 0 broken."
     }
   },
-  "composite_score": 99.52,
+  "composite_score": 100.0,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
