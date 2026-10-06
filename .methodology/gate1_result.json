@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 8,
-  "fr_id": "FR-02",
-  "overall_score": 100.0,
+  "fr_id": "FR-03",
+  "overall_score": 99.01,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -16,26 +16,26 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287437719\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.234\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287574460\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.245\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 25,
+      "tests_passed": 22,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "25 passed, 1 warning in 6.57s\nName                                                 Stmts   Miss  Cover\n------------------------------------------------------------------------\n03-development/src/taskq_api/api/routes_runs.py         23      0   100%\n03-development/src/taskq_api/repository/results.py      16      0   100%\n03-development/src/taskq_api/service/runner.py          63      0   100%\n03-development/src/taskq_api/servic",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-02.txt",
+      "tool_evidence": "22 passed, 1 warning; FR-03 files coverage 96.05% (73/76 stmts, 3 missing); spec coverage 8/8",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-03.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-02",
+      "coverage_scope_fr": "FR-03",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "\u001b[1m=============\u001b[0m\n\u001b[1mImport Linter\u001b[0m\n\u001b[1m=============\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[1m---------\u001b[0m\n\u001b[1mContracts\u001b[0m\n\u001b[1m---------\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[1mAnalyzed 73 files, 206 dependencies.\u001b[0m\n\u001b[1m------------------------------------\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[22mtaskq_api layers \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mtaskq_api independence \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mno sqlalchemy outside repository \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[22mContracts: 3 kept, ",
+      "tool_evidence": "Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -78,26 +78,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "10a2464c0550cc8067624062d04cbcda973b711c32071a87912996e9e6b1a15b",
+      "sha256": "df2a0b835c35e70eca6c43583caa43e07f799665b43d1d71220cac0dfa7ede04",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287437719\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.234\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287574460\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.245\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "93f8f529307a519dd1683d0ca5309d39b4fa76218f35df8c203b6ab2bff67e07",
-      "bytes": 430,
-      "head": "25 passed, 1 warning in 6.57s\nName                                                 Stmts   Miss  Cover\n------------------------------------------------------------------------\n03-development/src/taskq_api/api/routes_runs.py         23      0   100%\n03-development/src/taskq_api/repository/results.py      16      0   100%\n03-development/src/taskq_api/service/runner.py          63      0   100%\n03-development/src/taskq_api/servic"
+      "sha256": "4a9546ce7738d4354e0cbe77d8ee0f35df2f85d526ece25d7ac5bb144a84b48d",
+      "bytes": 93,
+      "head": "22 passed, 1 warning; FR-03 files coverage 96.05% (73/76 stmts, 3 missing); spec coverage 8/8"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "b413c433fba85f55cc32cf0b4b5baf735ac2ab7cefb8c5edb85561f2cacf58bc",
-      "bytes": 499,
-      "head": "\u001b[1m=============\u001b[0m\n\u001b[1mImport Linter\u001b[0m\n\u001b[1m=============\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[1m---------\u001b[0m\n\u001b[1mContracts\u001b[0m\n\u001b[1m---------\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[1mAnalyzed 73 files, 206 dependencies.\u001b[0m\n\u001b[1m------------------------------------\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[22mtaskq_api layers \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mtaskq_api independence \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22mno sqlalchemy outside repository \u001b[0m\u001b[32m\u001b[22mKEPT\u001b[0m\u001b[33m\u001b[22m\u001b[0m\u001b[22m\u001b[0m\n\u001b[22m\u001b[0m\n\u001b[22mContracts: 3 kept,"
+      "sha256": "7aa947691432dba918485ec10900b61a04db79503214e12490e7f803a17b962b",
+      "bytes": 28,
+      "head": "Contracts: 3 kept, 0 broken."
     }
   },
-  "composite_score": 100.0,
+  "composite_score": 99.01,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
