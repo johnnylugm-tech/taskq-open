@@ -82,6 +82,17 @@
         "harness/gate_configs": "d91e4c3c9409081ea44b75ae3060f3293fa59cab"
       },
       "delivered_tree_sha256": "f93adda4cbe6a76a0d0b19bc5d998a5e39cf9423d057fff1f95033ebb480c93c"
+    },
+    "8": {
+      "sha": "80ec68329a2aeb9b220812f6f67c096d584ecf12",
+      "timestamp": "2026-10-06T12:17:15.837462+00:00",
+      "enforcer_sha": "27f354cae2e052a40b9c0e02c78a75defbab135a",
+      "enforcer_surface": {
+        "core/quality_gate": "40c4764bb48a87dec52ca7538d9b53a9daa6c2a5",
+        "harness/harness_bridge.py": "e853d6a3102801dc57ec8b408dafd6e196987785",
+        "harness/gate_configs": "d91e4c3c9409081ea44b75ae3060f3293fa59cab"
+      },
+      "delivered_tree_sha256": "99c235c1b5f2c7f84bf3c0cc65de237febd7199fb91d146caef42b848b23a348"
     }
   },
   "test_inventory_checksum": "2007422fca7553a6fca9573d44d2bc3e0c54676230cdc6e5764cfb0b22e6365c",
