@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 8,
-  "fr_id": "FR-06",
-  "overall_score": 100.0,
+  "fr_id": "FR-07",
+  "overall_score": 97.09,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -10,32 +10,34 @@
       "score": 100.0,
       "threshold": 100,
       "tool_evidence": "All checks passed!",
+      "evidence_file": ".sessi-work/round_1/tools/linting.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt"
     },
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287947362\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.244\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791288055232\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.26\n    }\n}\n\n",
+      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 9,
+      "tests_passed": 8,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "9 passed, 1 warning in 0.53s; coverage session.py+uow.py 58/58 statements = 100%",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-06.txt",
+      "tool_evidence": "test_fr07.py 8 passed; FR-07 coverage 88.35% (migration_state.py 77.4%, missing lines 75-79,84,92-98; v1/v2/v3 100%)",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-07.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-06",
+      "coverage_scope_fr": "FR-07",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Analyzed 73 files, 206 dependencies. taskq_api layers KEPT; taskq_api independence KEPT; no sqlalchemy outside repository KEPT; Contracts: 3 kept, 0 broken.",
+      "tool_evidence": "Contracts: 3 kept, 0 broken. (run from repo root with PYTHONPATH=03-development/src; the given cwd 03-development had no .importlinter)",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -78,26 +80,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "99e9291f3f271dae98258180fe2a6947141042015019f25b62c8d14ffa6230cf",
-      "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287947362\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.244\n    }\n}"
+      "sha256": "0a8b711e62dcd2f1f7ddfa1a1b5b7edaf3f48bc5ac262397b58382a03178513e",
+      "bytes": 249,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791288055232\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.26\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "1737ceaea8888903e53e89f467113d8276e72d10e9828cc51931116428ce6b33",
-      "bytes": 80,
-      "head": "9 passed, 1 warning in 0.53s; coverage session.py+uow.py 58/58 statements = 100%"
+      "sha256": "446812d13235c80c473130cd2f08ecd33ba846784f59f175f7f1765b6f4999ee",
+      "bytes": 116,
+      "head": "test_fr07.py 8 passed; FR-07 coverage 88.35% (migration_state.py 77.4%, missing lines 75-79,84,92-98; v1/v2/v3 100%)"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "fc3e6e4b69264091370985fe43311c7ac30e781b16ff1ccd9db0770f5ce35935",
-      "bytes": 156,
-      "head": "Analyzed 73 files, 206 dependencies. taskq_api layers KEPT; taskq_api independence KEPT; no sqlalchemy outside repository KEPT; Contracts: 3 kept, 0 broken."
+      "sha256": "f08d1a02cdd24fb5b2080bcde7e70253a34ced1171a56bfd7890948ca3297eaf",
+      "bytes": 135,
+      "head": "Contracts: 3 kept, 0 broken. (run from repo root with PYTHONPATH=03-development/src; the given cwd 03-development had no .importlinter)"
     }
   },
-  "composite_score": 100.0,
+  "composite_score": 97.09,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
