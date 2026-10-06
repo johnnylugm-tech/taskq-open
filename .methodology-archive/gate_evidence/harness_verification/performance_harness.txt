@@ -1,0 +1,186 @@
+# Harness-executed: pytest-benchmark
+# returncode: 0
+# agent_score: 100.0 | threshold: 75.0
+
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 32%]
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 64%]
+sssssssssssssssssssssssssssssssssss..sssssssssssssssssssssssssssssssssss [ 96%]
+ssssssss                                                                 [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.11/site-packages/fastapi/testclient.py:1
+  /Users/johnny/projects/taskq-open/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+
+---------------------------- benchmark: 2 tests ---------------------------
+Name (time in ms)                          Mean               Max          
+---------------------------------------------------------------------------
+test_nfr01_benchmark_get_task_mean       1.6838 (1.0)      2.3842 (1.0)    
+test_nfr01_benchmark_list_tasks_mean     2.4346 (1.45)     2.6671 (1.12)   
+---------------------------------------------------------------------------
+
+Legend:
+  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+  OPS: Operations Per Second, computed as 1 / Mean
+2 passed, 222 skipped, 1 warning in 0.61s
+
+Wrote benchmark data in: <_io.BufferedWriter name='.sessi-work/benchmark_report.json'>
+=== TOOL_OUTPUT_ARTIFACT ===
+{
+    "machine_info": {
+        "node": "JohnnydeMac-Studio.local",
+        "processor": "arm",
+        "machine": "arm64",
+        "python_compiler": "Clang 22.1.3 ",
+        "python_implementation": "CPython",
+        "python_implementation_version": "3.11.15",
+        "python_version": "3.11.15",
+        "python_build": [
+            "main",
+            "May 10 2026 19:23:07"
+        ],
+        "release": "27.0.0",
+        "system": "Darwin",
+        "cpu": {
+            "python_version": "3.11.15.final.0 (64 bit)",
+            "cpuinfo_version": [
+                9,
+                0,
+                0
+            ],
+            "cpuinfo_version_string": "9.0.0",
+            "arch": "ARM_8",
+            "bits": 64,
+            "count": 32,
+            "arch_string_raw": "arm64",
+            "brand_raw": "Apple M3 Ultra"
+        }
+    },
+    "commit_info": {
+        "id": "c02cec7c9c9de0ea26c7f30950fa3f634cbf6120",
+        "time": "2026-10-05T23:04:41+08:00",
+        "author_time": "2026-10-05T23:04:41+08:00",
+        "dirty": true,
+        "project": "taskq-open",
+        "branch": "main"
+    },
+    "benchmarks": [
+        {
+            "group": null,
+            "name": "test_nfr01_benchmark_get_task_mean",
+            "fullname": "03-development/tests/test_nfr_runtime.py::test_nfr01_benchmark_get_task_mean",
+            "params": null,
+            "param": null,
+            "extra_info": {},
+            "options": {
+                "disable_gc": true,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0014805420069023967,
+                "max": 0.0023842499940656126,
+                "mean": 0.0016837812479934655,
+                "stddev": 0.00020621492633362965,
+                "rounds": 20,
+                "median": 0.0016282914875773713,
+                "iqr": 0.00015656251343898475,
+                "q1": 0.0015777289954712614,
+                "q3": 0.0017342915089102462,
+                "iqr_outliers": 2,
+                "stddev_outliers": 2,
+                "outliers": "2;2",
+                "ld15iqr": 0.0014805420069023967,
+                "hd15iqr": 0.00200154198682867,
+                "ops": 593.9013759606146,
+                "total": 0.03367562495986931,
+                "data": [
+                    0.0023842499940656126,
+                    0.00200154198682867,
+                    0.0018454999953974038,
+                    0.0017349999980069697,
+                    0.0017581249994691461,
+                    0.0015904169995337725,
+                    0.0017335830198135227,
+                    0.001622707990463823,
+                    0.0017100419790949672,
+                    0.0015770829922985286,
+                    0.0016344579926226288,
+                    0.0014989999763201922,
+                    0.0015899580030236393,
+                    0.0016338749846909195,
+                    0.0015292080061044544,
+                    0.0016444580105599016,
+                    0.0015480420261155814,
+                    0.0015783749986439943,
+                    0.0015794589999131858,
+                    0.0014805420069023967
+                ],
+                "iterations": 1
+            }
+        },
+        {
+            "group": null,
+            "name": "test_nfr01_benchmark_list_tasks_mean",
+            "fullname": "03-development/tests/test_nfr_runtime.py::test_nfr01_benchmark_list_tasks_mean",
+            "params": null,
+            "param": null,
+            "extra_info": {},
+            "options": {
+                "disable_gc": true,
+                "timer": "perf_counter",
+                "min_rounds": 5,
+                "max_time": 1.0,
+                "min_time": 5e-06,
+                "warmup": false
+            },
+            "stats": {
+                "min": 0.0022946670069359243,
+                "max": 0.002667124994331971,
+                "mean": 0.0024345957514015026,
+                "stddev": 8.181266162959028e-05,
+                "rounds": 20,
+                "median": 0.0024192289856728166,
+                "iqr": 8.689600508660078e-05,
+                "q1": 0.002394270501099527,
+                "q3": 0.0024811665061861277,
+                "iqr_outliers": 1,
+                "stddev_outliers": 4,
+                "outliers": "4;1",
+                "ld15iqr": 0.0022946670069359243,
+                "hd15iqr": 0.002667124994331971,
+                "ops": 410.7458083849603,
+                "total": 0.04869191502803005,
+                "data": [
+                    0.002667124994331971,
+                    0.0025372500240337104,
+                    0.0024918749986682087,
+                    0.0024723329988773912,
+                    0.0024213749857153744,
+                    0.002417082985630259,
+                    0.002405707986326888,
+                    0.0024550000089220703,
+                    0.002490000013494864,
+                    0.0024954160035122186,
+                    0.0024516670091543347,
+                    0.0023870000150054693,
+                    0.0022946670069359243,
+                    0.002410291985142976,
+                    0.002441417018417269,
+                    0.0023825829848647118,
+                    0.0024046250036917627,
+                    0.0023097500088624656,
+                    0.0024015409871935844,
+                    0.0023552080092485994
+                ],
+                "iterations": 1
+            }
+        }
+    ],
+    "datetime": "2026-10-05T15:11:42.729270+00:00",
+    "version": "5.2.3"
+}

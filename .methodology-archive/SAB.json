@@ -1,0 +1,395 @@
+{
+  "version": "1.0",
+  "created_at": "2026-10-04",
+  "phase": 2,
+  "project": "taskq-api",
+  "layers": [
+    {
+      "name": "api",
+      "modules": [
+        "taskq_api.api.deps",
+        "taskq_api.api.schemas",
+        "taskq_api.api.routes_tasks",
+        "taskq_api.api.routes_runs",
+        "taskq_api.api.routes_health",
+        "taskq_api.api.routes_metrics",
+        "taskq_api.api.error_handlers",
+        "taskq_api.api.middleware",
+        "taskq_api.api"
+      ],
+      "allowed_dependencies": [
+        "service",
+        "shared"
+      ]
+    },
+    {
+      "name": "service",
+      "modules": [
+        "taskq_api.service.uow",
+        "taskq_api.service.tasks",
+        "taskq_api.service.runs",
+        "taskq_api.service.runner",
+        "taskq_api.service.executor",
+        "taskq_api.service.auth",
+        "taskq_api.service.ratelimit",
+        "taskq_api.service.redact",
+        "taskq_api.service.health",
+        "taskq_api.service"
+      ],
+      "allowed_dependencies": [
+        "repository",
+        "models",
+        "shared"
+      ]
+    },
+    {
+      "name": "repository",
+      "modules": [
+        "taskq_api.repository.session",
+        "taskq_api.repository.tasks",
+        "taskq_api.repository.results",
+        "taskq_api.repository.api_keys",
+        "taskq_api.repository.rate_buckets",
+        "taskq_api.repository.tags",
+        "taskq_api.repository.stats",
+        "taskq_api.repository.migration_state",
+        "taskq_api.repository"
+      ],
+      "allowed_dependencies": [
+        "models",
+        "shared"
+      ]
+    },
+    {
+      "name": "models",
+      "modules": [
+        "taskq_api.models.base",
+        "taskq_api.models.task",
+        "taskq_api.models.api_key",
+        "taskq_api.models.tag",
+        "taskq_api.models.result",
+        "taskq_api.models.rate_bucket",
+        "taskq_api.models"
+      ],
+      "allowed_dependencies": []
+    },
+    {
+      "name": "shared",
+      "modules": [
+        "taskq_api.config",
+        "taskq_api.errors"
+      ],
+      "allowed_dependencies": []
+    },
+    {
+      "name": "entry",
+      "modules": [
+        "taskq_api.app",
+        "taskq_api.cli",
+        "taskq_api.__main__"
+      ],
+      "allowed_dependencies": [
+        "api",
+        "service",
+        "repository",
+        "shared"
+      ]
+    },
+    {
+      "name": "migrations",
+      "modules": [
+        "migrations.versions.v1_initial",
+        "migrations.versions.v2_tags",
+        "migrations.versions.v3_split_results",
+        "migrations.env",
+        "migrations.versions"
+      ],
+      "allowed_dependencies": []
+    }
+  ],
+  "dependencies": {
+    "api": [
+      "service",
+      "shared"
+    ],
+    "service": [
+      "repository",
+      "models",
+      "shared"
+    ],
+    "repository": [
+      "models",
+      "shared"
+    ],
+    "entry": [
+      "api",
+      "service",
+      "repository",
+      "shared"
+    ]
+  },
+  "quality_targets": {
+    "max_complexity": 10,
+    "min_coverage": 100,
+    "max_coupling": 0.3
+  },
+  "nfr_dimension_mapping": {
+    "NFR-01": "performance",
+    "NFR-02": "security",
+    "NFR-03": "error_handling",
+    "NFR-04": "security",
+    "NFR-05": "documentation",
+    "NFR-06": "architecture_constraints",
+    "NFR-07": "license_compliance",
+    "NFR-08": "mutation_testing",
+    "NFR-09": "test_assertion_quality",
+    "NFR-10": "integration_coverage",
+    "NFR-11": "readability",
+    "NFR-12": "execute_verification_target"
+  },
+  "nfr_traceability": {
+    "NFR-01": {
+      "type": "performance",
+      "dimension": "performance",
+      "target": "p95 get < 30ms, list < 80ms at 10k rows; constant SQL statement count",
+      "module": "taskq_api.repository.tasks"
+    },
+    "NFR-02": {
+      "type": "security",
+      "dimension": "security",
+      "target": "bandit 0 HIGH / 0 MEDIUM; no shell=True, eval, exec, string-built SQL",
+      "module": "taskq_api.service.auth"
+    },
+    "NFR-03": {
+      "type": "reliability",
+      "dimension": "error_handling",
+      "target": "no swallowed exceptions; CancelledError re-raised; no orphan processes",
+      "module": "taskq_api.service.executor"
+    },
+    "NFR-04": {
+      "type": "security",
+      "dimension": "security",
+      "target": "redaction regex applied; DB URL absent from logs and metrics",
+      "module": "taskq_api.service.redact"
+    },
+    "NFR-05": {
+      "type": "documentation",
+      "dimension": "documentation",
+      "target": "all public symbols documented with FR/NFR reference",
+      "module": "taskq_api.api.routes_tasks"
+    },
+    "NFR-06": {
+      "type": "layering",
+      "dimension": "architecture_constraints",
+      "target": "lint-imports exit 0; sqlalchemy forbidden outside repository",
+      "module": "taskq_api.repository.session"
+    },
+    "NFR-07": {
+      "type": "licensing",
+      "dimension": "license_compliance",
+      "target": "all dependencies in license allowlist incl. transitive",
+      "module": "taskq_api.config"
+    },
+    "NFR-08": {
+      "type": "mutation",
+      "dimension": "mutation_testing",
+      "target": "mutation score threshold per SPEC NFR-08 on service and repository",
+      "scope_layers": [
+        "service",
+        "repository"
+      ],
+      "module": "taskq_api.service.tasks"
+    },
+    "NFR-09": {
+      "type": "testability",
+      "dimension": "test_assertion_quality",
+      "target": "zero skipped tests; zero assertion-free tests",
+      "module": "taskq_api.repository.migration_state"
+    },
+    "NFR-10": {
+      "type": "integration",
+      "dimension": "integration_coverage",
+      "target": "integration line coverage threshold per SPEC NFR-10",
+      "module": "taskq_api.app"
+    },
+    "NFR-11": {
+      "type": "maintainability",
+      "dimension": "readability",
+      "target": "CC <= 10; file <= 400 lines; directory <= 15 files",
+      "module": "taskq_api.service.tasks"
+    },
+    "NFR-12": {
+      "type": "verifiability",
+      "dimension": "execute_verification_target",
+      "target": "make verify-system exits 0 and prints verify-system: PASS",
+      "module": "taskq_api.app"
+    }
+  },
+  "advisory_only": [],
+  "gate_score_overrides": {
+    "performance": 75.0,
+    "security": 80.0,
+    "error_handling": 80.0,
+    "documentation": 75.0,
+    "architecture_constraints": 100.0,
+    "license_compliance": 100.0,
+    "mutation_testing": 70.0,
+    "test_assertion_quality": 70.0,
+    "integration_coverage": 75.0,
+    "readability": 80.0,
+    "execute_verification_target": 100.0
+  },
+  "fr_module_traceability": {
+    "FR-01": [
+      "taskq_api.api.routes_tasks",
+      "taskq_api.api.schemas",
+      "taskq_api.service.tasks",
+      "taskq_api.repository.tasks",
+      "taskq_api.repository.tags"
+    ],
+    "FR-02": [
+      "taskq_api.api.routes_runs",
+      "taskq_api.service.runs",
+      "taskq_api.service.runner",
+      "taskq_api.repository.results"
+    ],
+    "FR-03": [
+      "taskq_api.service.auth",
+      "taskq_api.repository.api_keys",
+      "taskq_api.cli"
+    ],
+    "FR-04": [
+      "taskq_api.api.deps",
+      "taskq_api.service.auth"
+    ],
+    "FR-05": [
+      "taskq_api.service.ratelimit",
+      "taskq_api.repository.rate_buckets"
+    ],
+    "FR-06": [
+      "taskq_api.repository.session",
+      "taskq_api.service.uow"
+    ],
+    "FR-07": [
+      "migrations.versions.v1_initial",
+      "migrations.versions.v2_tags",
+      "migrations.versions.v3_split_results",
+      "taskq_api.repository.migration_state"
+    ],
+    "FR-08": [
+      "taskq_api.service.executor",
+      "taskq_api.service.runner",
+      "taskq_api.app"
+    ],
+    "FR-09": [
+      "taskq_api.api.routes_health",
+      "taskq_api.api.routes_metrics",
+      "taskq_api.service.health",
+      "taskq_api.repository.stats"
+    ],
+    "FR-10": [
+      "taskq_api.api.error_handlers",
+      "taskq_api.api.middleware",
+      "taskq_api.errors"
+    ]
+  },
+  "architecture_constraints": [
+    {
+      "id": "NFR-06-layers",
+      "executor": "import-linter",
+      "contract_type": "layers",
+      "contract_name": "taskq_api layers",
+      "source_modules": [
+        "taskq_api.__main__",
+        "taskq_api.cli",
+        "taskq_api.app",
+        "taskq_api.api",
+        "taskq_api.service",
+        "taskq_api.repository",
+        "taskq_api.models"
+      ]
+    },
+    {
+      "id": "NFR-06-independence",
+      "executor": "import-linter",
+      "contract_type": "independence",
+      "contract_name": "taskq_api independence",
+      "source_modules": [
+        "taskq_api.config",
+        "taskq_api.errors"
+      ]
+    },
+    {
+      "id": "NFR-06-no-sqlalchemy-outside-repository",
+      "executor": "import-linter",
+      "contract_type": "forbidden",
+      "contract_name": "no sqlalchemy outside repository",
+      "source_modules": [
+        "taskq_api.__main__",
+        "taskq_api.cli",
+        "taskq_api.app",
+        "taskq_api.api",
+        "taskq_api.service",
+        "taskq_api.config",
+        "taskq_api.errors"
+      ],
+      "forbidden_modules": [
+        "sqlalchemy"
+      ]
+    }
+  ],
+  "decision_issues": [
+    {
+      "id": "NFR-99.1",
+      "status": "resolved",
+      "blocks_phase": 3,
+      "resolution_ref": "02-architecture/SAD.md:492"
+    },
+    {
+      "id": "NFR-99.2",
+      "status": "resolved",
+      "blocks_phase": 3,
+      "resolution_ref": "02-architecture/SAD.md:493"
+    },
+    {
+      "id": "NFR-99.3",
+      "status": "resolved",
+      "blocks_phase": 3,
+      "resolution_ref": "02-architecture/SAD.md:494"
+    },
+    {
+      "id": "NFR-99.4",
+      "status": "resolved",
+      "blocks_phase": 3,
+      "resolution_ref": "02-architecture/SAD.md:495"
+    }
+  ],
+  "high_risk_modules": [
+    "taskq_api.service.runner",
+    "taskq_api.service.auth",
+    "taskq_api.repository.session",
+    "migrations.versions.v3_split_results"
+  ],
+  "required_artifacts": [
+    {
+      "path": ".importlinter",
+      "required_by_phase": 3
+    },
+    {
+      "path": "requirements.txt",
+      "required_by_phase": 3
+    },
+    {
+      "path": ".env.example",
+      "required_by_phase": 3
+    },
+    {
+      "path": "alembic.ini",
+      "required_by_phase": 3
+    },
+    {
+      "path": "Makefile",
+      "required_by_phase": 3
+    }
+  ]
+}

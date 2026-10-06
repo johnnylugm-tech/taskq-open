@@ -1,0 +1,332 @@
+{
+  "quality_complete": true,
+  "breakdown": {
+    "linting": {
+      "score": 100.0,
+      "threshold": 90,
+      "tool_output": ".methodology/gate_evidence/gate2/linting.txt",
+      "tool_evidence": "ruff check 03-development (src + tests): All checks passed! (framework-generated root shim harness_cli.py excluded: do-not-edit file)",
+      "score_source": "framework"
+    },
+    "type_safety": {
+      "score": 100.0,
+      "threshold": 85,
+      "tool_output": ".methodology/gate_evidence/gate2/type_safety.txt",
+      "tool_evidence": "pyright 03-development/src: errorCount 0, warningCount 0, filesAnalyzed 47",
+      "score_source": "framework"
+    },
+    "test_coverage": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_output": ".methodology/gate_evidence/gate2/test_coverage.txt",
+      "tool_evidence": "pytest --cov=03-development/src: 205 passed; TOTAL 1020 stmts, 0 miss, 100%",
+      "score_source": "framework"
+    },
+    "security": {
+      "score": 98.0,
+      "threshold": 80,
+      "tool_output": ".methodology/gate_evidence/gate2/security.txt",
+      "tool_evidence": "bandit: 0 HIGH, 0 MEDIUM, 2 LOW (B101 assert at executor.py:77, runs.py:65); 100-2=98",
+      "score_source": "framework"
+    },
+    "secrets_scanning": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_output": ".methodology/gate_evidence/gate2/secrets_scanning.txt",
+      "tool_evidence": "gitleaks detect --source .: 94 commits scanned, no leaks found",
+      "score_source": "framework"
+    },
+    "license_compliance": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_output": ".methodology/gate_evidence/gate2/license_compliance.txt",
+      "tool_evidence": "scancode --license over 03-development/src: 114 files, 0 license detections",
+      "score_source": "artifact_verified"
+    },
+    "mutation_testing": {
+      "score": 96.6,
+      "threshold": 70,
+      "tool_output": ".methodology/gate_evidence/gate2/mutation_testing.txt",
+      "tool_evidence": "framework: compute_mutation_score → killed=285 survived=10 score=96.6 [scope: 03-development/src/taskq_api/repository, 03-development/src/taskq_api/service, 19 files, excluded: ['__init__.py', 'tags.py', 'uow.py']]",
+      "framework_override": true,
+      "score_source": "artifact_verified"
+    },
+    "integration_coverage": {
+      "score": 96.0,
+      "threshold": 75,
+      "tool_output": ".methodology/gate_evidence/gate2/integration_coverage.txt",
+      "tool_evidence": "pytest 03-development/tests/integration --cov=03-development/src: 17 passed; TOTAL 1020 stmts, 40 miss, 96%",
+      "score_source": "framework"
+    },
+    "test_assertion_quality": {
+      "score": 100.0,
+      "threshold": 70,
+      "tool_output": ".methodology/gate_evidence/gate2/test_assertion_quality.txt",
+      "tool_evidence": "{\"total\": 204, \"asserted\": 204, \"zero_assert\": [], \"neutralised\": []}",
+      "score_source": "framework"
+    },
+    "execute_verification_target": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_output": ".methodology/gate_evidence/gate2/execute_verification_target.txt",
+      "tool_evidence": "framework: verify_target_findings → `make verify-system` reaches the delivered package on 1 step(s): smoke_key=$(PYTHONPATH=\"/Users/johnny/projects/taskq-open/03-development/src\" /Users/johnny/projects/taskq-open/.venv/bin/python -m taskq_api key create --scope write); \\. no step swallows the product's verdict. Which steps a requirement asked the recipe to chain is not decided here and is not claimed.",
+      "score_source": "framework"
+    },
+    "traceability": {
+      "score": 97.2027972027972,
+      "threshold": 60.0,
+      "tool_evidence": "framework: compute_trace_dimension(gate=2) → 4a=100.0% 4b=97.2% 4c=100.0% merged=97.2%",
+      "framework_override": true
+    },
+    "architecture": {
+      "score": 100.0,
+      "threshold": 80,
+      "tool_output": ".methodology/gate_evidence/gate2/architecture.txt",
+      "tool_evidence": "crg-arch-check: architecture_score=100.0 (threshold 80) OK",
+      "calibration": {
+        "cohesion_healthy": 0.3,
+        "community_oversized": 50,
+        "graph_files": 64,
+        "source_files": 64
+      }
+    }
+  },
+  "overall_score": null,
+  "rounds_used": 1,
+  "failing_dimensions": [],
+  "enforcer_sha": "78f79c1530eeb5d06e333b6c830bec3b58ff8616",
+  "enforcer_surface": {
+    "core/quality_gate": "4e2db2c4c86f8f8c3eca7e102ef436e7b0004bc3",
+    "harness/harness_bridge.py": "e853d6a3102801dc57ec8b408dafd6e196987785",
+    "harness/gate_configs": "d91e4c3c9409081ea44b75ae3060f3293fa59cab"
+  },
+  "evidence_digest": {
+    "secrets_scanning::.gitleaks.toml": {
+      "source": ".gitleaks.toml (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "aaf76d53514eafabbbda6f381969949f276096ce96d91f4218b45a7a79a9be19",
+      "bytes": 2494,
+      "head": "# Delivered by `init-project` — templates/.gitleaks.toml is the single\n# source; a project's copy is written once and not re-synced (same shape as\n# harness_quality_gate.yml, see core/ci_template.py). SKIP, never overwrite:\n# unlike the CI workflow this file is one projects already hand-author\n# (three corpus projects shipped their own before this template existed),\n# so init-project never touches an existing copy, with or without\n# --overwrite.\n#\n# Round 92. secrets_scanning (tier-1, threshold 100) treats a clean gitleaks\n# run as proof of no secrets. The framework itself writes free-text agent\n# excerpts (test names, coverage summaries) into `.methodology/*.json` and\n# commits them (Round 90: the record has to reach git). generic-api-key's\n# entropy rule fires on names like `test_invalid_api_key_returns_401` —\n# measured on a real project's committed Gate 1 evidence, which blocked P5.\n# Scoped to that ONE rule so a real credential under .methodology/ is still\n# caught by private-key / aws-access-token / github-pat / etc. — verified:\n# a private key planted under .methodology/ is still flagged under this\n# config; a real secret outside .methodology/ is unaffected.\n#\n# The path is `(^|/)\\.methodology...`, not `^\\.methodology...`: two of the"
+    },
+    "mutation_testing::setup.cfg": {
+      "source": "setup.cfg (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "0ddd6a09423cb3e12183ec9ac47a0abd7d92edfc98f34fee784816e46e618c78",
+      "bytes": 311,
+      "head": "# [mutmut] paths_to_mutate — auto-generated from SAB scope_layers\n# by core.quality_gate.mutmut_scope during advance-phase P2→P3 handoff.\n# Human edits will be overwritten on the next P2→P3 advance.\n[mutmut]\npaths_to_mutate = 03-development/src/taskq_api/repository, 03-development/src/taskq_api/service\n"
+    },
+    "test_coverage::setup.cfg": {
+      "source": "setup.cfg (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "0ddd6a09423cb3e12183ec9ac47a0abd7d92edfc98f34fee784816e46e618c78",
+      "bytes": 311,
+      "head": "# [mutmut] paths_to_mutate — auto-generated from SAB scope_layers\n# by core.quality_gate.mutmut_scope during advance-phase P2→P3 handoff.\n# Human edits will be overwritten on the next P2→P3 advance.\n[mutmut]\npaths_to_mutate = 03-development/src/taskq_api/repository, 03-development/src/taskq_api/service\n"
+    },
+    "linting": {
+      "source": ".methodology/gate_evidence/gate2/linting.txt",
+      "kind": "file",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19,
+      "head": "All checks passed!"
+    },
+    "type_safety": {
+      "source": ".methodology/gate_evidence/gate2/type_safety.txt",
+      "kind": "file",
+      "sha256": "a9f72a5a9d30c4067bffa69e034d2686f6517a4e623dacff73cc6273c4d086f2",
+      "bytes": 252,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791151610270\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.186\n    }\n}\n"
+    },
+    "test_coverage": {
+      "source": ".methodology/gate_evidence/gate2/test_coverage.txt",
+      "kind": "file",
+      "sha256": "311ac9025fbb081bfcbdc818403288aef973e07c1b565ff6b761209c992f6129",
+      "bytes": 6688,
+      "head": "============================= test session starts ==============================\nplatform darwin -- Python 3.11.15, pytest-8.4.2, pluggy-1.6.0\nbenchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)\nrootdir: /Users/johnny/projects/taskq-open\nplugins: benchmark-5.2.3, platformdirs-4.12.2, cov-7.1.0, anyio-4.15.1\ncollected 205 items\n\n03-development/tests/integration/test_nfr10_integration.py ............. [  6%]\n....                                                                     [  8%]\n03-development/tests/test_fr01.py ....................                   [ 18%]\n03-development/tests/test_fr02.py .............                          [ 24%]\n03-development/tests/test_fr03.py ............                           [ 30%]\n03-development/tests/test_fr04.py ..........                             [ 35%]\n03-development/tests/test_fr05.py .........                              [ 39%]\n03-development/tests/test_fr06.py .........                              [ 43%]\n03-development/tests/test_fr07.py ........                               [ 47%]\n03-development/tests/test_fr08.py ..........                             [ 52%]\n03-development/tests/test_fr09.py .......                                [ 56%]\n03-development/tests/test_fr10.py ..................                     [ 64%]\n03-development/tests/test_nfr08_mutation_kills.py ...................... [ 75%]"
+    },
+    "security": {
+      "source": ".methodology/gate_evidence/gate2/security.txt",
+      "kind": "file",
+      "sha256": "781653242eb3300ac4ed6cc722e3d592bc84e5c0d9a9cbc50cc7eae31a5a72cd",
+      "bytes": 18541,
+      "head": "{\n  \"errors\": [],\n  \"generated_at\": \"2026-10-04T22:06:50Z\",\n  \"metrics\": {\n    \"03-development/src/migrations/__init__.py\": {\n      \"CONFIDENCE.HIGH\": 0,\n      \"CONFIDENCE.LOW\": 0,\n      \"CONFIDENCE.MEDIUM\": 0,\n      \"CONFIDENCE.UNDEFINED\": 0,\n      \"SEVERITY.HIGH\": 0,\n      \"SEVERITY.LOW\": 0,\n      \"SEVERITY.MEDIUM\": 0,\n      \"SEVERITY.UNDEFINED\": 0,\n      \"loc\": 5,\n      \"nosec\": 0,\n      \"skipped_tests\": 0\n    },\n    \"03-development/src/migrations/env.py\": {\n      \"CONFIDENCE.HIGH\": 0,\n      \"CONFIDENCE.LOW\": 0,"
+    },
+    "secrets_scanning": {
+      "source": ".methodology/gate_evidence/gate2/secrets_scanning.txt",
+      "kind": "file",
+      "sha256": "b851d04af422165be402bd9d3ac7dbd5113f2fb191343fa83b0b4e9880bb32d1",
+      "bytes": 188,
+      "head": "\u001b[90m6:08AM\u001b[0m \u001b[32mINF\u001b[0m \u001b[1m94 commits scanned.\u001b[0m\n\u001b[90m6:08AM\u001b[0m \u001b[32mINF\u001b[0m \u001b[1mscanned ~1071341 bytes (1.07 MB) in 127ms\u001b[0m\n\u001b[90m6:08AM\u001b[0m \u001b[32mINF\u001b[0m \u001b[1mno leaks found\u001b[0m"
+    },
+    "license_compliance": {
+      "source": ".methodology/gate_evidence/gate2/license_compliance.txt",
+      "kind": "file",
+      "sha256": "03c97d2b321cf21d8cdb015c8faa8f8c2ae4d8f12bad594473313aa7344bfa49",
+      "bytes": 36555,
+      "head": "{\n  \"headers\": [\n    {\n      \"tool_name\": \"scancode-toolkit\",\n      \"tool_version\": \"32.4.1\",\n      \"options\": {\n        \"input\": [\n          \"03-development/src\"\n        ],\n        \"--json-pp\": \"-\",\n        \"--license\": true,\n        \"--processes\": \"2\"\n      },\n      \"notice\": \"Generated with ScanCode and provided on an \\\"AS IS\\\" BASIS, WITHOUT WARRANTIES\\nOR CONDITIONS OF ANY KIND, either express or implied. No content created from\\nScanCode should be considered or used as legal advice. Consult an Attorney\\nfor any legal advice.\\nScanCode is a free software code scanning tool from nexB Inc. and others.\\nVisit https://github.com/nexB/scancode-toolkit/ for support and download.\",\n      \"start_timestamp\": \"2026-10-04T220651.051972\",\n      \"end_timestamp\": \"2026-10-04T220656.813946\",\n      \"output_format_version\": \"4.1.0\",\n      \"duration\": 5.761995077133179,\n      \"message\": null,\n      \"errors\": [],"
+    },
+    "mutation_testing": {
+      "source": ".methodology/gate_evidence/gate2/mutation_testing.txt",
+      "kind": "file",
+      "sha256": "992694a3c37102db4f1b9f0b4766cbb2da7908ea64e6cda733a9e47b267b886d",
+      "bytes": 477,
+      "head": "{\n  \"generated_at\": \"2026-10-04T22:06:11.718161+00:00\",\n  \"tool\": \"mutmut\",\n  \"score\": 96.6,\n  \"killed\": 285,\n  \"survived\": 10,\n  \"paths_to_mutate\": \"03-development/src/taskq_api/repository, 03-development/src/taskq_api/service\",\n  \"paths_to_exclude\": [\n    \"__init__.py\",\n    \"tags.py\",\n    \"uow.py\"\n  ],\n  \"mutated_files\": 19,\n  \"cache_sha256\": \"27b5870e74e652771209dbaf576c43fec51c7f732c9a0eabf737d0a00c15ce53\",\n  \"enforcer_sha\": \"78f79c1530eeb5d06e333b6c830bec3b58ff8616\"\n}"
+    },
+    "integration_coverage": {
+      "source": ".methodology/gate_evidence/gate2/integration_coverage.txt",
+      "kind": "file",
+      "sha256": "97b349e77ca9c02a06c1a5fe9c3c2a28272a9a54104e3a42be5d108d4b0bb310",
+      "bytes": 4559,
+      "head": ".................                                                        [100%]\n================================ tests coverage ================================\n______________ coverage: platform darwin, python 3.11.15-final-0 _______________\n\nName                                                         Stmts   Miss  Cover   Missing\n------------------------------------------------------------------------------------------\n03-development/src/migrations/__init__.py                        0      0   100%\n03-development/src/migrations/env.py                            28      4    86%   21-23, 59\n03-development/src/migrations/versions/__init__.py               0      0   100%\n03-development/src/migrations/versions/v1_initial.py            16      0   100%\n03-development/src/migrations/versions/v2_tags.py               14      0   100%\n03-development/src/migrations/versions/v3_split_results.py      20      0   100%\n03-development/src/taskq_api/__init__.py                         0      0   100%\n03-development/src/taskq_api/__main__.py                         4      4     0%   8-13\n03-development/src/taskq_api/api/__init__.py                     0      0   100%\n03-development/src/taskq_api/api/deps.py                        32      1    97%   86\n03-development/src/taskq_api/api/error_handlers.py              21      0   100%\n03-development/src/taskq_api/api/middleware.py                  34      8    76%   46-47, 61-68\n03-development/src/taskq_api/api/routes_health.py               14      0   100%\n03-development/src/taskq_api/api/routes_metrics.py              10      0   100%"
+    },
+    "test_assertion_quality": {
+      "source": ".methodology/gate_evidence/gate2/test_assertion_quality.txt",
+      "kind": "file",
+      "sha256": "2f721aadc147ffc4778f496760c26fc3dea0e1202e477c1eac0a399bb9db03d4",
+      "bytes": 70,
+      "head": "{\"total\": 204, \"asserted\": 204, \"zero_assert\": [], \"neutralised\": []}"
+    },
+    "execute_verification_target": {
+      "source": ".methodology/gate_evidence/gate2/execute_verification_target.txt",
+      "kind": "file",
+      "sha256": "571275c6ff71f09f61c4bf2671cee1e251cce72b9e78740680a3114b7fbaf658",
+      "bytes": 967,
+      "head": "verify-system: 1/4 alembic upgrade head\nverify-system: 2/4 full test suite\n........................................................................ [ 35%]\n........................................................................ [ 70%]\n.............................................................            [100%]\n=============================== warnings summary ===============================\n.venv/lib/python3.11/site-packages/fastapi/testclient.py:1\n  /Users/johnny/projects/taskq-open/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n205 passed, 1 warning in 13.44s\nverify-system: 3/4 service smoke (/healthz, /readyz)\nverify-system: 4/4 alembic downgrade base, upgrade head\nverify-system: PASS"
+    },
+    "architecture": {
+      "source": ".methodology/gate_evidence/gate2/architecture.txt",
+      "kind": "file",
+      "sha256": "308aabd2f6bda323a6fc5fc4dee4d247e9cf88c2ceac4a37bf8232685949c806",
+      "bytes": 476,
+      "head": "[DEGRADED] crg:graph-scope: incremental graph covered 5 of 64 delivered source file(s) — rebuilding in full (59 file(s) missing from the graph)\n[DEGRADED] crg:graph-scope: after a full build the graph covers 58 file(s) and the project delivers 64 — the architecture score is measured over the graph's set (6 delivered file(s) still unparsed)\n[crg-arch-check] floor 80 from gate config (phase 3)\n[crg-arch-check] architecture_score=100.0 (threshold 80)\n[crg-arch-check] OK"
+    }
+  },
+  "crg_review_context": {
+    "status": "ok",
+    "summary": "Review context for 26 changed file(s):\n  - Risk: high\n  - 259 impacted nodes in 45 files",
+    "risk": "high",
+    "changed_file_count": 26,
+    "impacted_file_count": 45,
+    "key_entities": [
+      "/Users/johnny/projects/taskq-open/03-development/src/migrations/env.py",
+      "_begin",
+      "_disable_driver_begin",
+      "_make_sqlite_ddl_transactional",
+      "run_migrations_offline"
+    ],
+    "test_gaps": 45,
+    "next_tool_suggestions": [
+      "detect_changes",
+      "get_affected_flows",
+      "get_impact_radius"
+    ],
+    "context_savings": {
+      "estimated": true,
+      "saved_tokens": 54215,
+      "saved_percent": 100
+    }
+  },
+  "crg_impact_radius": {
+    "status": "ok",
+    "summary": "Blast radius for 26 changed file(s):\n  - 234 nodes directly changed\n  - 259 nodes impacted (within 2 hops)\n  - 45 additional files affected",
+    "risk": "high",
+    "impacted_file_count": 45,
+    "key_entities": [
+      "/Users/johnny/projects/taskq-open/03-development/src/migrations/versions/v1_initial.py",
+      "downgrade",
+      "upgrade",
+      "/Users/johnny/projects/taskq-open/03-development/src/migrations/versions/v2_tags.py",
+      "downgrade"
+    ],
+    "truncated": false,
+    "context_savings": {
+      "estimated": true,
+      "saved_tokens": 54217,
+      "saved_percent": 100
+    }
+  },
+  "crg_affected_flows": {
+    "total": 2,
+    "flows": [
+      {
+        "name": "run_migrations_online",
+        "criticality": 0.485
+      },
+      {
+        "name": "main",
+        "criticality": 0.37
+      }
+    ]
+  },
+  "composite_score": 98.8603,
+  "verdict": "PASS",
+  "passed": true,
+  "phase": 3,
+  "spec_undelivered": [
+    {
+      "test_fn": "test_nfr10_integration_line_coverage_80",
+      "type": "validation",
+      "derivation": "Q2 AC-N10.1",
+      "fr_id": "nfr_10_整合覆蓋",
+      "why": "absent"
+    },
+    {
+      "test_fn": "test_nfr12_verify_system_prints_pass",
+      "type": "smoke",
+      "derivation": "Q1 AC-N12.2",
+      "fr_id": "nfr_12_系統驗證目標",
+      "why": "absent"
+    },
+    {
+      "test_fn": "test_nfr03_request_txn_commit_rollback",
+      "type": "",
+      "derivation": "",
+      "fr_id": "deferred_to_downstream_phases_",
+      "why": "absent"
+    },
+    {
+      "test_fn": "test_nfr03_cancelled_error_reraised",
+      "type": "",
+      "derivation": "",
+      "fr_id": "deferred_to_downstream_phases_",
+      "why": "absent"
+    }
+  ],
+  "spec_declared": 143,
+  "denominator_provenance": {
+    "test_spec_sha256": "719f8dc17d54501ed83a4a4fda4eddcae22b7f6cafaaf7283a8cc72b81020a1b",
+    "rows_declared": 143,
+    "rows_unread": 0,
+    "delivery_basis": "ran-and-passed"
+  },
+  "measurement_scope": {
+    "weight_covered": 1.0,
+    "weight_total": 1.0,
+    "weight_artifact_verified": 0.18,
+    "dimensions_scored": [
+      "architecture",
+      "execute_verification_target",
+      "integration_coverage",
+      "license_compliance",
+      "linting",
+      "mutation_testing",
+      "secrets_scanning",
+      "security",
+      "test_assertion_quality",
+      "test_coverage",
+      "traceability",
+      "type_safety"
+    ],
+    "dimensions_unscored": [],
+    "dimensions_artifact_verified": [
+      "license_compliance",
+      "mutation_testing"
+    ],
+    "dimensions_declared_absent": [
+      "architecture_constraints",
+      "documentation",
+      "error_handling",
+      "performance",
+      "readability"
+    ]
+  }
+}

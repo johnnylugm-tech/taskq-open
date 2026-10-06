@@ -1,0 +1,398 @@
+{
+  "quality_complete": true,
+  "breakdown": {
+    "linting": {
+      "score": 100.0,
+      "threshold": 90,
+      "tool_output": ".methodology/gate_evidence/gate4/linting.txt",
+      "tool_evidence": "ruff check . -> \"All checks passed!\" (0 violations; 100 - 0*2)",
+      "score_source": "framework"
+    },
+    "type_safety": {
+      "score": 100.0,
+      "threshold": 85,
+      "tool_output": ".methodology/gate_evidence/gate4/type_safety.txt",
+      "tool_evidence": "pyright 03-development/src: filesAnalyzed 47, errorCount 0",
+      "score_source": "framework"
+    },
+    "test_coverage": {
+      "score": 100.0,
+      "threshold": 80,
+      "tool_output": ".methodology/gate_evidence/gate4/test_coverage.txt",
+      "tool_evidence": "pytest --cov=03-development/src: 224 passed; coverage.json totals.percent_covered 100.0",
+      "score_source": "framework"
+    },
+    "security": {
+      "score": 98.0,
+      "threshold": 80,
+      "tool_output": ".methodology/gate_evidence/gate4/security.txt",
+      "tool_evidence": "bandit: 2 LOW (B101 assert_used at service/executor.py:78, service/runs.py:65), 0 MEDIUM, 0 HIGH -> 98",
+      "score_source": "framework"
+    },
+    "secrets_scanning": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_output": ".methodology/gate_evidence/gate4/secrets_scanning.txt",
+      "tool_evidence": "gitleaks detect: 146 commits scanned, no leaks found",
+      "score_source": "framework"
+    },
+    "license_compliance": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_output": ".methodology/gate_evidence/gate4/license_compliance.txt",
+      "tool_evidence": "scancode 32.4.1 --license JSON over 03-development/src/ (117 file entries); full tool JSON retained as tool_output",
+      "score_source": "artifact_verified"
+    },
+    "readability": {
+      "score": 96.7,
+      "threshold": 80,
+      "tool_output": ".methodology/gate_evidence/gate4/readability.txt",
+      "tool_evidence": "readability-v2: project_score 96.7, project_avg_cc 1.63, total_lloc 1340",
+      "score_source": "framework"
+    },
+    "error_handling": {
+      "score": 85.7,
+      "threshold": 80,
+      "tool_output": ".methodology/gate_evidence/gate4/error_handling.out",
+      "tool_evidence": "ast-error-handling: total 7, with_handler 6, no_handler [cli.py], anti_patterns [] -> 85.7",
+      "score_source": "framework"
+    },
+    "documentation": {
+      "score": 100.0,
+      "threshold": 75,
+      "tool_output": ".methodology/gate_evidence/gate4/documentation.out",
+      "tool_evidence": "ast-docstrings: total 142, with_doc 142, missing [] -> 100",
+      "score_source": "framework"
+    },
+    "performance": {
+      "score": 100.0,
+      "threshold": 75,
+      "tool_output": ".methodology/gate_evidence/gate4/performance.txt",
+      "tool_evidence": "pytest-benchmark --benchmark-only: 2 passed (the other tests are not benchmarks and were not selected); means 1.674ms (get), 2.458ms (list); no mean >1000ms -> 100",
+      "score_source": "framework"
+    },
+    "integration_coverage": {
+      "score": 96.0,
+      "threshold": 75,
+      "tool_output": ".methodology/gate_evidence/gate4/integration_coverage.txt",
+      "tool_evidence": "pytest tests/integration --cov=03-development/src: 17 passed, TOTAL 1052 stmts 45 missed 96%",
+      "score_source": "framework"
+    },
+    "test_assertion_quality": {
+      "score": 100.0,
+      "threshold": 70,
+      "tool_output": ".methodology/gate_evidence/gate4/test_assertion_quality.out",
+      "tool_evidence": "ast-assertions: total 219, asserted 219, zero_assert []",
+      "score_source": "framework"
+    },
+    "execute_verification_target": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_output": ".methodology/gate_evidence/gate4/execute_verification_target.txt",
+      "tool_evidence": "framework: verify_target_findings → `make verify-system` reaches the delivered package on 1 step(s): smoke_key=$(PYTHONPATH=\"/Users/johnny/projects/taskq-open/03-development/src\" /Users/johnny/projects/taskq-open/.venv/bin/python -m taskq_api key create --scope write); \\. no step swallows the product's verdict. Which steps a requirement asked the recipe to chain is not decided here and is not claimed.",
+      "score_source": "framework"
+    },
+    "mutation_testing": {
+      "score": 96.6,
+      "threshold": 70,
+      "tool_output": ".methodology/gate_evidence/gate4/mutation_testing.json",
+      "tool_evidence": "framework: compute_mutation_score → killed=285 survived=10 score=96.6 [scope: 03-development/src/taskq_api/repository, 03-development/src/taskq_api/service, 19 files, excluded: ['__init__.py', 'tags.py', 'uow.py']]",
+      "framework_override": true,
+      "score_source": "artifact_verified"
+    },
+    "architecture": {
+      "score": 100.0,
+      "threshold": 80,
+      "tool_output": ".methodology/gate_evidence/gate4/architecture.json",
+      "tool_evidence": "framework-owned (CRG); crg-arch-check printed architecture_score=100.0, OK",
+      "calibration": {
+        "cohesion_healthy": 0.3,
+        "community_oversized": 50,
+        "graph_files": 65,
+        "source_files": 65
+      }
+    },
+    "traceability": {
+      "score": 97.2027972027972,
+      "threshold": 90.0,
+      "tool_output": ".methodology/gate_evidence/",
+      "tool_evidence": "framework: compute_trace_dimension(gate=4) → 4a=100.0% 4b=97.2% 4c=100.0% merged=97.2%",
+      "framework_override": true
+    }
+  },
+  "overall_score": null,
+  "rounds_used": 1,
+  "failing_dimensions": [],
+  "devil_advocate": {
+    "architecture": true,
+    "readability": true,
+    "error_handling": true,
+    "documentation": true,
+    "performance": true
+  },
+  "devil_advocate_evidence": {
+    "architecture": {
+      "challenger_model": "claude",
+      "challenge": "The 100.0 architecture score measures the wrong thing. .methodology/gate_evidence/gate4/architecture.json:2-17 is a code-review-graph community-cohesion score. The formula note reads \"cohesion reported, not scored (Round 113)\", so the three communities below the 0.3 threshold (service-settings 0.28, api-error 0.28, scripts-end 0.19) cost nothing. 25 of 40 communities are excluded as \"test communities\", which leaves 15/15 \"healthy\" by construction. \"_source: framework-independent\" means the layering contracts in setup.cfg are not part of this number. The score is a size cap (<=50) plus an exclusion list, not a check of layering.\n\nThe import-linter contracts (setup.cfg [importlinter:contract:*]) are weaker than they look.\n1. The sqlalchemy ban sets allow_indirect_imports = True. The layers contract puts service above models, and service/tasks.py:18, service/auth.py:20, service/runs.py:20 and service/ratelimit.py:18 import ORM classes (Task, ApiKey, TaskResult, RateBucket) directly. The service layer therefore handles SQLAlchemy-mapped entities. Because of that, ORM objects (lazy loads, session-bound state) can leak into the service and API layers, and the \"no sqlalchemy outside repository\" rule only holds at the textual level. The setup.cfg comment calls this \"a legitimate transitive path\". That is a waiver of the invariant, not enforcement of it.\n2. service/health.py:19 imports taskq_api.repository.migration_state, which runs create_engine and inspect (repository/migration_state.py:21). Service code is coupled to a repository helper that opens its own engine, outside the UnitOfWork abstraction.\n3. service/uow.py:1-10 only re-exports repository.session.UnitOfWork so that api/deps.py:25 never names \"repository\". This satisfies the linter without decoupling anything, because api still depends on the concrete repository class and not on a service-defined Protocol. There is no dependency inversion, and the layer rule is passed by a shim.\n4. cli.py:16 and app.py:31 import repository.session (build_engine, uow_factory) directly. That is legitimate for a composition root, but the contract does not separate \"composition root\" from \"layer\". So api cannot be proven free of repository access, only free of the literal import.\n5. The independence contract covers only config and errors. config is imported by many modules, and api/deps.py:22 imports errors. The contract does not check whether those modules import upwards.\n\nMeasurement gaps. The evidence lists no lint-imports output among the gate4 files. The dimension file is only the graph JSON. Gate 4's own architecture dimension is mapped to NFR-06 (CLAUDE.md), yet the JSON shows no contract pass/fail, no count of broken contracts and no count of ignored imports. High-risk modules (service.runner, service.auth, repository.session) are not given stricter checks. Nothing tests for cycles inside the service package, such as runner, executor and runs. Finally, the 100 score cannot fall for any layering regression, so it cannot detect the failure it is meant to detect.",
+      "response": "Partly conceded, partly rebutted. Conceded: the framework architecture score is a CRG size-cap measure (communities <=50, test/tooling communities excluded per the documented Round 113 rule) and cannot fall on a layering regression; I do not defend it as a layering check. The layering evidence is separate: I ran lint-imports with PYTHONPATH=03-development/src on this tree today and it reports \"Analyzed 73 files, 206 dependencies ... Contracts: 3 kept, 0 broken\" (layers, independence, no sqlalchemy outside repository). The contracts live in .importlinter, not setup.cfg as the challenge says. allow_indirect_imports=True is real and is documented in .importlinter against SAD L19: service imports models (ORM mapping) by the declared layer order, so the ban is on direct sqlalchemy imports, not on handling mapped entities. That is a design decision recorded in the SAD, not a hidden waiver, but the ORM-leak risk it names is a legitimate residual design risk and is not claimed to be eliminated. Items 2 to 4 (health->migration_state, uow re-export shim, composition-root imports in cli/app) are accurate descriptions of the code; they are accepted trade-offs of a small 73-file service, not breaches of a declared contract. I did not verify the specific line numbers cited in items 1 to 4 individually. No threshold is lifted: the architecture score is framework-computed (100.0, crg-arch-check OK at floor 80, drift 0.00) and the DA does not alter it."
+    },
+    "readability": {
+      "challenger_model": "claude",
+      "challenge": "The readability score of 96.7 rests on one number, mean cyclomatic complexity (project_avg_cc 1.63, total_lloc 1340; gate4/readability.txt:2-4, harness_verification/readability_harness.txt:3-9). I ran `radon cc -a` on 03-development/src and got an average of 1.58 over 173 blocks, so the metric is reproducible. It is also a weak measure of readability, for these reasons.\n\n1. Averaging hides the worst code. Most blocks are trivial: dataclass fields, one-line getters, route stubs. They pull the mean toward 1.6 no matter how hard the few real functions are. The high-risk modules (service/runner.py, service/auth, repository/session.py, migrations/versions/v3_split_results.py) are exactly where a complex function would sit, and the average dilutes them. The evidence has no max-CC, no per-module figure and no count of functions above a threshold. The threshold is 80 and the score is 96.7, so 16.7 points of headroom absorb any amount of local complexity. A per-function ceiling, or a separate score for the high-risk modules, would test this properly.\n\n2. CC does not measure comprehension. It ignores naming, nesting depth, function length, cognitive complexity, duplication, comment accuracy and cross-module coupling. Splitting one clear function into many tiny ones lowers CC and raises the score, even if the result is harder to follow. The score can therefore be raised without making anything easier to read.\n\n3. Scope is unclear. 2,588 physical lines (wc -l) against 1,340 LLOC is plausible once docstrings are excluded, but nothing in the artifact lists which files were scored. I could not tell from the evidence whether migrations/ (a high-risk module), tests and __main__ were included. If they were left out, the headline number does not cover the riskiest code.\n\n4. Docstring bloat is rewarded, not penalised. runner.py:1-12 and each small class (runner.py:38-60, for example) carry a docstring with a \"Citations: SPEC.md L97\" line, repeated per method. This is useful for traceability, but it buries a 5-line state machine in boilerplate. LLOC-based metrics ignore docstrings, so the cost to the reader never appears in the score. SPEC line numbers also go stale whenever SPEC.md is edited, and no check stops that.\n\n5. Gate 4 evidence is circular. The harness runs readability-v2 and the agent_score is the same 96.7 (readability_harness.txt:3-4). Two runs of one tool are not independent confirmation, and no human or LLM review of readability is recorded.\n\n6. Design smells that CC does not catch. runner.py:22-31 uses string-constant statuses and a bare TRANSITIONS dict instead of an Enum. INTERRUPTED is defined but absent from TRANSITIONS, so the state machine is not the single source of truth for statuses. The status vocabulary is therefore implicit and has to be read across several modules.\n\nConclusion: the 96.7 shows only that functions are short and branch-light. It is not evidence that the code is readable. The most likely way this critique is wrong is that the harness's readability-v2 also checks nesting, length or naming internally and only prints the summary. If so, the raw output should be recorded in the evidence.",
+      "response": "Rebutted on the measurement, conceded on its limits. The gate number is not plain mean CC: readability-v2 (harness/toolchains/readability_v2.py via registry) reports project_score 96.7 with project_avg_cc 1.63 and total_lloc 1340; I re-ran it today and got the identical output, and radon cc -a independently gives 1.58 over 173 blocks. I also ran radon cc -n B on 03-development/src: the only function at or above grade B is run_command in service/runner.py (CC 7, grade B); nothing is grade C or worse, so the high-risk modules do not hide a complex function behind the average, and the project quality target max_complexity 10 is met per function, not merely on average. Conceded: CC/MI-style proxies do not capture naming, comment accuracy or SPEC-line staleness, and no human readability review is recorded; this score is a proxy, as the evaluate_dimension protocol itself states. The string-constant status vocabulary in runner.py (item 6) is an accurate observation and a style choice, not a defect I can show causes misbehaviour; I did not verify the INTERRUPTED/TRANSITIONS claim. Item 5 (circularity) is correct that the harness re-run is the same tool, not an independent one. The threshold (80) is not lifted by this DA."
+    },
+    "error_handling": {
+      "challenger_model": "claude",
+      "challenge": "The measurement is close to vacuous. gate4/error_handling.out reports total=7, with_handler=6, and only 7 files scanned. Another 31 files are listed as exempt_files, and the scanner reports anti_patterns=[]. The exempt list covers nearly everything that matters for error handling: repository/session.py (UnitOfWork.__exit__ at line 133, rollback and close), service/auth.py (the 401 path at lines 62-71), api/error_handlers.py (the RFC 7807 handlers), service/ratelimit.py, repository/api_keys.py, and the migrations. That is 31 exempt files against 7 judged files, so the score reflects only a small, easy remainder. The one file flagged no_handler, cli.py, is a real finding. key_create (cli.py:26) has try/finally and no except, so a DB or auth failure surfaces as a raw traceback with no operator-facing message and no distinct exit code. serve() has no handling for bind failures. The metric counts whether a try/except exists. It does not check whether the handling is correct. Its anti-pattern detection has no hits, but nothing shows what it looks for. It may not look for swallowed exceptions, broad except clauses, or missing re-raise.\n\nDesign problems, from reading the code:\n1. service/runner.py:128 catches (OSError, ValueError) and writes str(exc) into stderr. Spawn failures (FileNotFound, PermissionError) become a normal FAILED run with exit_code None. Callers cannot tell a user command failure from an infrastructure failure. The raw OS message also goes to the client unredacted, although redact.py exists, and that may leak filesystem paths. The ValueError catch is also overbroad, because shlex.split errors and the deliberate \"empty command\" raise share one path.\n2. runner.py:134-140 handles TimeoutError and CancelledError but not any other exception from communicate(). The machine has already moved to RUNNING at line 119, so any other failure leaves the state machine stuck in RUNNING with the subprocess possibly unreaped. There is no finally-based kill. The timeout branch discards the partial stdout and stderr (b\"\", b\"\"), which throws away the diagnostics needed to debug a timeout.\n3. api/error_handlers.py:83-84 registers handlers only for TaskqError and RequestValidationError. The generic 500 problem+json depends entirely on the middleware.py:61 `except Exception`. Errors raised in that middleware itself, or from lifespan or startup, bypass it. A starlette HTTPException (404 or 405 for unknown routes) is not mapped to problem+json, so the error contract is inconsistent.\n4. repository/session.py:133-148 does commit in a try block with no handling of commit-time failures (IntegrityError or OperationalError). Those propagate as raw SQLAlchemy errors. The architecture contract forbids SQLAlchemy outside the repository layer, yet nothing in this layer translates DB errors into domain errors (TaskqError). The result is likely generic 500s where 409 or 503 would be correct.\n\nOverall, the dimension passes because the proxy metric is gameable by exemption, not because error behavior was demonstrated. The score also lacks fault-injection evidence, such as DB failure, spawn failure, or cancellation mid-transition. NFR-03 is mapped to this dimension, but no runtime evidence is in gate4.",
+      "response": "Mixed. The score (85.7 = 6 of 7 non-exempt files with a handler, 0 anti-patterns) is the framework ast-error-handling result, and I reproduced it with run_tool today. It is a file-level presence metric with an exemption mechanism, and I concede it does not demonstrate behavioural correctness; the 31 exempt files carry a pragma, and I cannot assert from this evidence that each exemption is justified. cli.py is the one file reported without a handler and is a real, already-visible gap in the score rather than hidden. On the design points, I read runner.py run_command (lines 102-149) in this session: it does catch (OSError, ValueError) and records str(exc) as stderr with status FAILED and exit_code None, so item 1 is accurate; its docstring documents this as deliberate behaviour (an unspawnable command ends failed rather than stuck in running). TimeoutError and CancelledError are handled with _kill, and CancelledError is re-raised, matching the NFR-03 text. Items 2 to 4 (other exceptions from communicate() leaving RUNNING, timeout discarding partial output, HTTPException not mapped to problem+json, commit-time DB errors surfacing raw) are plausible risks that I have not reproduced by fault injection, so I cannot rule them out. Whether the runtime test suite covers them is unverified here. The threshold (80) is not lifted by this DA; the score stands as the tool computed it."
+    },
+    "documentation": {
+      "challenger_model": "claude",
+      "challenge": "Measurement gap: SPEC.md:214-218 (NFR-05) requires every public function/class to have a docstring that ALSO carries an [FR-XX]/[NFR-XX] reference, at 100%. The Gate-4 evidence .methodology/gate_evidence/gate4/documentation.out is only {\"total\":142,\"with_doc\":142,\"missing\":[]}. That counts docstring presence and records nothing about the tag. A bare `\"\"\"Does stuff.\"\"\"` would pass, so the 100% does not demonstrate the spec's stated criterion. The scanner is a black box here, and the evidence has no per-symbol listing, no tag-match count and no definition of \"public\". It is also unverified whether 142 includes classes, methods, or the ORM models, or whether underscore-prefixed helpers are excluded. Docstring existence says nothing about accuracy. Docstrings are tag-and-citation boilerplate, for example auth.py:28-32, where \"Citations: SPEC.md L104.\" follows a one-line summary. runner.py:103-113 is a good counter-example, but nothing checks that docstrings match behaviour (raises, timeouts, status codes), and the SPEC line numbers they cite rot as soon as SPEC.md is edited. Metric gaming is built in. The FR tag satisfies the check without explaining anything, and modules opt out of other checks with pragmas, such as auth.py:9 \"pragma: no error-handling\". The score is a binary 142/142, so it cannot separate good documentation from tag-stuffed documentation. The second half of NFR-05 is the OpenAPI summary and description per operation. It is asserted only in 03-development/tests/test_nfr_runtime.py:368-376, which checks non-empty, not useful. A one-word summary passes, and error responses, auth scopes and problem+json bodies are not required to be documented. The documentation dimension never consumes that test, so the Gate-4 score covers one of the two halves of the NFR. Design gaps: there is no README or user-facing doc in the repo root. It holds only SPEC.md, HANDOVER.md and phase folders. Nothing covers install, configuration (TASKQ_TASK_TIMEOUT and others), CLI usage or `key create`. NFR-05 as written measures API-docstring coverage only, so \"documentation\" can score 100 while an operator has no guide. I did not find the scanner source (the harness is off-limits), so the claim that it ignores tags rests on the evidence format alone and requires verification.",
+      "response": "Conceded on scope of the metric, rebutted on the claim that nothing else checks it. The scored number (142/142 public symbols documented, missing=[]) is the framework ast-docstrings result; I reproduced it with run_tool today. The scanner is the harness's, and I did not read its source, so I cannot confirm whether it checks the FR/NFR tag; the evidence format (total/with_doc/missing) alone shows presence, as the challenge says. The challenger likewise did not read it. The runner.py docstring I read in this session carries an [FR-02] / [FR-08] tag, behaviour description (spawn failure, timeout kill, cancellation re-raise) and a SPEC citation, so that sample is more than a bare stub; I did not audit all 142. Docstring accuracy and SPEC line-number rot are not checked by any gate dimension, which I concede. The OpenAPI summary/description requirement is asserted by a runtime test in 03-development/tests/test_nfr_runtime.py (non-empty check, per the challenge) that is part of the 224-test suite which passed today, so it is enforced, if weakly. A repository-root README for operators is absent (ls shows no README); NFR-05 as scoped in CLAUDE.md is API-symbol documentation with FR/NFR references, so that gap is outside the dimension but is a fair advisory note. The threshold (75) is not lifted by this DA."
+    },
+    "performance": {
+      "challenger_model": "claude",
+      "challenge": "The performance dimension scores 100 on evidence that does not test the NFR-01 contract in SPEC.md:177-182, which requires p95 < 30ms for GET /v1/tasks/{id} and p95 < 80ms for the list endpoint, measured at 10k rows.\n\n1. The scored harness run is pytest-benchmark. It selects only two tests, as the log in gate_evidence/harness_verification/performance_harness.txt shows (\"2 passed, 222 skipped\"). Those two are test_nfr01_benchmark_*_mean at 03-development/tests/test_nfr_runtime.py:150-159. They assert the mean, not the p95 (the helper at line 139-147 uses benchmark.stats.stats.mean). The spec asks for p95, and the mean hides tail latency. The real p95 tests at lines 122-136 are never what the performance dimension scores.\n\n2. The sample is small. Each benchmark runs rounds=20, iterations=1, warmup_rounds=1 (lines 143-145), so the p95 is effectively the second-largest of 20 samples. The p95 tests at lines 126 and 134 use 100 rounds, which is also thin for a tail percentile.\n\n3. The budgets have large headroom. gate4/performance.txt records a mean of about 1.75ms against 30ms for get, and about 2.46ms against 80ms for list, which is 17x and 32x. A regression of an order of magnitude would still pass. The gate therefore detects only gross failures, not drift. Nothing is stored as a baseline, and there is no --benchmark-compare or --benchmark-compare-fail threshold.\n\n4. The load is unrepresentative. It is one sequential client on an Apple M3 Ultra with 32 cores, using local SQLite files and an in-process ASGI transport (SPEC.md:179 allows this). There is no concurrency, no connection-pool contention, and no cold cache. Only a single record at index 5000 is fetched, so that one row stays hot in cache. The list test uses only limit=50 and the default ordering, with no filters, pagination offsets, or status/queue predicates, so a missing index on a filtered list would not be caught. The runner, auth, and session modules listed as high-risk in CLAUDE.md are not exercised under load.\n\n5. Evidence integrity is weak. performance.txt records commit_info.dirty=true at 7acbcbf, which is not the current HEAD c02cec7. The result cannot be tied to a clean, reproducible tree.\n\n6. The N+1 guard at lines 179-187 compares statement counts between a small and a large database, but only for the list endpoint. There is no equivalent check for relation-bearing endpoints such as results or the v3 split-results path.\n\n7. The score is the harness's \"agent_score 100\", which is self-reported.\n\nI'd treat this dimension as under-evidenced. A defensible gate would assert p95 or max from the benchmark data, use many more rounds, compare against a stored baseline, run concurrent clients, and measure on a clean commit.",
+      "response": "Partly conceded. The score is the framework pytest-benchmark rule (100 minus penalties only if mean >1000ms or >3000ms per benchmark); I re-ran the benchmark-only command today: 2 passed, and benchmark_report.json shows means of 1.67 ms (get) and 2.46 ms (list), far inside both penalty bands. That is a coarse, gross-failure detector and I do not claim it proves the p95 NFR. The p95 assertions the challenge says exist at test_nfr_runtime.py lines 122-136 are in the full suite, which passed today (224 passed), so the NFR-01 p95 budgets are asserted there, but I did not read those lines to confirm their thresholds or rounds, and I accept the challenger's points on 100 rounds being thin, single sequential client on fast hardware, no stored baseline and no concurrency. The \"222 skipped\" in that run is the benchmark-only filter deselecting non-benchmark tests; I attribute it to no specific NFR. I did not verify the commit_info.dirty claim for performance.txt; the benchmark I ran today was on the current working tree. The N+1 guard covering only the list endpoint is accepted as a coverage gap. The threshold (75) is not lifted by this DA."
+    }
+  },
+  "enforcer_sha": "9bee0f7763cb100c26ba8940831d651cb908b3b7",
+  "enforcer_surface": {
+    "core/quality_gate": "4e2db2c4c86f8f8c3eca7e102ef436e7b0004bc3",
+    "harness/harness_bridge.py": "e853d6a3102801dc57ec8b408dafd6e196987785",
+    "harness/gate_configs": "d91e4c3c9409081ea44b75ae3060f3293fa59cab"
+  },
+  "evidence_digest": {
+    "secrets_scanning::.gitleaks.toml": {
+      "source": ".gitleaks.toml (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "aaf76d53514eafabbbda6f381969949f276096ce96d91f4218b45a7a79a9be19",
+      "bytes": 2494,
+      "head": "# Delivered by `init-project` — templates/.gitleaks.toml is the single\n# source; a project's copy is written once and not re-synced (same shape as\n# harness_quality_gate.yml, see core/ci_template.py). SKIP, never overwrite:\n# unlike the CI workflow this file is one projects already hand-author\n# (three corpus projects shipped their own before this template existed),\n# so init-project never touches an existing copy, with or without\n# --overwrite.\n#\n# Round 92. secrets_scanning (tier-1, threshold 100) treats a clean gitleaks\n# run as proof of no secrets. The framework itself writes free-text agent\n# excerpts (test names, coverage summaries) into `.methodology/*.json` and\n# commits them (Round 90: the record has to reach git). generic-api-key's\n# entropy rule fires on names like `test_invalid_api_key_returns_401` —\n# measured on a real project's committed Gate 1 evidence, which blocked P5.\n# Scoped to that ONE rule so a real credential under .methodology/ is still\n# caught by private-key / aws-access-token / github-pat / etc. — verified:\n# a private key planted under .methodology/ is still flagged under this\n# config; a real secret outside .methodology/ is unaffected.\n#\n# The path is `(^|/)\\.methodology...`, not `^\\.methodology...`: two of the"
+    },
+    "mutation_testing::setup.cfg": {
+      "source": "setup.cfg (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "fa2ca13ffc267a1a27121073657cf2bbcb9d30af62f69b8bd4472c111ee132f3",
+      "bytes": 521,
+      "head": "# [mutmut] paths_to_mutate — auto-generated from SAB scope_layers\n# by core.quality_gate.mutmut_scope during advance-phase P2→P3 handoff.\n# Human edits will be overwritten on the next P2→P3 advance.\n[mutmut]\npaths_to_mutate = 03-development/src/taskq_api/repository, 03-development/src/taskq_api/service\n\n\n[tool:pytest]\n# harness/ is the vendored harness-methodology submodule with its own suite; it is not this project's tests.\nnorecursedirs = .* build dist CVS _darcs {arch} *.egg venv .venv node_modules harness"
+    },
+    "test_coverage::setup.cfg": {
+      "source": "setup.cfg (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "fa2ca13ffc267a1a27121073657cf2bbcb9d30af62f69b8bd4472c111ee132f3",
+      "bytes": 521,
+      "head": "# [mutmut] paths_to_mutate — auto-generated from SAB scope_layers\n# by core.quality_gate.mutmut_scope during advance-phase P2→P3 handoff.\n# Human edits will be overwritten on the next P2→P3 advance.\n[mutmut]\npaths_to_mutate = 03-development/src/taskq_api/repository, 03-development/src/taskq_api/service\n\n\n[tool:pytest]\n# harness/ is the vendored harness-methodology submodule with its own suite; it is not this project's tests.\nnorecursedirs = .* build dist CVS _darcs {arch} *.egg venv .venv node_modules harness"
+    },
+    "linting": {
+      "source": ".methodology/gate_evidence/gate4/linting.txt",
+      "kind": "file",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18",
+      "bytes": 19,
+      "head": "All checks passed!"
+    },
+    "type_safety": {
+      "source": ".methodology/gate_evidence/gate4/type_safety.txt",
+      "kind": "file",
+      "sha256": "208d1033971742940c3539fac4aeac7cc26c3e56153377fcd462514a3ec285a1",
+      "bytes": 252,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791212897058\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.292\n    }\n}\n"
+    },
+    "test_coverage": {
+      "source": ".methodology/gate_evidence/gate4/test_coverage.txt",
+      "kind": "file",
+      "sha256": "d25f0a28eed48b044158da5a9318ecdce0f6397c137e779da57cf3cdce2cf0e9",
+      "bytes": 6588,
+      "head": "........................................................................ [ 32%]\n........................................................................ [ 64%]\n........................................................................ [ 96%]\n........                                                                 [100%]\n=============================== warnings summary ===============================\n.venv/lib/python3.11/site-packages/fastapi/testclient.py:1\n  /Users/johnny/projects/taskq-open/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n================================ tests coverage ================================\n______________ coverage: platform darwin, python 3.11.15-final-0 _______________\n\nName                                                         Stmts   Miss  Cover   Missing\n------------------------------------------------------------------------------------------\n03-development/src/migrations/__init__.py                        0      0   100%\n03-development/src/migrations/env.py                            28      0   100%\n03-development/src/migrations/versions/__init__.py               0      0   100%\n03-development/src/migrations/versions/v1_initial.py            16      0   100%\n03-development/src/migrations/versions/v2_tags.py               14      0   100%"
+    },
+    "security": {
+      "source": ".methodology/gate_evidence/gate4/security.txt",
+      "kind": "file",
+      "sha256": "7a819e78299e17ba2fb31f0b6ef1b1ae5cf80430c6827ed6a301f660bae072e6",
+      "bytes": 18541,
+      "head": "{\n  \"errors\": [],\n  \"generated_at\": \"2026-10-05T15:08:36Z\",\n  \"metrics\": {\n    \"03-development/src/migrations/__init__.py\": {\n      \"CONFIDENCE.HIGH\": 0,\n      \"CONFIDENCE.LOW\": 0,\n      \"CONFIDENCE.MEDIUM\": 0,\n      \"CONFIDENCE.UNDEFINED\": 0,\n      \"SEVERITY.HIGH\": 0,\n      \"SEVERITY.LOW\": 0,\n      \"SEVERITY.MEDIUM\": 0,\n      \"SEVERITY.UNDEFINED\": 0,\n      \"loc\": 5,\n      \"nosec\": 0,\n      \"skipped_tests\": 0\n    },\n    \"03-development/src/migrations/env.py\": {\n      \"CONFIDENCE.HIGH\": 0,\n      \"CONFIDENCE.LOW\": 0,"
+    },
+    "secrets_scanning": {
+      "source": ".methodology/gate_evidence/gate4/secrets_scanning.txt",
+      "kind": "file",
+      "sha256": "9f2982a2d7310d21f57a2325d4898f57b368197a459449079dfd3feb84a272c7",
+      "bytes": 257,
+      "head": "\n    ○\n    │╲\n    │ ○\n    ○ ░\n    ░    gitleaks\n\n\u001b[90m11:09PM\u001b[0m \u001b[32mINF\u001b[0m \u001b[1m146 commits scanned.\u001b[0m\n\u001b[90m11:09PM\u001b[0m \u001b[32mINF\u001b[0m \u001b[1mscanned ~1802427 bytes (1.80 MB) in 117ms\u001b[0m\n\u001b[90m11:09PM\u001b[0m \u001b[32mINF\u001b[0m \u001b[1mno leaks found\u001b[0m"
+    },
+    "license_compliance": {
+      "source": ".methodology/gate_evidence/gate4/license_compliance.txt",
+      "kind": "file",
+      "sha256": "45ea038119c68a96052f6cdde8171dfa85c00e008c4a2c0cc6617a13fbdd7296",
+      "bytes": 37444,
+      "head": "{\n  \"headers\": [\n    {\n      \"tool_name\": \"scancode-toolkit\",\n      \"tool_version\": \"32.4.1\",\n      \"options\": {\n        \"input\": [\n          \"03-development/src/\"\n        ],\n        \"--json-pp\": \"-\",\n        \"--license\": true,\n        \"--processes\": \"2\"\n      },\n      \"notice\": \"Generated with ScanCode and provided on an \\\"AS IS\\\" BASIS, WITHOUT WARRANTIES\\nOR CONDITIONS OF ANY KIND, either express or implied. No content created from\\nScanCode should be considered or used as legal advice. Consult an Attorney\\nfor any legal advice.\\nScanCode is a free software code scanning tool from nexB Inc. and others.\\nVisit https://github.com/nexB/scancode-toolkit/ for support and download.\",\n      \"start_timestamp\": \"2026-10-05T072205.305073\",\n      \"end_timestamp\": \"2026-10-05T072211.493524\",\n      \"output_format_version\": \"4.1.0\",\n      \"duration\": 6.188464879989624,\n      \"message\": null,\n      \"errors\": [],"
+    },
+    "mutation_testing": {
+      "source": ".methodology/gate_evidence/gate4/mutation_testing.json",
+      "kind": "file",
+      "sha256": "72e0ab8882f59f908628d54152a212084d669920751ed11f6eea3300bf45c93f",
+      "bytes": 477,
+      "head": "{\n  \"generated_at\": \"2026-10-05T15:08:06.608390+00:00\",\n  \"tool\": \"mutmut\",\n  \"score\": 96.6,\n  \"killed\": 285,\n  \"survived\": 10,\n  \"paths_to_mutate\": \"03-development/src/taskq_api/repository, 03-development/src/taskq_api/service\",\n  \"paths_to_exclude\": [\n    \"__init__.py\",\n    \"tags.py\",\n    \"uow.py\"\n  ],\n  \"mutated_files\": 19,\n  \"cache_sha256\": \"664d546f5d86ad2668498b4d7811b785a1bc3ae71b1bbc4eba34f6543997cd4b\",\n  \"enforcer_sha\": \"9bee0f7763cb100c26ba8940831d651cb908b3b7\"\n}"
+    },
+    "architecture": {
+      "source": ".methodology/gate_evidence/gate4/architecture.json",
+      "kind": "file",
+      "sha256": "16c1d53a25bcb1d29cf153779f217a6860f6c8ef037264cecebc080da910e474",
+      "bytes": 1018,
+      "head": "{\n  \"community_cohesion\": {\n    \"score\": 100.0,\n    \"healthy\": 15,\n    \"total\": 15,\n    \"total_all\": 40,\n    \"excluded_test_communities\": 25,\n    \"unhealthy\": [],\n    \"low_cohesion\": [\n      {\n        \"name\": \"service-settings\",\n        \"cohesion\": 0.2827,\n        \"size\": 43\n      },\n      {\n        \"name\": \"api-error\",\n        \"cohesion\": 0.2848,\n        \"size\": 35\n      },\n      {"
+    },
+    "readability": {
+      "source": ".methodology/gate_evidence/gate4/readability.txt",
+      "kind": "file",
+      "sha256": "8e4900c5e7fa9bf923f28df728ab9118cb7f32f2548e5ea98ba8b3de636e4eff",
+      "bytes": 75,
+      "head": "{\n  \"project_score\": 96.7,\n  \"project_avg_cc\": 1.63,\n  \"total_lloc\": 1340\n}"
+    },
+    "error_handling": {
+      "source": ".methodology/gate_evidence/gate4/error_handling.out",
+      "kind": "file",
+      "sha256": "05cdfe6d47cd0cf923bce3ed79fa0748e53cc4e7b81f19a3718bb56f57b0b971",
+      "bytes": 1702,
+      "head": "{\"total\": 7, \"with_handler\": 6, \"no_handler\": [\"03-development/src/taskq_api/cli.py\"], \"exempt_count\": 31, \"exempt_files\": [\"03-development/src/migrations/env.py\", \"03-development/src/migrations/versions/v2_tags.py\", \"03-development/src/migrations/versions/v3_split_results.py\", \"03-development/src/migrations/versions/v1_initial.py\", \"03-development/src/taskq_api/config.py\", \"03-development/src/taskq_api/app.py\", \"03-development/src/taskq_api/errors.py\", \"03-development/src/taskq_api/repository/tags.py\", \"03-development/src/taskq_api/repository/rate_buckets.py\", \"03-development/src/taskq_api/repository/results.py\", \"03-development/src/taskq_api/repository/session.py\", \"03-development/src/taskq_api/repository/stats.py\", \"03-development/src/taskq_api/repository/api_keys.py\", \"03-development/src/taskq_api/models/task.py\", \"03-development/src/taskq_api/models/api_key.py\", \"03-development/src/taskq_api/models/result.py\", \"03-development/src/taskq_api/models/rate_bucket.py\", \"03-development/src/taskq_api/models/base.py\", \"03-development/src/taskq_api/models/tag.py\", \"03-development/src/taskq_api/api/routes_tasks.py\", \"03-development/src/taskq_api/api/routes_metrics.py\", \"03-development/src/taskq_api/api/deps.py\", \"03-development/src/taskq_api/api/schemas.py\", \"03-development/src/taskq_api/api/error_handlers.py\", \"03-development/src/taskq_api/api/routes_health.py\", \"03-development/src/taskq_api/api/routes_runs.py\", \"03-development/src/taskq_api/service/auth.py\", \"03-development/src/taskq_api/service/tasks.py\", \"03-development/src/taskq_api/service/health.py\", \"03-development/src/taskq_api/service/ratelimit.py\", \"03-development/src/taskq_api/service/redact.py\"], \"anti_patterns\": []}"
+    },
+    "documentation": {
+      "source": ".methodology/gate_evidence/gate4/documentation.out",
+      "kind": "file",
+      "sha256": "6eb04c9180ddfc41c135f53552c6824560a70ed9c4053a78e2f63bfe0f752609",
+      "bytes": 46,
+      "head": "{\"total\": 142, \"with_doc\": 142, \"missing\": []}"
+    },
+    "performance": {
+      "source": ".methodology/gate_evidence/gate4/performance.txt",
+      "kind": "file",
+      "sha256": "6b058fb8cb20f1d2392d688e8be42b5911b0d95f1e36953fbb19ab099a65a02b",
+      "bytes": 1568,
+      "head": "ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 32%]\nssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss [ 64%]\nsssssssssssssssssssssssssssssssssss..sssssssssssssssssssssssssssssssssss [ 96%]\nssssssss                                                                 [100%]\nWrote benchmark data in: <_io.BufferedWriter name='.sessi-work/benchmark_report.json'>\n\n=============================== warnings summary ===============================\n.venv/lib/python3.11/site-packages/fastapi/testclient.py:1\n  /Users/johnny/projects/taskq-open/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n\n---------------------------- benchmark: 2 tests ---------------------------\nName (time in ms)                          Mean               Max          \n---------------------------------------------------------------------------\ntest_nfr01_benchmark_get_task_mean       1.6740 (1.0)      2.2905 (1.0)    \ntest_nfr01_benchmark_list_tasks_mean     2.4583 (1.47)     2.7382 (1.20)   \n---------------------------------------------------------------------------\n"
+    },
+    "integration_coverage": {
+      "source": ".methodology/gate_evidence/gate4/integration_coverage.txt",
+      "kind": "file",
+      "sha256": "36f2c6a7a24078f8747b7cbab47916c3144695edbcff0fcdd3aa63208715eabe",
+      "bytes": 4576,
+      "head": ".................                                                        [100%]\n================================ tests coverage ================================\n______________ coverage: platform darwin, python 3.11.15-final-0 _______________\n\nName                                                         Stmts   Miss  Cover   Missing\n------------------------------------------------------------------------------------------\n03-development/src/migrations/__init__.py                        0      0   100%\n03-development/src/migrations/env.py                            28      4    86%   22-24, 60\n03-development/src/migrations/versions/__init__.py               0      0   100%\n03-development/src/migrations/versions/v1_initial.py            16      0   100%\n03-development/src/migrations/versions/v2_tags.py               14      0   100%\n03-development/src/migrations/versions/v3_split_results.py      20      0   100%\n03-development/src/taskq_api/__init__.py                         0      0   100%\n03-development/src/taskq_api/__main__.py                         4      4     0%   8-13\n03-development/src/taskq_api/api/__init__.py                     0      0   100%\n03-development/src/taskq_api/api/deps.py                        31      1    97%   86\n03-development/src/taskq_api/api/error_handlers.py              21      0   100%\n03-development/src/taskq_api/api/middleware.py                  34      8    76%   46-47, 61-68\n03-development/src/taskq_api/api/routes_health.py               14      0   100%\n03-development/src/taskq_api/api/routes_metrics.py              10      0   100%"
+    },
+    "test_assertion_quality": {
+      "source": ".methodology/gate_evidence/gate4/test_assertion_quality.out",
+      "kind": "file",
+      "sha256": "ec3bcf96651f7d271e48609c75d8fd67235a13e73d3e6588bd597c4fa1a19612",
+      "bytes": 69,
+      "head": "{\"total\": 219, \"asserted\": 219, \"zero_assert\": [], \"neutralised\": []}"
+    },
+    "execute_verification_target": {
+      "source": ".methodology/gate_evidence/gate4/execute_verification_target.txt",
+      "kind": "file",
+      "sha256": "7b47d9f948c72e7f4e250abbab48c125e5e3dc806dbdf4a1110eb7cd1c5b63a9",
+      "bytes": 2637,
+      "head": "verify-system: 1/4 alembic upgrade head\nverify-system: 2/4 full test suite\n........................................................................ [ 32%]\n........................................................................ [ 64%]\n........................................................................ [ 96%]\n........                                                                 [100%]\n=============================== warnings summary ===============================\n.venv/lib/python3.11/site-packages/fastapi/testclient.py:1\n  /Users/johnny/projects/taskq-open/.venv/lib/python3.11/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\n    from starlette.testclient import TestClient as TestClient  # noqa\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n\n----------------------------------------------------------------------------------------- benchmark: 2 tests ----------------------------------------------------------------------------------------\nName (time in ms)                           Min               Max              Mean            StdDev            Median               IQR            Outliers       OPS            Rounds  Iterations\n-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\ntest_nfr01_benchmark_get_task_mean       1.4477 (1.0)      1.8378 (1.0)      1.5815 (1.0)      0.0840 (1.0)      1.5831 (1.0)      0.0796 (1.0)           4;1  632.3194 (1.0)          20           1\ntest_nfr01_benchmark_list_tasks_mean     2.3818 (1.65)     3.3002 (1.80)     2.5867 (1.64)     0.2566 (3.06)     2.4910 (1.57)     0.1446 (1.82)          2;2  386.5976 (0.61)         20           1\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+    }
+  },
+  "crg_review_context": {
+    "status": "ok",
+    "summary": "Review context for 18 changed file(s):\n  - Risk: low\n  - 0 impacted nodes in 0 files",
+    "risk": "low",
+    "changed_file_count": 18,
+    "impacted_file_count": 0,
+    "key_entities": [],
+    "test_gaps": 0,
+    "next_tool_suggestions": [
+      "detect_changes",
+      "get_affected_flows",
+      "get_impact_radius"
+    ],
+    "context_savings": {
+      "estimated": true,
+      "saved_tokens": 81452,
+      "saved_percent": 100
+    }
+  },
+  "crg_impact_radius": {
+    "status": "ok",
+    "summary": "Blast radius for 18 changed file(s):\n  - 0 nodes directly changed\n  - 0 nodes impacted (within 2 hops)\n  - 0 additional files affected",
+    "risk": "low",
+    "impacted_file_count": 0,
+    "key_entities": [],
+    "truncated": false,
+    "context_savings": {
+      "estimated": true,
+      "saved_tokens": 81465,
+      "saved_percent": 100
+    }
+  },
+  "composite_score": 98.0222,
+  "verdict": "PASS",
+  "passed": true,
+  "phase": 6,
+  "spec_undelivered": [
+    {
+      "test_fn": "test_nfr10_integration_line_coverage_80",
+      "type": "validation",
+      "derivation": "Q2 AC-N10.1",
+      "fr_id": "nfr_10_整合覆蓋",
+      "why": "absent"
+    },
+    {
+      "test_fn": "test_nfr12_verify_system_prints_pass",
+      "type": "smoke",
+      "derivation": "Q1 AC-N12.2",
+      "fr_id": "nfr_12_系統驗證目標",
+      "why": "absent"
+    },
+    {
+      "test_fn": "test_nfr03_request_txn_commit_rollback",
+      "type": "",
+      "derivation": "",
+      "fr_id": "deferred_to_downstream_phases_",
+      "why": "absent"
+    },
+    {
+      "test_fn": "test_nfr03_cancelled_error_reraised",
+      "type": "",
+      "derivation": "",
+      "fr_id": "deferred_to_downstream_phases_",
+      "why": "absent"
+    }
+  ],
+  "spec_declared": 143,
+  "denominator_provenance": {
+    "test_spec_sha256": "719f8dc17d54501ed83a4a4fda4eddcae22b7f6cafaaf7283a8cc72b81020a1b",
+    "rows_declared": 143,
+    "rows_unread": 0,
+    "delivery_basis": "ran-and-passed"
+  },
+  "measurement_scope": {
+    "weight_covered": 1.0,
+    "weight_total": 1.0,
+    "weight_artifact_verified": 0.15,
+    "dimensions_scored": [
+      "architecture",
+      "documentation",
+      "error_handling",
+      "execute_verification_target",
+      "integration_coverage",
+      "license_compliance",
+      "linting",
+      "mutation_testing",
+      "performance",
+      "readability",
+      "secrets_scanning",
+      "security",
+      "test_assertion_quality",
+      "test_coverage",
+      "traceability",
+      "type_safety"
+    ],
+    "dimensions_unscored": [],
+    "dimensions_artifact_verified": [
+      "license_compliance",
+      "mutation_testing"
+    ],
+    "dimensions_declared_absent": [
+      "architecture_constraints"
+    ]
+  }
+}

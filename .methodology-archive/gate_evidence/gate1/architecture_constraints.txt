@@ -1,0 +1,16 @@
+[1m=============[0m
+[1mImport Linter[0m
+[1m=============[0m
+[22m[0m
+[1m---------[0m
+[1mContracts[0m
+[1m---------[0m
+[22m[0m
+[1mAnalyzed 36 files, 79 dependencies.[0m
+[1m-----------------------------------[0m
+[22m[0m
+[22mtaskq_api layers [0m[32m[22mKEPT[0m[33m[22m[0m[22m[0m
+[22mtaskq_api independence [0m[32m[22mKEPT[0m[33m[22m[0m[22m[0m
+[22mno sqlalchemy outside repository [0m[32m[22mKEPT[0m[33m[22m[0m[22m[0m
+[22m[0m
+[22mContracts: 3 kept, 0 broken.[0m

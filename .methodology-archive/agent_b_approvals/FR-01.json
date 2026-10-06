@@ -1,0 +1,84 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each FR-01 requirement maps to an assertion that fails when it is violated. POST/GET/DELETE behaviour and scope: test_fr01.py:148 (201), :168 (all fields), :230 and :232-:236 (delete removes the task and its result rows), :467 and :481 (403 and 401 per scope). Validation: :251-:254 (empty command → 422), :353-:356 (1001 chars → 422), :366 (exactly 1000 accepted), :375-:379 and :405-:407 (`;` rejected, nothing stored), :518 (blank or over-long name → 422). Name uniqueness: :391-:394 asserts 409, which SPEC.md:341 and :364 resolve for name conflicts even though SPEC.md:88 says 422. Unknown id: :267-:269 (GET) and :492-:493 (DELETE) → 404 problem+json. Cursor pagination: :289-:296 (3 pages of 50/50/20, no OFFSET in the captured SQL, no duplicate ids) and :300-:308 (opaque cursor, `offset` param does not shift the page). Limits: :321 (default 50), :333 (200 accepted), :340-:341 (201 → 422). Delete atomicity: :510-:511 (a forced failure rolls back and restores the result rows). The limit numbers come from the requirement, not from the implementation. The only open point is that the injection blacklist is exercised only with `;`, because SPEC.md does not enumerate the blacklist members.",
+  "citations": [
+    "SPEC.md:79",
+    "SPEC.md:88",
+    "SPEC.md:341",
+    "SPEC.md:364",
+    "03-development/tests/test_fr01.py:148",
+    "03-development/tests/test_fr01.py:168",
+    "03-development/tests/test_fr01.py:212",
+    "03-development/tests/test_fr01.py:236",
+    "03-development/tests/test_fr01.py:254",
+    "03-development/tests/test_fr01.py:269",
+    "03-development/tests/test_fr01.py:290",
+    "03-development/tests/test_fr01.py:296",
+    "03-development/tests/test_fr01.py:308",
+    "03-development/tests/test_fr01.py:321",
+    "03-development/tests/test_fr01.py:333",
+    "03-development/tests/test_fr01.py:341",
+    "03-development/tests/test_fr01.py:356",
+    "03-development/tests/test_fr01.py:366",
+    "03-development/tests/test_fr01.py:379",
+    "03-development/tests/test_fr01.py:393",
+    "03-development/tests/test_fr01.py:467",
+    "03-development/tests/test_fr01.py:481",
+    "03-development/tests/test_fr01.py:492",
+    "03-development/tests/test_fr01.py:511"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "SPEC.md:88",
+      "message": "SPEC.md:88 says every validation violation, including name uniqueness, returns 422. SPEC.md:341 and :364 say a duplicate name returns 409, and test_fr01.py:393 follows the 409 reading. The injection blacklist members are not enumerated in SPEC.md, so only `;` is tested.",
+      "fr_id": "FR-01"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr01_command_exactly_1000_chars_accepted",
+      "test_fr01_command_over_1000_chars_returns_422",
+      "test_fr01_create_task_returns_201",
+      "test_fr01_delete_task_removes_results_same_txn",
+      "test_fr01_duplicate_name_returns_409",
+      "test_fr01_get_task_returns_all_fields",
+      "test_fr01_injection_chars_in_command_returns_422",
+      "test_fr01_invalid_body_returns_422",
+      "test_fr01_list_limit_200_accepted",
+      "test_fr01_list_limit_201_returns_422",
+      "test_fr01_list_limit_default_50_max_200",
+      "test_fr01_list_tasks_filters_and_cursor",
+      "test_fr01_pagination_is_cursor_based",
+      "test_fr01_unknown_id_returns_404",
+      "test_sec_t05_injection_chars_rejected_422",
+      "test_sec_t08_sql_metacharacters_treated_as_data"
+    ],
+    "assertion_digests": {
+      "test_fr01_command_exactly_1000_chars_accepted": "996050cef17766e50b0324bd5e846942bb9f261e26b384b9ee2cc815c323a056",
+      "test_fr01_command_over_1000_chars_returns_422": "1f449afb0f1517e1e102766974b13b86222bca2ab93da1c115f28a3f2c86f3a5",
+      "test_fr01_create_task_returns_201": "50d7f25c25711c760315e4f986a7dc271d87ca4cec903987d68d69a8cb991201",
+      "test_fr01_delete_task_removes_results_same_txn": "800a4d53079a01800c04f5b9a8db26b941a0b1b99027df0a49bd9dbe2360ebfd",
+      "test_fr01_duplicate_name_returns_409": "c0108f11b59a70e72dc8e0f46cf96862c350f36d1eec5564257e9e5164cbee7f",
+      "test_fr01_get_task_returns_all_fields": "6fbde2eb2861dd9729c1fa00cebc0a39ae0c67092e896a6ef2f77ac311d9818a",
+      "test_fr01_injection_chars_in_command_returns_422": "febd85569a7817fbdea712e72f7bb2e7adc48f55878a2299449928d6b4827c79",
+      "test_fr01_invalid_body_returns_422": "9b26697c860a587ca346bb9f00a0b2544f65ac65eee9ed5bb61d2f1138d5be26",
+      "test_fr01_list_limit_200_accepted": "b9a2394beebdad76a91d245d38690d06920cccacd83228f1ac774e8fe8c8524c",
+      "test_fr01_list_limit_201_returns_422": "fcd3cf689454c32fb09e0645b6088ae00f195a2e84917de5e72d98897cee0305",
+      "test_fr01_list_limit_default_50_max_200": "ba10afeefa5fca779cbb0cffe87b1f7b1bb7c142ab18e1f8bd3134f1744d6a8d",
+      "test_fr01_list_tasks_filters_and_cursor": "730f71f745e83270cb5a775e01940834c2e79a47af4fad28e622a1142179639f",
+      "test_fr01_pagination_is_cursor_based": "ac0802c1d3096531aa0e8cffc648ff2faed1ec1a86e0547959fb6a16b85cce5b",
+      "test_fr01_unknown_id_returns_404": "c1ec2d2b6f03d0288c5f4377afc25ba1c4eb36fcb108161637e15ead0647bd4a",
+      "test_sec_t05_injection_chars_rejected_422": "f1449b5c68e44581b180080a5f6cd313b3a745d523419a869eec45e1792974ca",
+      "test_sec_t08_sql_metacharacters_treated_as_data": "c48872805d3c8169be8e41157ccd8d37411157a8b8a4fa0333df49f62468e5ff"
+    },
+    "test_files": [
+      "03-development/tests/test_fr01.py"
+    ]
+  }
+}

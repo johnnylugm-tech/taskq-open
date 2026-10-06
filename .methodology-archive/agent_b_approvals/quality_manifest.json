@@ -1,0 +1,19 @@
+{
+  "fr": "quality_manifest",
+  "review_status": "APPROVE",
+  "reason": "The manifest records gate4 with score 98.02, overall_score 98.02, quality_complete true, open_critical 0 and open_high 0, consistent with the report and sign-off. Gate 2 (98.86) and Gate 3 (97.88) are recorded as well. All 12 NFR-to-dimension mappings and the 10 FR IDs are present, and the gate_score_overrides block is present. The VERIFICATION_REPORT n/a entries for Gate 3 coverage and mutation score, and BASELINE's memory not measured, are disclosed in the release notes. They are traceability caveats and not scoring gaps.",
+  "citations": [
+    ".methodology/quality_manifest.json:328",
+    ".methodology/quality_manifest.json:329",
+    ".methodology/quality_manifest.json:337",
+    ".methodology/quality_manifest.json:219"
+  ],
+  "docs_embedded": [
+    "QUALITY_REPORT.md",
+    "RELEASE_NOTES.md",
+    "FINAL_SIGN_OFF.md",
+    "VERIFICATION_REPORT.md"
+  ],
+  "confidence": 0.9,
+  "gaps": []
+}

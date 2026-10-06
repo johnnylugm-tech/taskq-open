@@ -1,0 +1,53 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each FR-02 requirement maps to an assertion that fails when it is violated. (1) POST /run returns 202 with a run_id: test_fr02.py:182-185 and the history check at :190. (2) Spawn via create_subprocess_exec(*shlex.split(command)), never the shell: the spy at :224-231 asserts a single exec call, no shell kwarg, and argv equal to shlex.split. Timeout comes from TASKQ_TASK_TIMEOUT: :222-223 and :233 (0.5s kills a 30s sleep), and :244-245 (0.4s times out while 10s completes the same command). (3) State machine pending→running→done|failed|timeout: the history lists at :257, :268 and :281, plus the backward-transition rejection at :305-311. (4) Results written to task_results: the column set at :331, the values at :334-339, and the history API values at :345-346. (5) GET /runs scoped read, newest first: :374-383 uses out-of-order inserts, a competing task's row and exact id ordering, and :441-448 covers key requirements. POST scope write: 403 and 401 at :432-438. The tests have no tautological or inverted assertions.",
+  "citations": [
+    "SPEC.md:93-99",
+    "03-development/tests/test_fr02.py:182",
+    "03-development/tests/test_fr02.py:226-233",
+    "03-development/tests/test_fr02.py:244-245",
+    "03-development/tests/test_fr02.py:257",
+    "03-development/tests/test_fr02.py:268",
+    "03-development/tests/test_fr02.py:281",
+    "03-development/tests/test_fr02.py:305-311",
+    "03-development/tests/test_fr02.py:331-339",
+    "03-development/tests/test_fr02.py:374-383",
+    "03-development/tests/test_fr02.py:432-438"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr02_results_persisted_in_task_results",
+      "test_fr02_run_lifecycle_failed_on_nonzero_exit",
+      "test_fr02_run_lifecycle_state_machine",
+      "test_fr02_run_lifecycle_timeout",
+      "test_fr02_run_returns_202_with_run_id",
+      "test_fr02_run_unknown_task_returns_404",
+      "test_fr02_run_uses_exec_without_shell_and_times_out",
+      "test_fr02_runs_history_newest_first",
+      "test_fr02_state_machine_rejects_backward_transition",
+      "test_sec_t06_shell_metacharacters_not_interpreted",
+      "test_sec_t11_secrets_redacted_in_output_and_logs"
+    ],
+    "assertion_digests": {
+      "test_fr02_results_persisted_in_task_results": "c9e44a78aa6618be26940dc49d4d8f8ee763bcd7534c1395ac69a51ef7dd60b1",
+      "test_fr02_run_lifecycle_failed_on_nonzero_exit": "16ae25fa4600e078c1a26f8c0caf094f54afda0ce197774bcbe4b44c758405ce",
+      "test_fr02_run_lifecycle_state_machine": "baa4bbeea7e044384b3b005701efdb0c0a43e097fb42eadc951c9ba7b0f8585f",
+      "test_fr02_run_lifecycle_timeout": "41110e8e18e87ec37019d50a7dbb6e3ae00d393bb806f9e78cbac1b151a66050",
+      "test_fr02_run_returns_202_with_run_id": "80adeb08ef13439ddd775d1e0453e67be151fc6584bf61706bf5b4cef42bd2ed",
+      "test_fr02_run_unknown_task_returns_404": "d44388672321e8820d626402da7e097852dd782aa69abc6504ecc2d2491ba707",
+      "test_fr02_run_uses_exec_without_shell_and_times_out": "94413b25a2136f67fce8dbc5ec312c8be27880f78df3042fe073f4e604d9b768",
+      "test_fr02_runs_history_newest_first": "8345833bedeef4f6e87de0ad0891bbc243753c9b76b7ffae27bbe98da1e69cf4",
+      "test_fr02_state_machine_rejects_backward_transition": "713ea1242e2987778c3608191e982ac5ba5cea7cebfb5cca49ffde2d95e89b91",
+      "test_sec_t06_shell_metacharacters_not_interpreted": "77ad7af863cc9899ac3a9e6558c6e03944aefcf8ea5368ee0f0b5182e7ad47c3",
+      "test_sec_t11_secrets_redacted_in_output_and_logs": "44d8920c7d0aac53213ba6ab26d1f2f2a5198ce5b27d2cfd9810a88ec1715bd1"
+    },
+    "test_files": [
+      "03-development/tests/test_fr02.py"
+    ]
+  }
+}

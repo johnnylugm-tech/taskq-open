@@ -86,7 +86,7 @@
   },
   "test_inventory_checksum": "2007422fca7553a6fca9573d44d2bc3e0c54676230cdc6e5764cfb0b22e6365c",
   "phase_truth_passed": true,
-  "last_milestone_command": "push-milestone --type p8",
+  "last_milestone_command": "advance-phase --completed-phase 7",
   "integrity": 100.0,
   "last_milestone_head": {
     "p3-mid": "31063698d535c49d9fdf845c66985e52d7121ca7",

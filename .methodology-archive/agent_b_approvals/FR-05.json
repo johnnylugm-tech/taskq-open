@@ -1,0 +1,52 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each FR-05 clause maps to an assertion that fails if it is violated. Capacity (TASKQ_RATE_BURST) is checked at test_fr05.py:130 and :147, where the OK count must equal the burst of 20 and the next request must be 429. Refill (TASKQ_RATE_PER_SEC) is checked at :134 and :201, where 2.0/s over 1s must admit exactly 2 more requests. Per-token isolation is checked at :187. The 429 status is checked at :166. The problem+json content type and type are checked at :163 and :170. Retry-After in seconds is checked at :168 and :200. DB-backed state is checked at :313-317, where a rate_buckets row exists and 40 concurrent requests admit exactly 20. The row-level lock is checked at :283, where every bucket SELECT compiles with FOR UPDATE. The single transaction is checked at :285, where there is one begin, one commit, and read and write between them. Health endpoints being unlimited is checked at :340, after the bucket is shown drained at :332. Weak assertions such as :282 and :319 are redundant. The substantive assertions around them cover the requirement.",
+  "citations": [
+    "SPEC.md:117",
+    "SPEC.md:118",
+    "SPEC.md:119",
+    "SPEC.md:120",
+    "03-development/tests/test_fr05.py:130",
+    "03-development/tests/test_fr05.py:134",
+    "03-development/tests/test_fr05.py:163",
+    "03-development/tests/test_fr05.py:166",
+    "03-development/tests/test_fr05.py:168",
+    "03-development/tests/test_fr05.py:170",
+    "03-development/tests/test_fr05.py:187",
+    "03-development/tests/test_fr05.py:200",
+    "03-development/tests/test_fr05.py:201",
+    "03-development/tests/test_fr05.py:283",
+    "03-development/tests/test_fr05.py:285",
+    "03-development/tests/test_fr05.py:313",
+    "03-development/tests/test_fr05.py:317",
+    "03-development/tests/test_fr05.py:340"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr05_bucket_trigger_and_recovery",
+      "test_fr05_bucket_update_single_txn_row_lock",
+      "test_fr05_concurrent_requests_never_overdraw_bucket",
+      "test_fr05_exactly_burst_requests_all_succeed",
+      "test_fr05_health_endpoints_not_rate_limited",
+      "test_fr05_over_limit_returns_429_retry_after",
+      "test_sec_t04_burst_exceeded_returns_429"
+    ],
+    "assertion_digests": {
+      "test_fr05_bucket_trigger_and_recovery": "988216bf6245261cfcee6b0398330ee227d50b9ae75df5de4ade25b4eedee3ea",
+      "test_fr05_bucket_update_single_txn_row_lock": "27f580ce2e5cc53a5f2b964cacdb65a3eb3a3d6405aa10c4f43c9427a5483efd",
+      "test_fr05_concurrent_requests_never_overdraw_bucket": "569b38de7b863fdfdf3be93b50635386590659382fb006b4d785da1b081b9568",
+      "test_fr05_exactly_burst_requests_all_succeed": "88d8f9fc0c6f0c5a60972847a42e2027135af316b9ccb535ab13cf210fe978d3",
+      "test_fr05_health_endpoints_not_rate_limited": "9d17fddf2ed40fa0b0da9e8ca6c9db44eb357854842c1d9b716008a9da54df67",
+      "test_fr05_over_limit_returns_429_retry_after": "be0bb9daadb574a26e2d600411066a1772e5efe4eff87b892f0eeed6102d3540",
+      "test_sec_t04_burst_exceeded_returns_429": "2be22a5407305764e228d8656cb9646fc3313bdd16ed612897e66cc4ae80e047"
+    },
+    "test_files": [
+      "03-development/tests/test_fr05.py"
+    ]
+  }
+}

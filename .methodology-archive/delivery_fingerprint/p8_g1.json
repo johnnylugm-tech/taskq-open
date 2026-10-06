@@ -1,0 +1,39 @@
+{
+  "acceptance_criteria": {
+    "parse_gap": 0,
+    "uncited_by_test_spec": 0,
+    "unnumbered": 0
+  },
+  "architecture": {
+    "declared_only": [],
+    "modules_outside_every_contract": [
+      "taskq_api"
+    ]
+  },
+  "coverage": {
+    "omit": [],
+    "statements_measured": 0,
+    "statements_omitted": 0
+  },
+  "gate": 1,
+  "phase": 8,
+  "spec_ambiguity": [
+    {
+      "file": "03-development/tests/test_fr02.py",
+      "line": 389,
+      "note": "TEST_SPEC precondition says `$` is accepted at create, but"
+    }
+  ],
+  "stubbed_boundaries": {
+    "count": 0,
+    "modules": []
+  },
+  "test_seams": [],
+  "verify_system": {
+    "obligations_unmet": [],
+    "reach_status": "measured",
+    "status": "expanded",
+    "swallowed": 0,
+    "tautological": false
+  }
+}

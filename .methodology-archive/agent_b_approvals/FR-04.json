@@ -1,0 +1,58 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each normative requirement maps to an assertion that fails when it is violated. (1) Scope hierarchy read<write<admin: test_fr04_scope_hierarchy_matrix asserts read→403 and write→201 on POST at lines 102-103, and read/write→403 with admin→204 on DELETE at lines 105-107. test_fr04_write_key_can_read asserts write→200 on GET at line 115. (2) Insufficient scope returns 403 with problem+json: lines 124-127 assert the status, the application/problem+json content type and the /errors/forbidden type. (3) The body must not reveal whether the resource exists: test_fr04_403_does_not_leak_existence compares an existing id with a random unknown id under a write key on DELETE (admin required). Lines 147-153 assert equal status, type and detail, and that neither id appears in the body. test_sec_t03 asserts the same at lines 208-212. (4) Single dependency: line 181 walks every /v1 APIRoute's dependant tree and fails if any route lacks the require_scope closure from deps. Line 179 guards against an empty route list. The expected values come from the spec (403, 0 unguarded), not from the implementation. Minor limit: the dependency test shows each route is guarded, not that its minimum scope matches the FR-01/02 table. The matrix covers that only for POST and DELETE /v1/tasks.",
+  "citations": [
+    "SPEC.md:111",
+    "SPEC.md:112",
+    "SPEC.md:113",
+    "03-development/tests/test_fr04.py:102",
+    "03-development/tests/test_fr04.py:103",
+    "03-development/tests/test_fr04.py:105",
+    "03-development/tests/test_fr04.py:106",
+    "03-development/tests/test_fr04.py:107",
+    "03-development/tests/test_fr04.py:115",
+    "03-development/tests/test_fr04.py:124",
+    "03-development/tests/test_fr04.py:125",
+    "03-development/tests/test_fr04.py:127",
+    "03-development/tests/test_fr04.py:147",
+    "03-development/tests/test_fr04.py:151",
+    "03-development/tests/test_fr04.py:152",
+    "03-development/tests/test_fr04.py:181"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "SPEC.md:113",
+      "message": "The route-dependency test confirms every /v1 route includes a require_scope dependency but does not assert the per-route minimum scope. GET /v1/tasks/{id}, GET /v1/tasks/{id}/runs, POST /v1/tasks/{id}/run and /v1/metrics are only covered indirectly. This is not a requirement violation.",
+      "fr_id": "FR-04"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr04_403_does_not_leak_existence",
+      "test_fr04_every_v1_route_uses_scope_dependency",
+      "test_fr04_insufficient_scope_returns_403",
+      "test_fr04_scope_hierarchy_matrix",
+      "test_fr04_write_key_can_read",
+      "test_sec_t02_insufficient_scope_returns_403",
+      "test_sec_t03_forbidden_body_does_not_reveal_existence"
+    ],
+    "assertion_digests": {
+      "test_fr04_403_does_not_leak_existence": "330bfb3eb24a1e06ef7b6680134c5349b66435c322577aa47363ee5517fe089e",
+      "test_fr04_every_v1_route_uses_scope_dependency": "b1f152291cdb59ed046cda14057e5d2b0393bd68ab311d58e173ebc5dd321066",
+      "test_fr04_insufficient_scope_returns_403": "ec311e3c462425c3411f5b5f7e0d8e8781e2b599650bbdaeb347aa451bf0d619",
+      "test_fr04_scope_hierarchy_matrix": "23c30c11730a2f8b8b0b968ce34a915ec89183a254ab37893962e7ca073f43fc",
+      "test_fr04_write_key_can_read": "5fd72effafd87f4ec87e39e72d8169386bed1fcba31bc165f94e638a08dfeb63",
+      "test_sec_t02_insufficient_scope_returns_403": "8397298e3eff0770c1079c3600b01a9fde5d7135c9ca2cc0f3558b4f3b10747b",
+      "test_sec_t03_forbidden_body_does_not_reveal_existence": "b72626e1585d12c1d499dede66eb19da9e5e5e7a95c76921df894df658bf93bc"
+    },
+    "test_files": [
+      "03-development/tests/test_fr04.py"
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "review_status": "APPROVE",
+  "reason": "Each FR-06 rule maps to an assertion that fails when it is violated. (1) No Session in the business layer: test_fr06.py:187 AST-scans service/ for the name Session, and :185 checks UnitOfWork is not a Session. (2) Commit on success and rollback on exception: :208/:210 on success, :226/:228/:230 on RuntimeError, :251/:253/:255 on CancelledError, all counting real Session after_commit and after_rollback events and checking persistence. (3) No string-built SQL: :320 AST-scans every module under taskq_api for f-string, % and + SQL. (4) N+1: :383 requires equal statement counts for 10 and 100 seeded rows, and :389 caps the repository count at 2. (5) Pool: :404 and :406 check pool size and pre_ping, but 5 is also the default, so :404 alone would not catch an implementation that ignores TASKQ_DB_POOL_SIZE. The non-default case at :414 (pool_size=7) does catch that.",
+  "citations": [
+    "SPEC.md:122",
+    "SPEC.md:123",
+    "SPEC.md:124",
+    "SPEC.md:125",
+    "SPEC.md:126",
+    "SPEC.md:127",
+    "03-development/tests/test_fr06.py:187",
+    "03-development/tests/test_fr06.py:208",
+    "03-development/tests/test_fr06.py:230",
+    "03-development/tests/test_fr06.py:255",
+    "03-development/tests/test_fr06.py:320",
+    "03-development/tests/test_fr06.py:383",
+    "03-development/tests/test_fr06.py:406",
+    "03-development/tests/test_fr06.py:414"
+  ],
+  "docs_embedded": [
+    "SPEC.md"
+  ],
+  "gaps": [
+    {
+      "severity": "low",
+      "evidence_type": "methodology_artifact",
+      "canonical_ref": "03-development/tests/test_fr06.py:404",
+      "message": "The declared test test_fr06_engine_pool_size_and_pre_ping uses pool size 5, which equals the default, so its pool-size assertion cannot detect an implementation that ignores TASKQ_DB_POOL_SIZE. Only the undeclared test at line 414 (value 7) does.",
+      "fr_id": "FR-06"
+    },
+    {
+      "severity": "low",
+      "evidence_type": "over_interpretation",
+      "canonical_ref": "03-development/tests/test_fr06.py:187",
+      "message": "The first bullet says all data access goes through repository/. No test checks this beyond the service layer, for example that api/ code does not issue SQL directly.",
+      "fr_id": "FR-06"
+    }
+  ],
+  "criteria_review": {
+    "requirement_path": "SPEC.md",
+    "declared_tests": [
+      "test_fr06_engine_pool_size_and_pre_ping",
+      "test_fr06_list_query_count_constant",
+      "test_fr06_no_string_built_sql",
+      "test_fr06_service_layer_holds_no_session",
+      "test_fr06_session_commit_on_success_rollback_on_error",
+      "test_fr06_session_rollback_on_cancelled_error",
+      "test_fr06_session_rollback_on_exception"
+    ],
+    "assertion_digests": {
+      "test_fr06_engine_pool_size_and_pre_ping": "edf1cbe6cb2f0754dff3ab89fc5918217cd463be27f323c3e879d4547c050b94",
+      "test_fr06_list_query_count_constant": "84fe58cee18ce73cadc4668ed4a78224e901565925c707f998036346aef188c4",
+      "test_fr06_no_string_built_sql": "915970a20c203a543b647f8628221eb5e47fc7904bd98c415257309b6ff01934",
+      "test_fr06_service_layer_holds_no_session": "bb53b32a76229fa38637d9cb3f6dfe8548706900604234606fc429d97cd0df71",
+      "test_fr06_session_commit_on_success_rollback_on_error": "fd64f6becd37adfcd1e685bd8f662ab8434f2b03dc07b2c25356956d6293e97f",
+      "test_fr06_session_rollback_on_cancelled_error": "3da64e36cf5c0c97b95619553476c73c4f01d427745b288b84c398fd349019ad",
+      "test_fr06_session_rollback_on_exception": "32641274bcff9bf4041566f8ed5f421be2dc2e32539491c784e3467226c2c4e1"
+    },
+    "test_files": [
+      "03-development/tests/test_fr06.py"
+    ]
+  }
+}

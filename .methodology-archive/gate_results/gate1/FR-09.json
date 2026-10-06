@@ -1,0 +1,131 @@
+{
+  "gate": 1,
+  "phase": 3,
+  "fr_id": "FR-09",
+  "overall_score": 100.0,
+  "quality_complete": true,
+  "rounds_used": 1,
+  "breakdown": {
+    "linting": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_evidence": "All checks passed!\n",
+      "score_source": "framework",
+      "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt"
+    },
+    "type_safety": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791127448927\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.23\n    }\n}\n\n",
+      "score_source": "framework",
+      "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
+    },
+    "test_coverage": {
+      "score": 100.0,
+      "threshold": 100,
+      "tests_passed": 7,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "tool_evidence": "collected 7 items; 7 passed, 1 warning; FR-09 files coverage 83/83 statements = 100%; 6/6 required tests present",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-09.txt",
+      "coverage_scope": "per_fr",
+      "coverage_scope_fr": "FR-09",
+      "score_source": "framework"
+    },
+    "architecture_constraints": {
+      "score": 100.0,
+      "threshold": 100,
+      "tool_evidence": "=============\nImport Linter\n=============\n\n---------\nContracts\n---------\n\nAnalyzed 72 files, 204 dependencies.\n------------------------------------\n\ntaskq_api layers KEPT\ntaskq_api independence KEPT\nno sqlalchemy outside repository KEPT\n\nContracts: 3 kept, 0 broken.\n",
+      "score_source": "framework",
+      "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
+    }
+  },
+  "enforcer_sha": "78f79c1530eeb5d06e333b6c830bec3b58ff8616",
+  "enforcer_surface": {
+    "core/quality_gate": "4e2db2c4c86f8f8c3eca7e102ef436e7b0004bc3",
+    "harness/harness_bridge.py": "e853d6a3102801dc57ec8b408dafd6e196987785",
+    "harness/gate_configs": "d91e4c3c9409081ea44b75ae3060f3293fa59cab"
+  },
+  "evidence_digest": {
+    "secrets_scanning::.gitleaks.toml": {
+      "source": ".gitleaks.toml (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "4ee792a8dd8ca8022e0d9f658a30140cb275f083395cff0c5e0d745432f04614",
+      "bytes": 2157,
+      "head": "# Delivered by `init-project` — templates/.gitleaks.toml is the single\n# source; a project's copy is written once and not re-synced (same shape as\n# harness_quality_gate.yml, see core/ci_template.py). SKIP, never overwrite:\n# unlike the CI workflow this file is one projects already hand-author\n# (three corpus projects shipped their own before this template existed),\n# so init-project never touches an existing copy, with or without\n# --overwrite.\n#\n# Round 92. secrets_scanning (tier-1, threshold 100) treats a clean gitleaks\n# run as proof of no secrets. The framework itself writes free-text agent\n# excerpts (test names, coverage summaries) into `.methodology/*.json` and\n# commits them (Round 90: the record has to reach git). generic-api-key's\n# entropy rule fires on names like `test_invalid_api_key_returns_401` —\n# measured on a real project's committed Gate 1 evidence, which blocked P5.\n# Scoped to that ONE rule so a real credential under .methodology/ is still\n# caught by private-key / aws-access-token / github-pat / etc. — verified:\n# a private key planted under .methodology/ is still flagged under this\n# config; a real secret outside .methodology/ is unaffected.\n#\n# The path is `(^|/)\\.methodology...`, not `^\\.methodology...`: two of the"
+    },
+    "mutation_testing::setup.cfg": {
+      "source": "setup.cfg (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "0ddd6a09423cb3e12183ec9ac47a0abd7d92edfc98f34fee784816e46e618c78",
+      "bytes": 311,
+      "head": "# [mutmut] paths_to_mutate — auto-generated from SAB scope_layers\n# by core.quality_gate.mutmut_scope during advance-phase P2→P3 handoff.\n# Human edits will be overwritten on the next P2→P3 advance.\n[mutmut]\npaths_to_mutate = 03-development/src/taskq_api/repository, 03-development/src/taskq_api/service\n"
+    },
+    "test_coverage::setup.cfg": {
+      "source": "setup.cfg (score-altering exclusions)",
+      "kind": "file",
+      "sha256": "0ddd6a09423cb3e12183ec9ac47a0abd7d92edfc98f34fee784816e46e618c78",
+      "bytes": 311,
+      "head": "# [mutmut] paths_to_mutate — auto-generated from SAB scope_layers\n# by core.quality_gate.mutmut_scope during advance-phase P2→P3 handoff.\n# Human edits will be overwritten on the next P2→P3 advance.\n[mutmut]\npaths_to_mutate = 03-development/src/taskq_api/repository, 03-development/src/taskq_api/service\n"
+    },
+    "linting": {
+      "source": "tool_evidence (inline)",
+      "kind": "inline",
+      "sha256": "f0d0b1081d9d3ebb26c4c93543053ecdc0a58998f22c071dc4ddb26021b57645",
+      "bytes": 18,
+      "head": "All checks passed!"
+    },
+    "type_safety": {
+      "source": "tool_evidence (inline)",
+      "kind": "inline",
+      "sha256": "73feb1cded92f040a065e20a62429cfbe5c2f1ee6a0cd5ae1383b4a396f11cd2",
+      "bytes": 249,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791127448927\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.23\n    }\n}"
+    },
+    "test_coverage": {
+      "source": "tool_evidence (inline)",
+      "kind": "inline",
+      "sha256": "5bb41fd4de444ed10545ee2c4db8807412745b1c98e4cc20af0f34146d08ceb9",
+      "bytes": 112,
+      "head": "collected 7 items; 7 passed, 1 warning; FR-09 files coverage 83/83 statements = 100%; 6/6 required tests present"
+    },
+    "architecture_constraints": {
+      "source": "tool_evidence (inline)",
+      "kind": "inline",
+      "sha256": "ddf413d1bb6b8729f9c56524362c1c763f25dbde7056b8ba6343e6452477386b",
+      "bytes": 266,
+      "head": "=============\nImport Linter\n=============\n\n---------\nContracts\n---------\n\nAnalyzed 72 files, 204 dependencies.\n------------------------------------\n\ntaskq_api layers KEPT\ntaskq_api independence KEPT\nno sqlalchemy outside repository KEPT\n\nContracts: 3 kept, 0 broken."
+    }
+  },
+  "composite_score": 100.0,
+  "verdict": "PASS",
+  "passed": true,
+  "spec_undelivered": [],
+  "spec_declared": 0,
+  "denominator_provenance": {},
+  "measurement_scope": {
+    "weight_covered": 1.0,
+    "weight_total": 1.0,
+    "weight_artifact_verified": 0,
+    "dimensions_scored": [
+      "architecture_constraints",
+      "linting",
+      "test_coverage",
+      "type_safety"
+    ],
+    "dimensions_unscored": [],
+    "dimensions_artifact_verified": [],
+    "dimensions_declared_absent": [
+      "documentation",
+      "error_handling",
+      "execute_verification_target",
+      "integration_coverage",
+      "license_compliance",
+      "mutation_testing",
+      "performance",
+      "readability",
+      "security",
+      "test_assertion_quality"
+    ]
+  }
+}
