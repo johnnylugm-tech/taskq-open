@@ -1,7 +1,7 @@
 {
   "gate": 1,
   "phase": 8,
-  "fr_id": "FR-01",
+  "fr_id": "FR-02",
   "overall_score": 100.0,
   "quality_complete": true,
   "rounds_used": 1,
@@ -16,20 +16,20 @@
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287309144\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.295\n    }\n}\n\n",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287437719\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.234\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 29,
+      "tests_passed": 25,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "Name                                               Stmts   Miss  Cover\n----------------------------------------------------------------------\n03-development/src/taskq_api/api/routes_tasks.py      30      0   100%\n03-development/src/taskq_api/api/schemas.py           31      0   100%\n03-development/src/taskq_api/repository/tags.py        9      0   100%\n03-development/src/taskq_api/repository/tasks.py      49      0   100%\n03-development/src/taskq_api/service/tasks.py         38      0   100%\n---\n29 passed, 1 warning in 0.81s",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-01.txt",
+      "tool_evidence": "25 passed, 1 warning in 6.57s\nName                                                 Stmts   Miss  Cover\n------------------------------------------------------------------------\n03-development/src/taskq_api/api/routes_runs.py         23      0   100%\n03-development/src/taskq_api/repository/results.py      16      0   100%\n03-development/src/taskq_api/service/runner.py          63      0   100%\n03-development/src/taskq_api/servic",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-02.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-01",
+      "coverage_scope_fr": "FR-02",
       "score_source": "framework"
     },
     "architecture_constraints": {
@@ -78,16 +78,16 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "11d9eacc2e53318c5fbe3a5482aae1114a674c45b1d86a53d0e865fc5a74f59e",
+      "sha256": "10a2464c0550cc8067624062d04cbcda973b711c32071a87912996e9e6b1a15b",
       "bytes": 250,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287309144\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.295\n    }\n}"
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791287437719\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.234\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "e59e2d0240d2378085929bd56def68443819ec49045f9fe9a96d3f8a5d9b610b",
-      "bytes": 530,
-      "head": "Name                                               Stmts   Miss  Cover\n----------------------------------------------------------------------\n03-development/src/taskq_api/api/routes_tasks.py      30      0   100%\n03-development/src/taskq_api/api/schemas.py           31      0   100%\n03-development/src/taskq_api/repository/tags.py        9      0   100%\n03-development/src/taskq_api/repository/tasks.py      49      0   100%\n03-development/src/taskq_api/service/tasks.py         38      0   100%\n---\n29 passed, 1 warning in 0.81s"
+      "sha256": "93f8f529307a519dd1683d0ca5309d39b4fa76218f35df8c203b6ab2bff67e07",
+      "bytes": 430,
+      "head": "25 passed, 1 warning in 6.57s\nName                                                 Stmts   Miss  Cover\n------------------------------------------------------------------------\n03-development/src/taskq_api/api/routes_runs.py         23      0   100%\n03-development/src/taskq_api/repository/results.py      16      0   100%\n03-development/src/taskq_api/service/runner.py          63      0   100%\n03-development/src/taskq_api/servic"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
