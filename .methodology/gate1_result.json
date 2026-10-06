@@ -1,8 +1,8 @@
 {
   "gate": 1,
   "phase": 8,
-  "fr_id": "FR-07",
-  "overall_score": 97.09,
+  "fr_id": "FR-08",
+  "overall_score": 99.71424999999999,
   "quality_complete": true,
   "rounds_used": 1,
   "breakdown": {
@@ -10,34 +10,32 @@
       "score": 100.0,
       "threshold": 100,
       "tool_evidence": "All checks passed!",
-      "evidence_file": ".sessi-work/round_1/tools/linting.txt",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/linting_harness.txt"
     },
     "type_safety": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791288055232\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.26\n    }\n}\n\n",
-      "evidence_file": ".sessi-work/round_1/tools/type_safety.txt",
+      "tool_evidence": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791288176682\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.239\n    }\n}\n\n",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/type_safety_harness.txt"
     },
     "test_coverage": {
       "score": 100.0,
       "threshold": 100,
-      "tests_passed": 8,
+      "tests_passed": 25,
       "tests_failed": 0,
       "tests_skipped": 0,
-      "tool_evidence": "test_fr07.py 8 passed; FR-07 coverage 88.35% (migration_state.py 77.4%, missing lines 75-79,84,92-98; v1/v2/v3 100%)",
-      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-07.txt",
+      "tool_evidence": "25 passed, 1 warning; FR-08 files coverage 98.857%",
+      "tool_output": ".methodology/gate_evidence/harness_verification/test_coverage_harness_per_fr_FR-08.txt",
       "coverage_scope": "per_fr",
-      "coverage_scope_fr": "FR-07",
+      "coverage_scope_fr": "FR-08",
       "score_source": "framework"
     },
     "architecture_constraints": {
       "score": 100.0,
       "threshold": 100,
-      "tool_evidence": "Contracts: 3 kept, 0 broken. (run from repo root with PYTHONPATH=03-development/src; the given cwd 03-development had no .importlinter)",
+      "tool_evidence": "Contracts: 3 kept, 0 broken.",
       "score_source": "framework",
       "tool_output": ".methodology/gate_evidence/harness_verification/architecture_constraints_harness.txt"
     }
@@ -80,26 +78,26 @@
     "type_safety": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "0a8b711e62dcd2f1f7ddfa1a1b5b7edaf3f48bc5ac262397b58382a03178513e",
-      "bytes": 249,
-      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791288055232\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.26\n    }\n}"
+      "sha256": "98055b090a4d1aaf9529ae982f2deea7fc9f8de3e29dd58577e970eb8edc9c3a",
+      "bytes": 250,
+      "head": "{\n    \"version\": \"1.1.409\",\n    \"time\": \"1791288176682\",\n    \"generalDiagnostics\": [],\n    \"summary\": {\n        \"filesAnalyzed\": 47,\n        \"errorCount\": 0,\n        \"warningCount\": 0,\n        \"informationCount\": 0,\n        \"timeInSec\": 1.239\n    }\n}"
     },
     "test_coverage": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "446812d13235c80c473130cd2f08ecd33ba846784f59f175f7f1765b6f4999ee",
-      "bytes": 116,
-      "head": "test_fr07.py 8 passed; FR-07 coverage 88.35% (migration_state.py 77.4%, missing lines 75-79,84,92-98; v1/v2/v3 100%)"
+      "sha256": "19adb2f482dc58aaa7c292e57f28a18b42d2f80cd4eeae8823ea5e93bf08237f",
+      "bytes": 50,
+      "head": "25 passed, 1 warning; FR-08 files coverage 98.857%"
     },
     "architecture_constraints": {
       "source": "tool_evidence (inline)",
       "kind": "inline",
-      "sha256": "f08d1a02cdd24fb5b2080bcde7e70253a34ced1171a56bfd7890948ca3297eaf",
-      "bytes": 135,
-      "head": "Contracts: 3 kept, 0 broken. (run from repo root with PYTHONPATH=03-development/src; the given cwd 03-development had no .importlinter)"
+      "sha256": "7aa947691432dba918485ec10900b61a04db79503214e12490e7f803a17b962b",
+      "bytes": 28,
+      "head": "Contracts: 3 kept, 0 broken."
     }
   },
-  "composite_score": 97.09,
+  "composite_score": 99.7142,
   "verdict": "PASS",
   "passed": true,
   "spec_undelivered": [],
